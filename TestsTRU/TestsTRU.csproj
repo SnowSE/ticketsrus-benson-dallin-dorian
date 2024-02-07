@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WebApiTRU\WebApiTRU.csproj" />
+  </ItemGroup>
+
 </Project>
