@@ -1,6 +1,7 @@
 ﻿using LibraryTRU.IServices;
 using Microsoft.EntityFrameworkCore;
 using WebApiTRU.Data;
+using WebApiTRU.Exceptions;
 
 namespace WebApiTRU.Services
 {
@@ -12,7 +13,7 @@ namespace WebApiTRU.Services
             _ticketContext = _pgContext;
         }
 
-        public async Task<Ticket> Add(string email, int concertId)
+        public async Task<Ticket> AddTicket(string email, int concertId)
         {
             Ticket ticket = MakeTicketFrom(email, concertId);
             await _ticketContext.Tickets.AddAsync(ticket);
@@ -25,12 +26,19 @@ namespace WebApiTRU.Services
             return await _ticketContext.Tickets.ToListAsync();
         }
 
-        public async Task ScanTicket(string qrHash)
+        public async Task ScanTicket(string qrHash) 
         {
-            Ticket target = await _ticketContext.Tickets.Where(qr => qr.Qrhash == qrHash).SingleAsync();
-            target.Timescanned = DateTime.Now;
-            _ticketContext.Update(target);
-            await _ticketContext.SaveChangesAsync();
+            try
+            {
+                Ticket target = await _ticketContext.Tickets.Where(qr => qr.Qrhash == qrHash).SingleAsync();
+                target.Timescanned = DateTime.Now;
+                _ticketContext.Update(target);
+                await _ticketContext.SaveChangesAsync();
+            }
+            catch (ArgumentNullException e)
+            {
+                throw new TicketNotFoundException();
+            }
         }
 
         private Ticket MakeTicketFrom(string email, int concertId)
