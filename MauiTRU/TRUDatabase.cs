@@ -11,9 +11,10 @@ namespace MauiTRU;
 public class TRUDatabase
 {
     SQLiteAsyncConnection Database;
-    public TRUDatabase()
+    IDbPath _ifs;
+    public TRUDatabase(IDbPath ifs)
     {
-        
+        _ifs = ifs;
     }
 
     async Task Init()
@@ -21,7 +22,7 @@ public class TRUDatabase
         if (Database is not null)
             return;
 
-        Database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
+        Database = new SQLiteAsyncConnection(Path.Combine(_ifs.Directory, Constants.DatabaseFilename), Constants.Flags);
         await Database.CreateTableAsync<Ticket>();
         await Database.CreateTableAsync<Concert>();
     }
@@ -68,8 +69,4 @@ public class TRUDatabase
         ticket.Timescanned = DateTime.Now;
         await Database.UpdateAsync(ticket);
     }
-
-
-
-
 }
