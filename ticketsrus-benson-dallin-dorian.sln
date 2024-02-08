@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiTRU", "WebApiTRU\WebA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryTRU", "LibraryTRU\LibraryTRU.csproj", "{B38D2BFB-520A-4E93-96AF-BCA81227617B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsTRU", "TestsTRU\TestsTRU.csproj", "{E79F76AE-C490-455E-BFE1-7D6A4570237D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestsTRU", "TestsTRU\TestsTRU.csproj", "{E79F76AE-C490-455E-BFE1-7D6A4570237D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
