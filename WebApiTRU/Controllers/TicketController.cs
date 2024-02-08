@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using WebApiTRU.Data;
 using WebApiTRU.Exceptions;
 using WebApiTRU.Services;
-using System.Web.MVC;
 using System.Net;
 
 namespace WebApiTRU.Controllers;
