@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace MauiTRU
 {
+
     public static class Constants
     {
-        public const string DatabaseFilename = "TodoSQLite.db3";
+       
+        public const string DatabaseFilename = "TRUSQLite.db3";
 
         public const SQLite.SQLiteOpenFlags Flags =
             // open the database in read/write mode
@@ -17,8 +19,5 @@ namespace MauiTRU
             SQLite.SQLiteOpenFlags.Create |
             // enable multi-threaded database access
             SQLite.SQLiteOpenFlags.SharedCache;
-
-        public static string DatabasePath =>
-            Path.Combine(FileSystem.AppDataDirectory, DatabaseFilename);
     }
 }

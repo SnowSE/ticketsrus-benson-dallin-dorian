@@ -16,6 +16,7 @@ namespace MauiTRU
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddSingleton<TRUDatabase>();
+            builder.Services.AddSingleton<IDbPath, MauiDbPath>();
 
 #if DEBUG
     		builder.Services.AddBlazorWebViewDeveloperTools();
