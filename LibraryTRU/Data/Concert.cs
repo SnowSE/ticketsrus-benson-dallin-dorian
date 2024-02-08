@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SQLite;
 
 namespace WebApiTRU.Data;
 
 public partial class Concert
 {
+    [PrimaryKey]
     public int Id { get; set; }
 
     public DateTime StartTime { get; set; }
