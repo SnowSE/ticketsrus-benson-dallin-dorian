@@ -1,11 +1,4 @@
-﻿using LibraryTRU.IServices;
-using Microsoft.AspNetCore.Mvc;
-using WebApiTRU.Data;
-using WebApiTRU.Exceptions;
-using WebApiTRU.Services;
-using System.Net;
-
-namespace WebApiTRU.Controllers;
+﻿namespace WebApiTRU.Controllers;
 
 [ApiController]
 [Route("/api/[Controller]")]
