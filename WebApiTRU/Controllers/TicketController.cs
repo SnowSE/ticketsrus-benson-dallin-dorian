@@ -17,9 +17,9 @@ public class TicketController : Controller
     }
 
     [HttpPost("new")]
-    public async Task<Ticket> PostTicket([FromBody]string email, [FromBody]int concertId)
+    public async Task PostTicket([FromBody] (string email, int concertId) emailAndConcertId)
     {
-        return await _ts.AddTicket(email, concertId);
+        await _ts.AddTicket(emailAndConcertId.email, emailAndConcertId.concertId);
     }
 
     [HttpPut("scan")]

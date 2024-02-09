@@ -5,12 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApiTRU.Data;
 
-namespace LibraryTRU.IServices
+namespace LibraryTRU.IServices;
+
+public interface ITicketService
 {
-    public interface ITicketService
-    {
-        public Task<IEnumerable<Ticket>> GetAll();
-        public Task<Ticket> AddTicket(string email, int concertId);
-        public Task ScanTicket(string qrHash);
-    }
+    public Task<IEnumerable<Ticket>> GetAll();
+    public Task AddTicket(string email, int concertId);
+    public Task ScanTicket(string qrHash);
 }

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApiTRU.Components;
 using WebApiTRU.Data;
+using WebApiTRU.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddControllers();
+builder.Services.AddSingleton<IConcertService, ConcertService>();
+builder.Services.AddSingleton<ITicketService, TicketService>();
 
 builder.Services.AddDbContext<PostgresContext>(o => 
 {

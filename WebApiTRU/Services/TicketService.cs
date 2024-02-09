@@ -9,12 +9,17 @@ public class TicketService : ITicketService
         _ticketContext = _pgContext;
     }
 
-    public async Task<Ticket> AddTicket(string email, int concertId)
+    public async Task AddTicket(string email, int concertId)
     {
-        Ticket ticket = MakeTicketFrom(email, concertId);
+        Ticket ticket = new Ticket()
+        {
+            Email = email,
+            ConcertId = concertId,
+            Qrhash = GenerateTicketHash()
+        };
+
         await _ticketContext.Tickets.AddAsync(ticket);
         await _ticketContext.SaveChangesAsync();
-        return ticket;
     }
 
     public async Task<IEnumerable<Ticket>> GetAll()
@@ -35,18 +40,6 @@ public class TicketService : ITicketService
         {
             throw new TicketNotFoundException();
         }
-    }
-
-    private Ticket MakeTicketFrom(string email, int concertId)
-    {
-        Ticket ticket = new Ticket()
-        {
-            Email = email,
-            ConcertId = concertId,
-            Qrhash = GenerateTicketHash()
-        };
-
-        return ticket;
     }
 
     private string GenerateTicketHash()
