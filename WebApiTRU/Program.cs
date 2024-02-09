@@ -16,8 +16,8 @@ builder.Services.AddDbContext<PostgresContext>(o =>
     
 });
 
-builder.Services.AddSingleton<IConcertService, ConcertService>();
-builder.Services.AddSingleton<ITicketService, TicketService>();
+builder.Services.AddScoped<IConcertService, ConcertService>();
+builder.Services.AddScoped<ITicketService, TicketService>();
 
 var app = builder.Build();
 
