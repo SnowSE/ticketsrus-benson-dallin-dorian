@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApiTRU.Components;
-using WebApiTRU.Data;
+using LibraryTRU.Data;
 using WebApiTRU.Services;
 
 var builder = WebApplication.CreateBuilder(args);
