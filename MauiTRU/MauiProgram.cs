@@ -1,4 +1,6 @@
-﻿using MauiTRU.Database;
+﻿using LibraryTRU.IServices;
+using MauiTRU.Database;
+using MauiTRU.Services;
 using Microsoft.Extensions.Logging;
 
 namespace MauiTRU
@@ -7,6 +9,8 @@ namespace MauiTRU
     {
         public static MauiApp CreateMauiApp()
         {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new("https://localhost:7288"); //Needs different URI for production - azure or testing
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -18,6 +22,9 @@ namespace MauiTRU
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddSingleton<TRUDatabase>();
             builder.Services.AddSingleton<IDbPath, MauiDbPath>();
+            builder.Services.AddSingleton<ITicketService, MauiTicketService>();
+            builder.Services.AddSingleton<IConcertService, MauiConcertService>();
+            builder.Services.AddSingleton(client);
 
 #if DEBUG
     		builder.Services.AddBlazorWebViewDeveloperTools();
