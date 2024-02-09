@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MauiTRU
+namespace MauiTRU.Database
 {
 
     public static class Constants
     {
-       
+
         public const string DatabaseFilename = "TRUSQLite.db3";
 
         public const SQLite.SQLiteOpenFlags Flags =

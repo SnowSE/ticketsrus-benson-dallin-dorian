@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApiTRU.Data;
 
-namespace MauiTRU;
+namespace MauiTRU.Database;
 
 public class TRUDatabase
 {
@@ -37,6 +37,13 @@ public class TRUDatabase
         await Init();
         return await Database.Table<Concert>().ToListAsync();
     }
+    public async Task ScanTicketAsync(string qrHash)
+    {
+        await Init();
+        var ticket = await Database.Table<Ticket>().Where(t => t.Qrhash == qrHash).FirstOrDefaultAsync();
+        ticket.Timescanned = DateTime.Now;
+        await Database.UpdateAsync(ticket);
+    }
 
     //public async Task<Ticket> CreateTicketAsync(string email, int concertId)
     //{
@@ -62,11 +69,4 @@ public class TRUDatabase
     //    return chars.ToString();
     //}
 
-    public async Task ScanTicketAsync(string qrHash)
-    {
-        await Init();
-        var ticket = await Database.Table<Ticket>().Where(t => t.Qrhash == qrHash).FirstOrDefaultAsync();
-        ticket.Timescanned = DateTime.Now;
-        await Database.UpdateAsync(ticket);
-    }
 }
