@@ -6,14 +6,17 @@ partial class CameraPage : ContentPage
 {
     public CameraPage()
     {
+
         InitializeComponent();
 
-        barcodeReader.Options = new BarcodeReaderOptions{
+        barcodeReader.Options = new BarcodeReaderOptions
+        {
             Formats = BarcodeFormat.QrCode,
-            AutoRotate = true,
             Multiple = true,
             TryHarder = true,
+            AutoRotate = true,
         };
+
     }
 
     private TaskCompletionSource<BarcodeResult> scanTask = new TaskCompletionSource<BarcodeResult>();
@@ -30,4 +33,6 @@ partial class CameraPage : ContentPage
     {
         scanTask.TrySetResult(e.Results.FirstOrDefault());
     }
+
+
 }
