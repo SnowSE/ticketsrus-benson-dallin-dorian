@@ -2,6 +2,7 @@
 using MauiTRU.Database;
 using MauiTRU.Services;
 using Microsoft.Extensions.Logging;
+using ZXing.Net.Maui.Controls;
 
 namespace MauiTRU
 {
@@ -14,6 +15,7 @@ namespace MauiTRU
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseBarcodeReader()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
