@@ -12,14 +12,15 @@
 </div>
 <div id="selectionbuttons">
     <div>
-        @foreach (Concert show in Concerts)
+        @if(Concerts is not null)
         {
-            <button class="btn" href="purchase/concertname">@show.EventName</button> 
+            @foreach (Concert show in Concerts)
+            {
+                <button class="btn" href="purchase/concertname">@show.EventName</button> 
             
+            }
         }
-            <!--For each event in the event table
-            <button class="btn" href="purchase/concertname">@artistname<button> 
-        -->
+            
     </div>
 </div>
 
