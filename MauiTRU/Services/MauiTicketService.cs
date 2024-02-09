@@ -1,12 +1,6 @@
 ﻿using LibraryTRU.IServices;
-using Microsoft.Maui.ApplicationModel.Communication;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
-using WebApiTRU.Data;
+using LibraryTRU.Data;
 
 namespace MauiTRU.Services
 {
