@@ -16,20 +16,24 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+-- Create bdd role
+
+Create role bdd;
+
 --
 -- Name: public; Type: SCHEMA; Schema: -; Owner: azure_pg_admin
 --
 
-CREATE SCHEMA public;
+-- CREATE SCHEMA public;
 
 
-ALTER SCHEMA public OWNER TO azure_pg_admin;
+-- ALTER SCHEMA public OWNER TO azure_pg_admin;
 
 --
 -- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: azure_pg_admin
 --
 
-COMMENT ON SCHEMA public IS 'standard public schema';
+-- COMMENT ON SCHEMA public IS 'standard public schema';
 
 
 SET default_tablespace = '';
