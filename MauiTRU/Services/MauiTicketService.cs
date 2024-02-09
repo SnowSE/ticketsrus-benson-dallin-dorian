@@ -10,7 +10,7 @@ using WebApiTRU.Data;
 
 namespace MauiTRU.Services
 {
-    public class TicketService(HttpClient _hpClient) : ITicketService
+    public class MauiTicketService(HttpClient _hpClient) : ITicketService
     {
         public async Task AddTicket(string email, int concertId)
         {
