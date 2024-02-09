@@ -7,6 +7,7 @@ public class TicketService : ITicketService
     PostgresContext _ticketContext;
     public TicketService(PostgresContext _pgContext)
     {
+        var strin = _pgContext.Database.GetConnectionString();
         _ticketContext = _pgContext;
     }
 

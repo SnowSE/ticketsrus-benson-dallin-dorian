@@ -17,7 +17,6 @@ public class RubricTests : IClassFixture<TRUWebAppFactory>
     public async void SuccessfulScanUpdatesDatabase()
     {
         //arrange
-        var tickets = await client.GetFromJsonAsync<IEnumerable<Ticket>>("api/ticket/getall");
 
         //act
         //assert

@@ -22,6 +22,7 @@ namespace TestsTRU
             _dbContainer = new PostgreSqlBuilder()
                 .WithImage("postgres")
                 .WithPassword("P@ssword1")
+                .WithBindMount(backupFile.FullName, "/docker-entrypoint-initdb.d/init.sql")
                 .Build();
         }
 
