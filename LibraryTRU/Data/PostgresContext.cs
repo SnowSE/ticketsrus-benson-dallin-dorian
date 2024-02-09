@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebApiTRU.Data;
+namespace LibraryTRU.Data;
 
 public partial class PostgresContext : DbContext
 {

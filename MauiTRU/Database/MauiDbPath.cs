@@ -1,4 +1,4 @@
-﻿namespace MauiTRU
+﻿namespace MauiTRU.Database
 {
     public class MauiDbPath : IDbPath
     {

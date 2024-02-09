@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace WebApiTRU.Data;
+namespace LibraryTRU.Data;
 
 public partial class Ticket
 {

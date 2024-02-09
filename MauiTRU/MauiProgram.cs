@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MauiTRU.Database;
+using Microsoft.Extensions.Logging;
 
 namespace MauiTRU
 {
