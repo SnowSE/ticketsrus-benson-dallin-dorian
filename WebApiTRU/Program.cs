@@ -10,14 +10,14 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddControllers();
-builder.Services.AddSingleton<IConcertService, ConcertService>();
-builder.Services.AddSingleton<ITicketService, TicketService>();
-
 builder.Services.AddDbContext<PostgresContext>(o => 
 {
     o.UseNpgsql(builder.Configuration["db"]);
     
 });
+
+builder.Services.AddSingleton<IConcertService, ConcertService>();
+builder.Services.AddSingleton<ITicketService, TicketService>();
 
 var app = builder.Build();
 
