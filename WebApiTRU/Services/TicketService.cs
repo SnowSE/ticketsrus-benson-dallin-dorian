@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LibraryTRU.Data;
+using Microsoft.EntityFrameworkCore;
 namespace WebApiTRU.Services;
 
 public class TicketService : ITicketService

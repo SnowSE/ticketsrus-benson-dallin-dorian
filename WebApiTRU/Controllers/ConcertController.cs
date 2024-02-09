@@ -1,4 +1,6 @@
-﻿namespace WebApiTRU.Controllers;
+﻿using LibraryTRU.Data;
+
+namespace WebApiTRU.Controllers;
 
 [ApiController]
 [Route("/api/[controller]")]
