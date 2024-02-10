@@ -1,4 +1,5 @@
 ﻿using LibraryTRU.Data;
+using LibraryTRU.IServices;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Testcontainers.PostgreSql;
+using WebApiTRU.Services;
 
 namespace TestsTRU
 {
@@ -28,9 +30,10 @@ namespace TestsTRU
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.ConfigureTestServices(s => {
-                s.RemoveAll(typeof(DbContextOptions<PostgresContext>));
-                s.AddDbContext<PostgresContext>(o =>
+            builder.ConfigureTestServices(services => {
+                services.RemoveAll(typeof(DbContextOptions<PostgresContext>));
+
+                services.AddDbContext<PostgresContext>(o =>
                 {
                     o.UseNpgsql(_dbContainer.GetConnectionString());
                 });
