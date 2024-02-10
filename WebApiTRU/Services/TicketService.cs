@@ -17,7 +17,7 @@ public class TicketService : ITicketService
         {
             Email = email,
             ConcertId = concertId,
-            Qrhash = GenerateTicketHash()
+            Qrhash = await GenerateTicketHash()
         };
 
         await _ticketContext.Tickets.AddAsync(ticket);
@@ -44,13 +44,18 @@ public class TicketService : ITicketService
         }
     }
 
-    private string GenerateTicketHash()
+    async Task<string> GenerateTicketHash()
     {
-        string hash;
-        char[] chars = new char[16];
+        char[] hash = new char[16];
 
-        return chars.ToString();
-        
+        for (int i = 0; i < 16; i++)
+            hash[i] = (char)Random.Shared.Next(33, 127);
+
+        IEnumerable<Ticket> tickets = await GetAll();
+
+        if(tickets.Where(t => t.Qrhash == hash.ToString()).Count() > 0)
+            return await GenerateTicketHash();
+
+        return new string(hash);
     }
-
 }
