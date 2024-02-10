@@ -32,39 +32,11 @@ namespace TestsTRU
         {
             builder.ConfigureTestServices(services => {
                 services.RemoveAll(typeof(DbContextOptions<PostgresContext>));
-                services.RemoveAll(typeof(PostgresContext));
-
-                /*var dbc = services.SingleOrDefault(s =>
-                        s.ServiceType == typeof(DbContextOptions<PostgresContext>));
-
-                var pg = services.SingleOrDefault(s =>
-                        s.ServiceType == typeof(PostgresContext));
-
-                var db = services.SingleOrDefault(s =>
-                        s.ServiceType == typeof(DbContext));*/
 
                 services.AddDbContext<PostgresContext>(o =>
                 {
                     o.UseNpgsql(_dbContainer.GetConnectionString());
                 });
-
-                services.RemoveAll(typeof(ITicketService));
-                services.RemoveAll(typeof(IConcertService));
-
-                /*var ts = services.SingleOrDefault(s =>
-                        s.ServiceType == typeof(TicketService));
-
-                var cs = services.SingleOrDefault(s =>
-                        s.ServiceType == typeof(ConcertService));*/
-
-                services.AddScoped<ITicketService, TicketService>();
-                services.AddScoped<IConcertService, ConcertService>();
-
-                /*ts = services.SingleOrDefault(s =>
-                        s.ServiceType == typeof(ITicketService));
-
-                cs = services.SingleOrDefault(s =>
-                        s.ServiceType == typeof(IConcertService));*/
             });
         }
 
