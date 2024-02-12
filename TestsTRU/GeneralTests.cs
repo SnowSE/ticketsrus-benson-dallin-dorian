@@ -26,6 +26,13 @@ namespace TestsTRU
         }
 
         [Fact]
+        public async void GetOneTicketById()
+        {
+            var ticket = await client.GetFromJsonAsync<Ticket>("api/ticket/1");
+            ticket.Id.Should().Be(1);
+        }
+
+        [Fact]
         public async void PostTicketToDbWithDTOReturnsCreatedTicket()
         {
             string testEmail = "test@example.com";

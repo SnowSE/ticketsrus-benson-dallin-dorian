@@ -12,16 +12,18 @@ public class TicketController : Controller
         _ts = ticketService;
     }
 
-    [HttpGet("{email}")]
-    public async Task<Ticket> GetTicketWithEmail(string email)
-    {
-        return await _ts.GetSingleTicket(email);
-    }
 
-    [HttpDelete("{id}")]
-    public async Task DeleteTicket([FromBody]int id)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Ticket>> GetTicketById(int id)
     {
-        await _ts.DeleteTicket(id);
+        var ticket = await _ts.GetTicketById(id);
+
+        if (ticket == null)
+        {
+            return NotFound();
+        }
+
+        return ticket;
     }
 
     [HttpGet("getall")]
@@ -43,19 +45,6 @@ public class TicketController : Controller
         return CreatedAtAction(nameof(GetTicketById), new { id = ticket.Id }, ticket);
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Ticket>> GetTicketById(int id)
-    {
-        var ticket = await _ts.GetTicketById(id);
-
-        if (ticket == null)
-        {
-            return NotFound();
-        }
-
-        return ticket;
-    }
-
     [HttpPut("scan")]
     public async Task ScanTicket([FromBody]string qrHash)
     {
@@ -71,6 +60,12 @@ public class TicketController : Controller
         {
             Response.StatusCode = 500;
         }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task DeleteTicket([FromBody]int id)
+    {
+        await _ts.DeleteTicket(id);
     }
 
 }
