@@ -16,8 +16,8 @@
         {
             @foreach (Concert show in Concerts)
             {
-                <button class="btn" href="purchase/concertname">@show.EventName - @show.StartTime</button> 
-            
+                <button class="btn btn-primary" href="purchase/concertname" style="margin: 3px;">@show.EventName - @show.StartTime</button> 
+                <br />
             }
         }
             

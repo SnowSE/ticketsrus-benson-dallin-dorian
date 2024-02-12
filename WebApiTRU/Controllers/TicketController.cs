@@ -32,6 +32,12 @@ public class TicketController : Controller
         return await _ts.GetAll();
     }
 
+    [HttpGet("get/{email}")]
+    public async Task<Ticket> GetSingle(string email)
+    {
+        return await _ts.GetSingleTicket(email);
+    }
+
     [HttpPost("new")]
     public async Task<ActionResult<Ticket>> PostTicket([FromBody] TicketDTO ticketDTO)
     {
