@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using LibraryTRU.Data;
+using LibraryTRU.Data.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +24,17 @@ namespace TestsTRU
             var tickets = await client.GetFromJsonAsync<IEnumerable<Ticket>>("api/ticket/getall");
             tickets.Where(o => o.Id == 1).Should().HaveCount(1);
         }
+
+        [Fact]
+        public async void PostTicketToDbWithDTOReturnsCreatedTicket()
+        {
+            string testEmail = "test@example.com";
+            TicketDTO data = new() { Email = testEmail, ConcertId = 1 };
+            var ticket = await client.PostAsJsonAsync("/api/ticket/new", data);
+            ticket.Content.ReadFromJsonAsync<Ticket>().Result.Email.Should().Be(testEmail);
+        }
+    
+
+    
     }
 }

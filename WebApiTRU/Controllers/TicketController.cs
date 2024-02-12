@@ -1,4 +1,4 @@
-﻿using LibraryTRU.Data;
+﻿using LibraryTRU.Data.DTOs;
 
 namespace WebApiTRU.Controllers;
 
@@ -12,6 +12,18 @@ public class TicketController : Controller
         _ts = ticketService;
     }
 
+    [HttpGet("{email}")]
+    public async Task<Ticket> GetTicketWithEmail(string email)
+    {
+        return await _ts.GetSingleTicket(email);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task DeleteTicket([FromBody]int id)
+    {
+        await _ts.DeleteTicket(id);
+    }
+
     [HttpGet("getall")]
     public async Task<IEnumerable<Ticket>> GetAll()
     {
@@ -19,9 +31,29 @@ public class TicketController : Controller
     }
 
     [HttpPost("new")]
-    public async Task PostTicket([FromBody] (string email, int concertId) emailAndConcertId)
+    public async Task<ActionResult<Ticket>> PostTicket([FromBody] TicketDTO ticketDTO)
     {
-        await _ts.AddTicket(emailAndConcertId.email, emailAndConcertId.concertId);
+        var ticket = await _ts.AddTicket(ticketDTO.Email, ticketDTO.ConcertId);
+
+        if (ticket == null)
+        {
+            return BadRequest(); // Or any appropriate status code indicating failure
+        }
+
+        return CreatedAtAction(nameof(GetTicketById), new { id = ticket.Id }, ticket);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Ticket>> GetTicketById(int id)
+    {
+        var ticket = await _ts.GetTicketById(id);
+
+        if (ticket == null)
+        {
+            return NotFound();
+        }
+
+        return ticket;
     }
 
     [HttpPut("scan")]
