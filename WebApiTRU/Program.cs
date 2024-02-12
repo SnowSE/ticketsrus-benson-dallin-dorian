@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApiTRU.Components;
+using WebApiTRU.Email;
 using WebApiTRU.Services;
 
 public class Program
@@ -22,14 +23,18 @@ public class Program
         builder.Services.AddScoped<IConcertService, ConcertService>();
         builder.Services.AddScoped<ITicketService, TicketService>();
 
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
         builder.Services.AddTransient<IEmailService, EmailService>();
 
         var app = builder.Build();
-        var emailPassword = builder.Configuration["emailpassword"];
+        var emailpassword = builder.Configuration["emailpassword"];
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
+            app.UseSwagger();
+            app.UseSwaggerUI();
             app.UseExceptionHandler("/Error", createScopeForErrors: true);
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();

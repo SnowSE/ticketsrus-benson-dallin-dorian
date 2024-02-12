@@ -1,13 +1,12 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using LibraryTRU.IServices;
 
 namespace WebApiTRU.Email;
 
-public class EmailSender : IEmailService
+public class EmailService : IEmailService
 {
     private readonly IConfiguration _config;
-    public EmailSender(IConfiguration config)
+    public EmailService(IConfiguration config)
     {
         _config = config;
     }
@@ -18,11 +17,11 @@ public class EmailSender : IEmailService
         {
             EnableSsl = true,
             UseDefaultCredentials = false,
-            Credentials = new NetworkCredential("ticketsrus@gmail.com", emailpassword)
+            Credentials = new NetworkCredential("ticketsrus3@gmail.com", emailpassword)
         };
 
         return client.SendMailAsync(
-            new MailMessage(from: "your.email@live.com",
+            new MailMessage(from: "ticketsrus3@gmail.com",
                             to: email,
                             subject,
                             message
