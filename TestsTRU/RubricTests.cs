@@ -25,15 +25,19 @@ public class RubricTests : IClassFixture<TRUWebAppFactory>
         TicketDTO data = new() {Email =  testEmail, ConcertId = 1};
         var result = await client.PostAsJsonAsync("/api/ticket/new", data);
         var ticket = result.Content.ReadFromJsonAsync<Ticket>().Result;
+        int id = ticket.Id;
+
+        //make sure the ticket hasnt been scanned
+        var testResult = await client.GetFromJsonAsync<Ticket>($"api/ticket/{id}");
+        testResult.Timescanned.Should().BeNull();
 
         //Act: Scan the ticket
         var qrHash = ticket.Qrhash;
         await client.PutAsJsonAsync("/api/ticket/scan", qrHash);
 
         //Assert: get the ticket and see if it was scanned
-        int id = ticket.Id;
-        var testResult = await client.GetFromJsonAsync<Ticket>($"api/ticket/{id}");
-        testResult.Timescanned.Should().NotBeNull();
+        var testResult2 = await client.GetFromJsonAsync<Ticket>($"api/ticket/{id}");
+        testResult2.Timescanned.Should().NotBeNull();
      
     }
 
