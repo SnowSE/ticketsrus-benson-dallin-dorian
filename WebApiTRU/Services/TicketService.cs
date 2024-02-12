@@ -30,6 +30,11 @@ public class TicketService : ITicketService
         return await _ticketContext.Tickets.ToListAsync();
     }
 
+    public async Task<IEnumerable<Ticket>> GetAll(String email)
+    {
+        return await _ticketContext.Tickets.Where(tc => tc.Email == email).ToListAsync();
+    }
+
     public async Task<Ticket> GetSingleTicket(string email)
     {
         return await _ticketContext.Tickets.Where(hc => hc.Email == email).FirstAsync();

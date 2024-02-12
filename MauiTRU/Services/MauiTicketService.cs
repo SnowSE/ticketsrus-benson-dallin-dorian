@@ -22,9 +22,9 @@ namespace MauiTRU.Services
             return await _hpClient.GetFromJsonAsync<IEnumerable<Ticket>>("api/ticket/getall");
         }
 
-        public Task<Ticket> GetSingleTicket(string email)
+        public async Task<Ticket> GetSingleTicket(string email)
         {
-            throw new NotImplementedException();
+            return await _hpClient.GetFromJsonAsync<Ticket>($"api/ticket/{email}");
         }
 
         public Task<ActionResult<Ticket>> GetTicketById(int id)
