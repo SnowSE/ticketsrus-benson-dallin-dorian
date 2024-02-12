@@ -1,5 +1,6 @@
 ﻿using SQLite;
 using LibraryTRU.Data;
+using System.Net.Http.Json;
 
 namespace MauiTRU.Database;
 
@@ -7,9 +8,11 @@ public class TRUDatabase
 {
     SQLiteAsyncConnection Database;
     IDbPath _ifs;
-    public TRUDatabase(IDbPath ifs)
+    HttpClient _client;
+    public TRUDatabase(IDbPath ifs, HttpClient client)
     {
         _ifs = ifs;
+        _client = client;
     }
 
     async Task Init()
@@ -40,28 +43,43 @@ public class TRUDatabase
         await Database.UpdateAsync(ticket);
     }
 
-    //public async Task<Ticket> CreateTicketAsync(string email, int concertId)
-    //{
-    //    await Init();
+    public async Task UpdateLocalDbFromMainDb()
+    {
+        await Init();
+        var mainTickets = await _client.GetFromJsonAsync<IEnumerable<Ticket>>("api/ticket/getall");
+        var localTickets = await Database.Table<Ticket>().ToListAsync();
 
-    //    Ticket ticket = new Ticket()
-    //    {
-    //        Email = email,
-    //        ConcertId = concertId,
-    //        Qrhash = GenerateTicketHash()
-    //    };
+        foreach(Ticket mainTicket in mainTickets)
+        {
+            try 
+            { 
+                var result = await Database.GetAsync<Ticket>(localTicket => localTicket.Id == mainTicket.Id);
 
-    //    await Database.InsertAsync(ticket);
+                if(result.Timescanned is not null) // If it has been scanned, update it
+                    await Database.UpdateAsync(result);
+            }
+            catch (SQLiteException) // Main Ticket not found in local db
+            {
+                await Database.InsertAsync(mainTicket);
+            }
+        }
 
-    //    return ticket;
-    //}
+        foreach (Ticket localTicket in localTickets)
+        {
+            if(!mainTickets.Contains(localTicket)) // Delete any tickets that are deleted in the main db
+                await Database.DeleteAsync(localTicket);
+        }
+    }
 
-    //private string GenerateTicketHash()
-    //{
-    //    string hash;
-    //    char[] chars = new char[16];
+    public async Task UpdateMainDbFromLocalDb()
+    {
+        await Init();
+        var localTickets = await Database.Table<Ticket>().ToListAsync();
+        var mainTickets = await _client.GetFromJsonAsync<IEnumerable<Ticket>>("api/ticket/getall");
 
-    //    return chars.ToString();
-    //}
-
+        foreach (Ticket localTicket in localTickets)
+            if(localTicket.Timescanned is not null) //If the local ticket is scanned
+                if (mainTickets.Where(mt => mt.Id == localTicket.Id).Single().Timescanned is not null) // And the main ticket is not scanned
+                    await _client.PutAsJsonAsync("api/ticket/scan", localTicket.Qrhash); // scan the main one
+    }
 }
