@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using LibraryTRU.Data;
 using LibraryTRU.Data.DTOs;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,20 @@ namespace TestsTRU
             var ticket = await client.PostAsJsonAsync("/api/ticket/new", data);
             ticket.Content.ReadFromJsonAsync<Ticket>().Result.Email.Should().Be(testEmail);
         }
+
+        //[Fact]
+        //public async void EmailServiceCanSend()
+        //{
+        //    EmailInfoDTO emailDTO = new()
+        //    {
+        //        Email = "thenewdorian21@gmail.com",
+        //        Subject = "Test from test explorer",
+        //        Message = "Test"
+        //    };
+
+        //    HttpResponseMessage response = await client.PostAsJsonAsync("/api/email", emailDTO);
+        //    response.IsSuccessStatusCode.Should().BeTrue();
+        //}
     
 
     
