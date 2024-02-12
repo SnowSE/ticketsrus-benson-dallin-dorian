@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MauiTRU\MauiTRU.csproj" />
     <ProjectReference Include="..\WebApiTRU\WebApiTRU.csproj" />
   </ItemGroup>
 
