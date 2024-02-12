@@ -42,9 +42,25 @@ public class RubricTests : IClassFixture<TRUWebAppFactory>
     }
 
     [Fact]
-    public void FailedScanDoesntUpdateDatabase()
+    public async void FailedScanDoesntUpdateDatabase()
     {
+        //Arrange: create new ticket
+        string testEmail = "test@example.com";
+        TicketDTO data = new() { Email = testEmail, ConcertId = 1 };
+        var result = await client.PostAsJsonAsync("/api/ticket/new", data);
+        var ticket = result.Content.ReadFromJsonAsync<Ticket>().Result;
+        int id = ticket.Id;
 
+        //make sure the ticket hasnt been scanned
+        var testResult = await client.GetFromJsonAsync<Ticket>($"api/ticket/{id}");
+        testResult.Timescanned.Should().BeNull();
+
+        //Act: Scan the ticket with a bogus hash
+        await client.PutAsJsonAsync("/api/ticket/scan", "123");
+
+        //Assert: get the ticket and make sure it wasn't scanned
+        var testResult2 = await client.GetFromJsonAsync<Ticket>($"api/ticket/{id}");
+        testResult2.Timescanned.Should().BeNull();
     }
 
     [Fact]
