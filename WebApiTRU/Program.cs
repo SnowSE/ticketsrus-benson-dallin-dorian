@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using WebApiTRU.Components;
-using LibraryTRU.Data;
 using WebApiTRU.Services;
 
 public class Program
@@ -23,7 +22,10 @@ public class Program
         builder.Services.AddScoped<IConcertService, ConcertService>();
         builder.Services.AddScoped<ITicketService, TicketService>();
 
+        builder.Services.AddTransient<IEmailService, EmailService>();
+
         var app = builder.Build();
+        var emailPassword = builder.Configuration["emailpassword"];
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
