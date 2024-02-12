@@ -1,6 +1,7 @@
 ﻿using LibraryTRU.IServices;
 using System.Net.Http.Json;
 using LibraryTRU.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MauiTRU.Services
 {
@@ -11,14 +12,34 @@ namespace MauiTRU.Services
             await _hpClient.PostAsJsonAsync("api/ticket/new", (email, concertId));
         }
 
+        public Task DeleteTicket(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<Ticket>> GetAll()
         {
             return await _hpClient.GetFromJsonAsync<IEnumerable<Ticket>>("api/ticket/getall");
         }
 
+        public Task<Ticket> GetSingleTicket(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ActionResult<Ticket>> GetTicketById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task ScanTicket(string qrHash)
         {
             await _hpClient.PutAsJsonAsync("api/ticket/scan", qrHash);
+        }
+
+        Task<Ticket> ITicketService.AddTicket(string email, int concertId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

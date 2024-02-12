@@ -11,7 +11,7 @@ public class TicketService : ITicketService
         _ticketContext = _pgContext;
     }
 
-    public async Task AddTicket(string email, int concertId)
+    public async Task<Ticket> AddTicket(string email, int concertId)
     {
         Ticket ticket = new Ticket()
         {
@@ -22,11 +22,27 @@ public class TicketService : ITicketService
 
         await _ticketContext.Tickets.AddAsync(ticket);
         await _ticketContext.SaveChangesAsync();
+        return ticket;
     }
 
     public async Task<IEnumerable<Ticket>> GetAll()
     {
         return await _ticketContext.Tickets.ToListAsync();
+    }
+
+    public async Task<Ticket> GetSingleTicket(string email)
+    {
+        return await _ticketContext.Tickets.Where(hc => hc.Email == email).FirstAsync();
+    }
+
+    public async Task<ActionResult<Ticket>> GetTicketById(int id)
+    {
+        return await _ticketContext.Tickets.Where(hc => hc.Id == id).FirstAsync();
+    }
+
+    public async Task DeleteTicket(int id)
+    {
+        await _ticketContext.Tickets.Where(hc => hc.Id == id).ExecuteDeleteAsync();
     }
 
     public async Task ScanTicket(string qrHash) 
