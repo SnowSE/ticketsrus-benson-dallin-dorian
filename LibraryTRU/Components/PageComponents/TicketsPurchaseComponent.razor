@@ -1,5 +1,8 @@
 ﻿@using LibraryTRU.IServices
+@using LibraryTRU.Data.DTOs
 @inject IEmailService emailService
+@inject IConcertService concertService
+@inject ITicketService ticketService
 
 
 <h3>TicketsPurchaseComponent</h3>
@@ -14,9 +17,30 @@
     public int concert_id { get; set; }
 
     public string userEmail;
+    List<Ticket> tickets;
+    Concert concert;
+
+
+    protected override async Task OnInitializeAsync()
+    {
+        tickets = await ticketService.GetAll();
+        concert = (await concertService.GetAll()).Where(c => c.Id == concert_id);
+    }
 
     public void PurchaseTicket()
     {
-        emailService.SendEmail(userEmail, "test", "test");
+        if(userEmail is not null) // Maybe catch if they put in a non-email
+        {
+            var ticket = await ticketService.AddTicket(concert.Id, userEmail);
+            EmailInfoDTO emailDto = new() 
+            { 
+                Email = userEmail, 
+                Subject = "Tickets-R-US Ticket Confirmation", 
+                Message = $"Thank you for purchasing a ticket for event: {concert.Name}",
+                QrHash = ticket.QrHash
+            };
+            emailService.SendEmail(emailDto);
+            userEmail = null;
+        }
     }
 }
