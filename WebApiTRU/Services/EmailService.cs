@@ -1,6 +1,8 @@
 ﻿using System.Net;
-using System.Net.Mail;
-
+using MailKit.Net;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
 namespace WebApiTRU.Email;
 
 public class EmailService : IEmailService
@@ -10,21 +12,20 @@ public class EmailService : IEmailService
     {
         _config = config;
     }
-    public Task SendEmailAsync(string email, string subject, string message)
+    public void SendEmail(string email, string subject, string body)
     {
-        var emailpassword = _config["googlepassword"];
-        var client = new SmtpClient("smtp.gmail.com", 587)
-        {
-            EnableSsl = true,
-            UseDefaultCredentials = false,
-            Credentials = new NetworkCredential("ticketsrus3@gmail.com", emailpassword)
+        var message = new MimeMessage();
+        message.From.Add(new MailboxAddress("TRU", "ticketsrus3@gmail.com"));
+        message.To.Add(new MailboxAddress("", email));
+        message.Subject = subject;
+        message.Body = new TextPart("plain") {
+            Text = body
         };
-
-        return client.SendMailAsync(
-            new MailMessage(from: "ticketsrus3@gmail.com",
-                            to: email,
-                            subject,
-                            message
-                            ));
+        using (var client = new SmtpClient()){
+            client.Connect("smtp.server.come", 587, false);
+            client.Authenticate("ticketsrus3@gmail.com", $"{_config["googlepassword"]}");
+            client.Send(message);
+            client.Disconnect(true);
+        }
     }
 }
