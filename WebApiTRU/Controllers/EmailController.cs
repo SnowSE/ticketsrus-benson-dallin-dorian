@@ -3,7 +3,7 @@
 namespace WebApiTRU.Controllers;
 
 [ApiController]
-[Route("email")]
+[Route("/api/email")]
 public class EmailController : Controller
 {
     private readonly IEmailService emailService;

@@ -15,6 +15,7 @@ namespace MauiTRU.Services
         public MauiConcertService(HttpClient concertclient)
         {
             _concertClient = concertclient;
+            _concertClient.BaseAddress = new Uri("https://localhost:7288");
         }
 
         public async Task<IEnumerable<Concert>> GetAll()
