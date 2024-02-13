@@ -12,7 +12,7 @@ public class ConcertController : Controller
         _cs = concertService;
     }
 
-    [HttpGet]
+    [HttpGet("getall")]
     public async Task<IEnumerable<Concert>> GetAllConcerts()
     {
         return await _cs.GetAll();
