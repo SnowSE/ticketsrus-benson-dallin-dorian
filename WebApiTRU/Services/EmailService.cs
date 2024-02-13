@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using LibraryTRU.Data.DTOs;
 using MailKit.Net;
 using MailKit.Net.Smtp;
 using MailKit.Security;
@@ -12,14 +13,15 @@ public class EmailService : IEmailService
     {
         _config = config;
     }
-    public void SendEmail(string email, string subject, string body)
+    public void SendEmail(EmailInfoDTO emailInfo)
     {
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("TRU", "ticketsrus4@gmail.com"));
-        message.To.Add(new MailboxAddress("", email));
-        message.Subject = subject;
+        message.To.Add(new MailboxAddress("", emailInfo.Email));
+        message.Subject = emailInfo.Subject;
         message.Body = new TextPart("plain") {
-            Text = body
+            Text = emailInfo.Message
+            // Add emailInfo.QrCode
         };
         using (var client = new SmtpClient()){
             client.Connect("smtp.gmail.com", 587, false);

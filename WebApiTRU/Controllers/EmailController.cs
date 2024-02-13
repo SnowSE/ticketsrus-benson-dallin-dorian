@@ -21,7 +21,7 @@ public class EmailController : Controller
             return BadRequest(ModelState);
         }
 
-        emailService.SendEmail(model.Email, model.Subject, model.Message);
+        emailService.SendEmail(model);
 
         return Ok();
     }

@@ -13,4 +13,7 @@ public class EmailInfoDTO
 
     [Required]
     public string Message { get; set; }
+
+    [Required]
+    public string QrHash { get; set; }
 }

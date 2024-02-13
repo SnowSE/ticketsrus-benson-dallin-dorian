@@ -22,7 +22,6 @@ public class Program
 
         builder.Services.AddScoped<IConcertService, ConcertService>();
         builder.Services.AddScoped<ITicketService, TicketService>();
-
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddTransient<IEmailService, EmailService>();
