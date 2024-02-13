@@ -1,6 +1,7 @@
 ﻿@using LibraryTRU.Data
 @using LibraryTRU.IServices
 @inject IConcertService ics
+@inject NavigationManager nm
 <PageTitle>Home</PageTitle>
 
 <div class="container">
@@ -16,7 +17,8 @@
         {
             @foreach (Concert show in Concerts)
             {
-                <button class="btn btn-primary" href="purchase/concertname" style="margin: 3px;">@show.EventName - @show.StartTime</button> 
+                int tempId = show.Id;
+                <button class="btn btn-primary" href="purchase/concertname" style="margin: 3px;" @onclick="() => NavigateToPage(tempId)">@show.EventName - @show.StartTime</button> 
                 <br />
             }
         }
@@ -30,5 +32,9 @@
     protected override async Task OnInitializedAsync()
     {
         Concerts = (List<Concert>)await ics.GetAll();
+    }
+
+    public void NavigateToPage(int id){
+        nm.NavigateTo($"/tickets/{id}");
     }
 }

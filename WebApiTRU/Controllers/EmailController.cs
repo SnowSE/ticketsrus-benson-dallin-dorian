@@ -14,14 +14,14 @@ public class EmailController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> SendEmail([FromBody] EmailInfoDTO model)
+    public IActionResult SendEmail([FromBody] EmailInfoDTO model)
     {
         if (model == null || !ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        await emailService.SendEmailAsync(model.Email, model.Subject, model.Message);
+        emailService.SendEmail(model.Email, model.Subject, model.Message);
 
         return Ok();
     }

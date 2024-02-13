@@ -1,5 +1,22 @@
-﻿<h3>TicketsPurchaseComponent</h3>
+﻿@using LibraryTRU.IServices
+@inject IEmailService emailService
+
+
+<h3>TicketsPurchaseComponent</h3>
+
+<p>Please enter your email</p>
+
+<input type="text" @bind=@userEmail />
+<button class="btn btn-primary" @onclick="PurchaseTicket">Purchase</button>
 
 @code {
+    [Parameter]
+    public int concert_id { get; set; }
 
+    public string userEmail;
+
+    public void PurchaseTicket()
+    {
+        emailService.SendEmail(userEmail, "test", "test");
+    }
 }
