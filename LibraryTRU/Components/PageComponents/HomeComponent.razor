@@ -17,7 +17,8 @@
         {
             @foreach (Concert show in Concerts)
             {
-                <button class="btn btn-primary" href="purchase/concertname" style="margin: 3px;" @onclick="NavigateToPage">@show.EventName - @show.StartTime</button> 
+                int tempId = show.Id;
+                <button class="btn btn-primary" href="purchase/concertname" style="margin: 3px;" @onclick="() => NavigateToPage(tempId)">@show.EventName - @show.StartTime</button> 
                 <br />
             }
         }
@@ -33,7 +34,7 @@
         Concerts = (List<Concert>)await ics.GetAll();
     }
 
-    public void NavigateToPage(){
-        nm.NavigateTo($"/purchase/{}")
+    public void NavigateToPage(int id){
+        nm.NavigateTo($"/tickets/{id}");
     }
 }

@@ -1,0 +1,10 @@
+﻿@page "/tickets/{concert_id:int}"
+<h3>TicketsView</h3>
+
+<TicketsPurchaseComponent concert_id="concert_id"></TicketsPurchaseComponent>
+
+
+@code {
+    [Parameter]
+    public int concert_id { get; set; }
+}

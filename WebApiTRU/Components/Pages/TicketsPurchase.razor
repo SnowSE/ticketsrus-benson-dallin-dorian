@@ -1,0 +1,10 @@
+﻿@page "/tickets/{_concert_id:int}"
+@rendermode InteractiveServer
+
+<h3>TicketsPurchase</h3>
+<TicketsPurchaseComponent concert_id="_concert_id"></TicketsPurchaseComponent>
+
+@code {
+    [Parameter]
+    public int _concert_id { get; set; }
+}
