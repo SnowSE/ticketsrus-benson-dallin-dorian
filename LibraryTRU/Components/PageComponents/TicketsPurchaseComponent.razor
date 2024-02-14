@@ -1,4 +1,5 @@
-﻿@using LibraryTRU.IServices
+﻿@using LibraryTRU.Data
+@using LibraryTRU.IServices
 @using LibraryTRU.Data.DTOs
 @inject IEmailService emailService
 @inject IConcertService concertService
@@ -18,27 +19,27 @@
 
     public string userEmail;
     List<Ticket> tickets;
-    Concert concert;
+    Concert? concert;
 
 
-    protected override async Task OnInitializeAsync()
+    protected override async Task OnInitializedAsync()
     {
-        tickets = await ticketService.GetAll();
-        concert = (await concertService.GetAll()).Where(c => c.Id == concert_id);
+        tickets = (List<Ticket>) await ticketService.GetAll();
+        concert = (await concertService.GetAll()).Where(c => c.Id == concert_id).FirstOrDefault();
     }
 
-    public void PurchaseTicket()
+    public async Task PurchaseTicket()
     {
         if(userEmail is not null) // Maybe catch if they put in a non-email
         {
-            var ticket = await ticketService.AddTicket(concert.Id, userEmail);
-            EmailInfoDTO emailDto = new() 
-            { 
-                Email = userEmail, 
-                Subject = "Tickets-R-US Ticket Confirmation", 
-                Message = $"Thank you for purchasing a ticket for event: {concert.Name}",
-                QrHash = ticket.QrHash
-            };
+            var ticket = await ticketService.AddTicket(userEmail, concert.Id);
+            EmailInfoDTO emailDto = new()
+                {
+                    Email = userEmail,
+                    Subject = "Tickets-R-US Ticket Confirmation",
+                    Message = $"Thank you for purchasing a ticket for event: {concert.EventName}",
+                    QrHash = ticket.Qrhash
+                };
             emailService.SendEmail(emailDto);
             userEmail = null;
         }

@@ -25,6 +25,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddTransient<IEmailService, EmailService>();
+        builder.Services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
 
         var app = builder.Build();
         var emailpassword = builder.Configuration["emailpassword"];
