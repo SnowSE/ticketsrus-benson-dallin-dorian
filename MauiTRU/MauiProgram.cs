@@ -22,10 +22,10 @@ namespace MauiTRU
                 });
 
             builder.Services.AddMauiBlazorWebView();
-            builder.Services.AddSingleton<TRUDatabase>();
+            builder.Services.AddSingleton<LocalTRUDatabase>();
             builder.Services.AddSingleton<IDbPath, MauiDbPath>();
-            builder.Services.AddSingleton<ITicketService, MauiTicketService>();
-            builder.Services.AddSingleton<IConcertService, MauiConcertService>();
+            builder.Services.AddScoped<ITicketService, MauiTicketService>();
+            builder.Services.AddScoped<IConcertService, MauiConcertService>();
             builder.Services.AddSingleton(client);
 
 #if DEBUG

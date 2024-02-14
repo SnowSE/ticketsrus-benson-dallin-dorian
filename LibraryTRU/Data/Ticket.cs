@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using SQLiteNetExtensions.Attributes;
 
 namespace LibraryTRU.Data;
 
@@ -11,9 +12,11 @@ public partial class Ticket
 
     public string? Email { get; set; }
 
+    [ForeignKey(typeof(Concert))]
     public int? ConcertId { get; set; }
 
     public DateTime? Timescanned { get; set; }
 
+    [ManyToOne]
     public virtual Concert? Concert { get; set; }
 }

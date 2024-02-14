@@ -4,12 +4,12 @@ using System.Net.Http.Json;
 
 namespace MauiTRU.Database;
 
-public class TRUDatabase
+public class LocalTRUDatabase
 {
     SQLiteAsyncConnection Database;
     IDbPath _ifs;
     HttpClient _client;
-    public TRUDatabase(IDbPath ifs, HttpClient client)
+    public LocalTRUDatabase(IDbPath ifs, HttpClient client)
     {
         _ifs = ifs;
         _client = client;
@@ -21,8 +21,8 @@ public class TRUDatabase
             return;
 
         Database = new SQLiteAsyncConnection(Path.Combine(_ifs.Directory, Constants.DatabaseFilename), Constants.Flags);
-        await Database.CreateTableAsync<Ticket>();
         await Database.CreateTableAsync<Concert>();
+        await Database.CreateTableAsync<Ticket>();
     }
 
     public async Task<List<Ticket>> GetTicketsAsync()
