@@ -1,5 +1,4 @@
 ﻿using LibraryTRU.Data;
-using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryTRU.IServices;
 
@@ -10,5 +9,5 @@ public interface ITicketService
     public Task ScanTicket(string qrHash);
     public Task<Ticket> GetSingleTicket(string email);
     public Task DeleteTicket(int id);
-    public Task<ActionResult<Ticket>> GetTicketById(int id);
+    public Task<Ticket> GetTicketById(int id);
 }

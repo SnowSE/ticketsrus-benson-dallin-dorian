@@ -14,13 +14,13 @@ public class TicketController : Controller
 
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Ticket>> GetTicketById(int id)
+    public async Task<Ticket> GetTicketById(int id)
     {
         var ticket = await _ts.GetTicketById(id);
 
         if (ticket == null)
         {
-            return NotFound();
+            Response.StatusCode = 410;
         }
 
         return ticket;
