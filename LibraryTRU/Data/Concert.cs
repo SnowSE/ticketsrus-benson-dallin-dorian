@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using SQLiteNetExtensions.Attributes;
 
 namespace LibraryTRU.Data;
 
@@ -15,5 +16,6 @@ public partial class Concert
 
     public string? Description { get; set; }
 
+    [OneToMany]
     public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }
