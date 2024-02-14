@@ -1,5 +1,4 @@
-﻿using LibraryTRU.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 namespace WebApiTRU.Services;
 
 public class TicketService : ITicketService
@@ -40,7 +39,7 @@ public class TicketService : ITicketService
         return await _ticketContext.Tickets.Where(hc => hc.Email == email).FirstAsync();
     }
 
-    public async Task<ActionResult<Ticket>> GetTicketById(int id)
+    public async Task<Ticket> GetTicketById(int id)
     {
         return await _ticketContext.Tickets.Where(hc => hc.Id == id).FirstAsync();
     }

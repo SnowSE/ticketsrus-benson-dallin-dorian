@@ -1,7 +1,6 @@
 ﻿using LibraryTRU.IServices;
 using System.Net.Http.Json;
 using LibraryTRU.Data;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MauiTRU.Services
 {
@@ -27,7 +26,7 @@ namespace MauiTRU.Services
             return await _hpClient.GetFromJsonAsync<Ticket>($"api/ticket/{email}");
         }
 
-        public Task<ActionResult<Ticket>> GetTicketById(int id)
+        public Task<Ticket> GetTicketById(int id)
         {
             throw new NotImplementedException();
         }
