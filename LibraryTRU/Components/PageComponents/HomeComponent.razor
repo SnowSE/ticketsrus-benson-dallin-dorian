@@ -31,7 +31,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Concerts = (List<Concert>)await ics.GetAll();
+        Concerts = (List<Concert>) await ics.GetAll();
     }
 
     public void NavigateToPage(int id){

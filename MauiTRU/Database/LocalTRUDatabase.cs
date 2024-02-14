@@ -21,8 +21,8 @@ public class LocalTRUDatabase
             return;
 
         Database = new SQLiteAsyncConnection(Path.Combine(_ifs.Directory, Constants.DatabaseFilename), Constants.Flags);
-        await Database.CreateTableAsync<Ticket>();
         await Database.CreateTableAsync<Concert>();
+        await Database.CreateTableAsync<Ticket>();
     }
 
     public async Task<List<Ticket>> GetTicketsAsync()

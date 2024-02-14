@@ -1,20 +1,11 @@
-﻿using System;
-using System.Data.SqlTypes;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
+﻿using System.Text;
 using LibraryTRU.Data.DTOs;
-using MailKit.Net;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 using MimeKit;
-using MimeKit.Text;
 using MimeKit.Utils;
 using Net.Codecrete.QrCodeGenerator;
 namespace WebApiTRU.Email;
 using System.IO;
 using Aspose.Html.Converters;
-using Aspose.Html.Rendering.Image;
 using Aspose.Html.Saving;
 
 public class EmailService : IEmailService
