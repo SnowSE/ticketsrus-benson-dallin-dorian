@@ -1,5 +1,6 @@
 ﻿using LibraryTRU.Data;
 using LibraryTRU.IServices;
+using MauiTRU.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +12,15 @@ namespace MauiTRU.Services
 {
     public class MauiConcertService : IConcertService
     {
-        HttpClient _concertClient;
-        public MauiConcertService(HttpClient concertclient)
+        LocalTRUDatabase _database;                          //Instead of a client that will call the API's
+        public MauiConcertService(LocalTRUDatabase database) //We are now injecting our local database 
         {
-            _concertClient = concertclient;
-            _concertClient.BaseAddress = new Uri("https://localhost:7288");
+            _database = database;
         }
 
         public async Task<IEnumerable<Concert>> GetAll()
         {
-            return await _concertClient.GetFromJsonAsync<IEnumerable<Concert>>("api/concert/getall");
+            return await _database.GetConcertsAsync();
         }
     }
 }

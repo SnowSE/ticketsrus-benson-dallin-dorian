@@ -4,12 +4,12 @@ using System.Net.Http.Json;
 
 namespace MauiTRU.Database;
 
-public class TRUDatabase
+public class LocalTRUDatabase
 {
     SQLiteAsyncConnection Database;
     IDbPath _ifs;
     HttpClient _client;
-    public TRUDatabase(IDbPath ifs, HttpClient client)
+    public LocalTRUDatabase(IDbPath ifs, HttpClient client)
     {
         _ifs = ifs;
         _client = client;

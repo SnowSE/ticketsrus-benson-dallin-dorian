@@ -1,44 +1,36 @@
 ﻿using LibraryTRU.IServices;
 using System.Net.Http.Json;
 using LibraryTRU.Data;
+using MauiTRU.Database;
 
 namespace MauiTRU.Services
 {
-    public class MauiTicketService(HttpClient _hpClient) : ITicketService
+    public class MauiTicketService(LocalTRUDatabase _context) : ITicketService
     {
-        public async Task AddTicket(string email, int concertId)
-        {
-            await _hpClient.PostAsJsonAsync("api/ticket/new", (email, concertId));
-        }
-
         public Task DeleteTicket(int id)
         {
-            throw new NotImplementedException();
+            throw new Exception("Cannot delete a ticket on the mobile app");
         }
 
         public async Task<IEnumerable<Ticket>> GetAll()
         {
-            return await _hpClient.GetFromJsonAsync<IEnumerable<Ticket>>("api/ticket/getall");
+            return await _context.GetTicketsAsync();
         }
 
-        public async Task<Ticket> GetSingleTicket(string email)
+        public async Task<Ticket> GetTicketById(int id)
         {
-            return await _hpClient.GetFromJsonAsync<Ticket>($"api/ticket/{email}");
-        }
-
-        public Task<Ticket> GetTicketById(int id)
-        {
-            throw new NotImplementedException();
+            var t = await _context.GetTicketsAsync();
+            return t.Where(t => t.Id == id).FirstOrDefault();
         }
 
         public async Task ScanTicket(string qrHash)
         {
-            await _hpClient.PutAsJsonAsync("api/ticket/scan", qrHash);
+            await _context.ScanTicketAsync(qrHash);
         }
 
         Task<Ticket> ITicketService.AddTicket(string email, int concertId)
         {
-            throw new NotImplementedException();
+            throw new Exception("Cannot create a ticket on the mobile app");
         }
     }
 }
