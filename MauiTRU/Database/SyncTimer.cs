@@ -19,7 +19,7 @@ namespace MauiTRU.Database
         public async void SetDatabase(LocalTRUDatabase db)
         {
             database = db;
-            await StartThread();
+            await SyncThread();
         }
 
         public async Task StartThread()
@@ -40,12 +40,12 @@ namespace MauiTRU.Database
             while (cancellationflag)
             {
                 activeflag = true;
-                Thread.Sleep(timer);
                 if(database is not null)
                 { 
                     await database.UpdateLocalDbFromMainDb();
                     await database.UpdateMainDbFromLocalDb();
                 }
+                Thread.Sleep(timer);
             }
         }
     }
