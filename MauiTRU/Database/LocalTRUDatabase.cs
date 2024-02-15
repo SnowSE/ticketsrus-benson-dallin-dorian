@@ -1,6 +1,7 @@
 ﻿using SQLite;
 using LibraryTRU.Data;
 using System.Net.Http.Json;
+using SQLiteNetExtensionsAsync.Extensions;
 
 namespace MauiTRU.Database;
 
@@ -28,7 +29,8 @@ public class LocalTRUDatabase
     public async Task<List<Ticket>> GetTicketsAsync()
     {
         await Init();
-        return await Database.Table<Ticket>().ToListAsync();
+        return await Database.GetAllWithChildrenAsync<Ticket>();
+        //return await Database.Table<Ticket>().ToListAsync();
     }
     public async Task<List<Concert>> GetConcertsAsync()
     {

@@ -1,5 +1,87 @@
-﻿<h3>ViewTicketsComponent</h3>
+﻿@using LibraryTRU.Data
+@using LibraryTRU.IServices
+@inject ITicketService its
+
+<h3>ViewTicketsComponent</h3>
+
+@if(tickets is not null)
+{
+        <label>
+            Tickets
+        </label>
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Ticket</th>
+                    <th scope="col">Concert Name</th>
+                    <th scope="col">Start Time</th>
+                    <th scope="col">Checked In</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in tickets)
+                {
+                @if (t.Timescanned is not null)
+                {
+                    <tr style="background-color: Lightgreen">
+                        <td>
+                            @t.Id
+                        </td>
+                        <td>
+                            @t.Concert.EventName
+                        </td>
+                        <td>
+                            @t.Concert.StartTime
+                        </td>
+                            Checked in!
+                        <td>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr style="background-color: lightcoral">
+                        <td>
+                            @t.Id
+                        </td>
+                        <td>
+                            @t.Concert.EventName
+                        </td>
+                        <td>
+                            @t.Concert.StartTime
+                        </td>
+                        <td>
+                            NOT checked in...
+                        </td>
+                    </tr>
+                }
+                
+                }
+            </tbody>
+        </table>
+}
 
 @code {
+    [Parameter]
+    public int concert_id { get; set; }
+
+    List<Ticket> tickets;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tickets = (List<Ticket>)await its.GetAll();
+        var temptickets = new List<Ticket>();
+        foreach(var t in tickets)
+        {
+            if(t.ConcertId == concert_id)
+            {
+                temptickets.Add(t);
+            }
+        }
+
+        tickets = temptickets;
+    }
+
+
 
 }
