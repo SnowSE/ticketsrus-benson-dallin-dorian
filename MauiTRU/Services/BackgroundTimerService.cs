@@ -9,24 +9,23 @@ using System.Threading.Tasks;
 
 namespace MauiTRU.Services
 {
-    public class BackgroundTimerService : BackgroundService
+    public class BackgroundTimerService
     {
-        private readonly ILogger<BackgroundTimerService> _logger;
         private readonly LocalTRUDatabase _db;
         private int _timeperiod = 30;
-        private int _execCount;
+        public bool isRunning;
         
-        public BackgroundTimerService(ILogger<BackgroundTimerService> logger, LocalTRUDatabase database)
+        public BackgroundTimerService(LocalTRUDatabase database)
         {
-            _logger = logger;
             _db = database;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        public async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Starting timer");
+            Console.WriteLine("Starting timer");
             
             await DoWork();
+            isRunning = true;
 
             using PeriodicTimer timer = new(TimeSpan.FromSeconds(_timeperiod));
 
@@ -39,13 +38,13 @@ namespace MauiTRU.Services
             }
             catch (OperationCanceledException ex)
             {
-                _logger.LogInformation("Timer is stopping");
+                Console.WriteLine("Timer is stopping");
             }
         }
 
         private async Task DoWork()
         {
-            _logger.LogInformation("Synchronizing databases...");
+            Console.WriteLine("Synchronizing databases...");
 
             if (_db is not null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
@@ -54,15 +53,9 @@ namespace MauiTRU.Services
             }
         }
 
-        public override async Task StopAsync(CancellationToken cancellationToken)
-        {
-            await base.StopAsync(cancellationToken);
-        }
-
         public async Task RestartTimer()
         {
-            await StopAsync(new CancellationToken());
-            await ExecuteAsync(new CancellationToken());
+            await ExecuteAsync(new(true));
         }
 
         public async Task ChangeTimePeriod(int periodinseconds)

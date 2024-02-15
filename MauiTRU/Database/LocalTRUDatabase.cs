@@ -60,7 +60,7 @@ public class LocalTRUDatabase
                 if(result.Timescanned is not null) // If it has been scanned, update it
                     await Database.UpdateAsync(result);
             }
-            catch (SQLiteException) // Main Ticket not found in local db
+            catch (InvalidOperationException) // Main Ticket not found in local db
             {
                 await Database.InsertAsync(mainTicket);
             }

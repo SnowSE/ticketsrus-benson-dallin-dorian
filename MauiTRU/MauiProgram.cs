@@ -27,13 +27,12 @@ namespace MauiTRU
             builder.Services.AddScoped<ITicketService, MauiTicketService>();
             builder.Services.AddScoped<IConcertService, MauiConcertService>();
             builder.Services.AddSingleton(client);
-            builder.Services.AddHostedService<BackgroundTimerService>();
+            builder.Services.AddScoped<BackgroundTimerService>();
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
-
             return builder.Build();
         }
     }
