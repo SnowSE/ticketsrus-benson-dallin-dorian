@@ -1,0 +1,26 @@
+# Docker-compose up --build
+version: '3'
+
+services:
+  db:
+    container_name: bensons_postgres
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: bbird
+      POSTGRES_DB: bensonsdb
+      POSTGRES_PASSWORD: P@ssw0rd!
+    volumes:
+     - ./init.sql:/docker-entrypoint-initdb.d/init.sq
+  adminer:
+    container_name: bensons_adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  website:
+    container_name: bensons_website
+    image: website
+    restart: always
+    environment:
+      connectionStrings: user id=bbird;database=bensonsdb;password=P@assw0rd!; #host?
