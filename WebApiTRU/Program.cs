@@ -49,6 +49,10 @@ public class Program
             .AddInteractiveServerRenderMode();
 
         app.MapControllers();
+        app.MapGet("/helathcheck", () =>
+        {
+            return "Healthy";
+        });
 
         app.Run();
     }

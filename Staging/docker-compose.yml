@@ -12,6 +12,7 @@ services:
       POSTGRES_PASSWORD: P@ssw0rd!
     volumes:
      - ./init.sql:/docker-entrypoint-initdb.d/init.sq
+    #health check for db too
   adminer:
     container_name: bensons_adminer
     image: adminer
@@ -22,5 +23,18 @@ services:
     container_name: bensons_website
     image: website
     restart: always
+    ports:
+     - 8070:8081
+    depends_on: 
+     - db
+    build: ..
     environment:
       connectionStrings: user id=bbird;database=bensonsdb;password=P@assw0rd!; #host?
+    healthcheck:
+    #Get wget downloaded
+      test: wget --tries=1 http://localhost8081/healthcheck || exit 1
+      interval: 2s #60s
+      retries: 5
+      start_period: 5s #20s
+      timeout: 1s #10s
+     
