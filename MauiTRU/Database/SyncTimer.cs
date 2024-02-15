@@ -11,18 +11,23 @@ namespace MauiTRU.Database
         private TimeSpan timer = TimeSpan.FromSeconds(30);
         private LocalTRUDatabase? database;
         private bool cancellationflag = true;
+        private bool activeflag = false;
         public TimeSpan TimerSteward {
             get; set;
         }
 
-        public void SetDatabase(LocalTRUDatabase db)
+        public async void SetDatabase(LocalTRUDatabase db)
         {
             database = db;
+            await StartThread();
         }
 
         public async Task StartThread()
         {
-            await SyncThread();
+            if (!cancellationflag) {
+                cancellationflag = true;
+                await SyncThread();
+            }
         }
 
         public void StopThread()
@@ -34,6 +39,7 @@ namespace MauiTRU.Database
         {
             while (cancellationflag)
             {
+                activeflag = true;
                 Thread.Sleep(timer);
                 if(database is not null)
                 { 
