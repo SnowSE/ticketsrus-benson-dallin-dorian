@@ -1,4 +1,5 @@
 ﻿@page "/tickets/{_concert_id:int}"
+@using Net.Codecrete.QrCodeGenerator
 @rendermode InteractiveServer
 
 <h3>TicketsPurchase</h3>
@@ -7,4 +8,6 @@
 @code {
     [Parameter]
     public int _concert_id { get; set; }
+
+
 }
