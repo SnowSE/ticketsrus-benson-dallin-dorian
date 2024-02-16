@@ -11,7 +11,8 @@ namespace MauiTRU
         public static MauiApp CreateMauiApp()
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new(Preferences.Get(Constants.PreferenceKeyForAPI, Constants.ProductionDefault)); //Needs different URI for production - azure or testing
+            client.BaseAddress = new(Preferences.Get(Constants.PreferenceKeyForAPI, Constants.ProductionDefault));
+            // client.BaseAddress = new(Preferences.Get(Constants.PreferenceKeyForAPI, Constants.LocalHostDefault));
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()

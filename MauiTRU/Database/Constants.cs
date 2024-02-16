@@ -10,7 +10,6 @@ namespace MauiTRU.Database
 
     public static class Constants
     {
-
         public const string DatabaseFilename = "TRUSQLite.db3";
         public const string RefreshRateKey = "refreshrate";
         public const string OfflineModeKey = "offlinemode";
@@ -25,7 +24,7 @@ namespace MauiTRU.Database
             SQLite.SQLiteOpenFlags.SharedCache;
         public const string PreferenceKeyForAPI = "APIRoute";
         public const string LocalHostDefault = "https://localhost:7288";
-        public const string ProductionDefault = "https://localhost:7288";
+        public const string ProductionDefault = "https://webapitru.azurewebsites.net/";
         public const int DefaultRefreshRate = 30;
     }
 }

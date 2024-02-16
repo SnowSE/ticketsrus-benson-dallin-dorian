@@ -1,21 +1,26 @@
 ﻿@inject HttpClient htpc
 
 <h3>Settings</h3>
-
-<input />
+<label for="control">Offline Mode: </label>
+<input type="checkbox" id="control" @bind="offlinemode" />
+<br />
+<label for="apiUri">API base address: </label>
+<InputText id="apiUri" @bind-Value="APIUri"/>
+<button class="submit">Change API base address</button>
+<br />
+<label for="refreshrate">Refresh Frequency: </label>
+<InputNumber TValue="int" id="refreshrate" @bind-Value="refreshrate"/>
 
 @code {
     bool offlinemode;
-    string APIUri;
+    string? APIUri;
     int refreshrate;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
+        // APIUri = Preferences.Get(Constants.PreferenceKeyForAPI, Constants.LocalHostDefault);
         APIUri = Preferences.Get(Constants.PreferenceKeyForAPI, Constants.ProductionDefault);
         refreshrate = Preferences.Get(Constants.RefreshRateKey, Constants.DefaultRefreshRate);
         offlinemode = Preferences.Get(Constants.OfflineModeKey, Constants.DefaultOfflineMode);
     }
-
-
-
 }

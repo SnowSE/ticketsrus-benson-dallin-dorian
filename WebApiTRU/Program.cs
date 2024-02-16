@@ -28,10 +28,9 @@ public class Program
         builder.Services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
 
         var app = builder.Build();
-        var emailpassword = builder.Configuration["emailpassword"];
 
         // Configure the HTTP request pipeline.
-        if (!app.Environment.IsDevelopment())
+        if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
