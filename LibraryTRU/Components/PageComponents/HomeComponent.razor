@@ -15,7 +15,7 @@
     <div>
         @if(Concerts is not null)
         {
-            @foreach (Concert show in Concerts)
+            foreach (Concert show in Concerts)
             {
                 int tempId = show.Id;
                 <button class="btn btn-primary" style="margin: 3px;" @onclick="() => NavigateToPage(tempId)">@show.EventName - @show.StartTime</button> 
@@ -31,7 +31,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Concerts = (List<Concert>) await ics.GetAll();
+        try
+        {
+            Concerts = (List<Concert>) await ics.GetAll();
+        }
+        catch(Exception e)
+        {
+            throw;
+        }
     }
 
     public void NavigateToPage(int id){
