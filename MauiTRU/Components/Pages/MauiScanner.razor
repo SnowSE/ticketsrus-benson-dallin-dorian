@@ -1,5 +1,4 @@
-﻿@page "/scanner"
-@using ZXing.Net.Maui;
+﻿@using ZXing.Net.Maui;
 @inject ITicketService its
 
 <h3>MauiScanner</h3>
@@ -14,8 +13,12 @@ Scan Result: @scanResultLabel
 {
     [Parameter]
     public int concertId { get; set; }
+    [Parameter]
+    public Func<Task<List<Ticket>>> GetTickets { get; set; }
 
     private string scanResultLabel;
+
+
 
     public async Task DoScanAsync()
     {
@@ -26,7 +29,7 @@ Scan Result: @scanResultLabel
             scanResultLabel = $"Barcodes: {barcode.Format} -> {barcode.Value}";
             try
             {
-                its.ScanTicket(barcode.Value);
+                await its.ScanTicket(barcode.Value);
             }
             catch
             {
@@ -52,8 +55,9 @@ Scan Result: @scanResultLabel
         return results;
     }
 
-    public bool EnsureCorrectConcert(string barcode)
+    public async bool EnsureCorrectConcert(string barcode)
     {
-        throw new NotImplementedException(); //TODO: IMPLEM<ENT THIS
+        throw new NotImplementedException();
+        // var tickets =await GetTickets();
     }
 }
