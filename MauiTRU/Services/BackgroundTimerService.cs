@@ -55,7 +55,8 @@ namespace MauiTRU.Services
 
         public async Task RestartTimer()
         {
-            await ExecuteAsync(new(true));
+            await ExecuteAsync(new CancellationToken(true));
+            await ExecuteAsync(new CancellationToken());
         }
 
         public async Task ChangeTimePeriod(int periodinseconds)
