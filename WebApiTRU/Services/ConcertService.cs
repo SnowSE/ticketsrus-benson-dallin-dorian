@@ -6,9 +6,9 @@ namespace WebApiTRU.Services;
 public class ConcertService : IConcertService
 {
     private readonly PostgresContext _concertcontext;
-    public ConcertService(PostgresContext newDB)
+    public ConcertService(IDbContextFactory<PostgresContext> contxtFact)
     {
-        _concertcontext = newDB;
+        _concertcontext = contxtFact.CreateDbContext();
     }
 
     public async Task<IEnumerable<Concert>> GetAll()

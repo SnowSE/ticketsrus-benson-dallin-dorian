@@ -1,9 +1,15 @@
 ﻿@page "/tickets/{concert_id:int}"
-<h3>TicketsView</h3>
+@inject ITicketService ticketService
 
-<ViewTicketsComponent></ViewTicketsComponent>
+<ViewTicketsComponent concert_id="concert_id" GetTickets="GetTickets" />
 
 @code {
+    //Right now we have to reload the page to see the new tickets, I don't want that
     [Parameter]
     public int concert_id { get; set; }
+
+    public async Task<List<Ticket>> GetTickets()
+    {
+        return (List<Ticket>) await ticketService.GetAll();
+    }
 }

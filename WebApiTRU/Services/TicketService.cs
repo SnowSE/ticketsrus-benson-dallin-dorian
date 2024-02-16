@@ -4,10 +4,9 @@ namespace WebApiTRU.Services;
 public class TicketService : ITicketService
 {
     PostgresContext _ticketContext;
-    public TicketService(PostgresContext _pgContext)
+    public TicketService(IDbContextFactory<PostgresContext> contxtFact)
     {
-        var strin = _pgContext.Database.GetConnectionString();
-        _ticketContext = _pgContext;
+        _ticketContext = contxtFact.CreateDbContext();
     }
 
     public async Task<Ticket> AddTicket(string email, int concertId)
@@ -26,10 +25,10 @@ public class TicketService : ITicketService
 
     public async Task<IEnumerable<Ticket>> GetAll()
     {
-        return await _ticketContext.Tickets.ToListAsync();
+        return await _ticketContext.Tickets.Include(tc => tc.Concert).ToListAsync();
     }
 
-    public async Task<IEnumerable<Ticket>> GetAll(String email)
+    public async Task<IEnumerable<Ticket>> GetAll(string email)
     {
         return await _ticketContext.Tickets.Where(tc => tc.Email == email).ToListAsync();
     }
