@@ -25,10 +25,10 @@ public class TicketService : ITicketService
 
     public async Task<IEnumerable<Ticket>> GetAll()
     {
-        return await _ticketContext.Tickets.ToListAsync();
+        return await _ticketContext.Tickets.Include(tc => tc.Concert).ToListAsync();
     }
 
-    public async Task<IEnumerable<Ticket>> GetAll(String email)
+    public async Task<IEnumerable<Ticket>> GetAll(string email)
     {
         return await _ticketContext.Tickets.Where(tc => tc.Email == email).ToListAsync();
     }

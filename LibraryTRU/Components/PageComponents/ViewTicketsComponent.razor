@@ -1,8 +1,4 @@
 ﻿@using LibraryTRU.Data
-@using LibraryTRU.IServices
-
-<h3>ViewTicketsComponent</h3>
-
 @if(concertTickets is not null)
 {
         <label>
@@ -63,12 +59,15 @@
     [Parameter]
     public int concert_id { get; set; }
     [Parameter]
-    public List<Ticket> tickets { get; set; }
-    List<Ticket> concertTickets;
+    public Func<Task<List<Ticket>>> GetTickets { get; set; }
+    public List<Ticket>? tickets { get; set; }
+    List<Ticket>? concertTickets = new();
 
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        tickets = await GetTickets();
+
         foreach(var t in tickets)
         {
             if(t.ConcertId == concert_id)
