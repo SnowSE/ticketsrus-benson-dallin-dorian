@@ -45,11 +45,17 @@ namespace MauiTRU.Services
         private async Task DoWork()
         {
             Console.WriteLine("Synchronizing databases...");
-
-            if (_db is not null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            try
             {
-                await _db.UpdateLocalDbFromMainDb();
-                await _db.UpdateMainDbFromLocalDb();
+                if (_db is not null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+                {
+                    await _db.UpdateLocalDbFromMainDb();
+                    await _db.UpdateMainDbFromLocalDb();
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Couldn't sync database");
             }
         }
 
