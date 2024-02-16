@@ -1,23 +1,18 @@
 ﻿using MauiTRU.Database;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MauiTRU.Services
 {
     public class BackgroundTimerService
     {
         private readonly LocalTRUDatabase _db;
+        private readonly ConnectivityForPhone _connectivity;
         private int _timeperiod = Constants.DefaultRefreshRate;
         public bool isRunning;
         
-        public BackgroundTimerService(LocalTRUDatabase database)
+        public BackgroundTimerService(LocalTRUDatabase database, ConnectivityForPhone cfp)
         {
             _db = database;
+            _connectivity = cfp;
         }
 
         public async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -45,9 +40,10 @@ namespace MauiTRU.Services
         private async Task DoWork()
         {
             Console.WriteLine("Synchronizing databases...");
+
             try
             {
-                if (_db is not null && Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+                if (_db is not null && _connectivity.GetNetworkAccess() == NetworkAccess.Internet )
                 {
                     await _db.UpdateLocalDbFromMainDb();
                     await _db.UpdateMainDbFromLocalDb();
