@@ -12,7 +12,7 @@ namespace MauiTRU.Services
     public class BackgroundTimerService
     {
         private readonly LocalTRUDatabase _db;
-        private int _timeperiod = 30;
+        private int _timeperiod = Constants.DefaultRefreshRate;
         public bool isRunning;
         
         public BackgroundTimerService(LocalTRUDatabase database)
@@ -55,7 +55,8 @@ namespace MauiTRU.Services
 
         public async Task RestartTimer()
         {
-            await ExecuteAsync(new(true));
+            await ExecuteAsync(new CancellationToken(true));
+            await ExecuteAsync(new CancellationToken());
         }
 
         public async Task ChangeTimePeriod(int periodinseconds)
