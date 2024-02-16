@@ -1,0 +1,21 @@
+﻿@inject HttpClient htpc
+
+<h3>Settings</h3>
+
+<input />
+
+@code {
+    bool offlinemode;
+    string APIUri;
+    int refreshrate;
+
+    protected override async Task OnInitializedAsync()
+    {
+        APIUri = Preferences.Get(Constants.PreferenceKeyForAPI, Constants.ProductionDefault);
+        refreshrate = Preferences.Get(Constants.RefreshRateKey, Constants.DefaultRefreshRate);
+        offlinemode = Preferences.Get(Constants.OfflineModeKey, Constants.DefaultOfflineMode);
+    }
+
+
+
+}
