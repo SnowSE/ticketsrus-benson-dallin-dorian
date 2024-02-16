@@ -1,9 +1,16 @@
 ﻿@page "/tickets/{concert_id:int}"
+@inject ITicketService ticketService
 <h3>TicketsView</h3>
 
-<ViewTicketsComponent></ViewTicketsComponent>
+<ViewTicketsComponent concert_id="concert_id" tickets="tickets"></ViewTicketsComponent>
 
 @code {
     [Parameter]
     public int concert_id { get; set; }
+    List<Ticket> tickets = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        tickets = (List<Ticket>) await ticketService.GetAll();
+    }
 }

@@ -1,10 +1,9 @@
 ﻿@using LibraryTRU.Data
 @using LibraryTRU.IServices
-@inject ITicketService its
 
 <h3>ViewTicketsComponent</h3>
 
-@if(tickets is not null)
+@if(concertTickets is not null)
 {
         <label>
             Tickets
@@ -19,43 +18,42 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var t in tickets)
+                @foreach (var t in concertTickets)
                 {
-                @if (t.Timescanned is not null)
-                {
-                    <tr style="background-color: Lightgreen">
-                        <td>
-                            @t.Id
-                        </td>
-                        <td>
-                            @t.Concert.EventName
-                        </td>
-                        <td>
-                            @t.Concert.StartTime
-                        </td>
-                            Checked in!
-                        <td>
-                        </td>
-                    </tr>
-                }
-                else
-                {
-                    <tr style="background-color: lightcoral">
-                        <td>
-                            @t.Id
-                        </td>
-                        <td>
-                            @t.Concert.EventName
-                        </td>
-                        <td>
-                            @t.Concert.StartTime
-                        </td>
-                        <td>
-                            NOT checked in...
-                        </td>
-                    </tr>
-                }
-                
+                    @if (t.Timescanned is not null)
+                    {
+                        <tr style="background-color: Lightgreen">
+                            <td>
+                                @t.Id
+                            </td>
+                            <td>
+                                @t.Concert.EventName
+                            </td>
+                            <td>
+                                @t.Concert.StartTime
+                            </td>
+                                Checked in!
+                            <td>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr style="background-color: lightcoral">
+                            <td>
+                                @t.Id
+                            </td>
+                            <td>
+                                @t.Concert.EventName
+                            </td>
+                            <td>
+                                @t.Concert.StartTime
+                            </td>
+                            <td>
+                                NOT checked in...
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
@@ -64,24 +62,19 @@
 @code {
     [Parameter]
     public int concert_id { get; set; }
+    [Parameter]
+    public List<Ticket> tickets { get; set; }
+    List<Ticket> concertTickets;
 
-    List<Ticket> tickets;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        tickets = (List<Ticket>)await its.GetAll();
-        var temptickets = new List<Ticket>();
         foreach(var t in tickets)
         {
             if(t.ConcertId == concert_id)
             {
-                temptickets.Add(t);
+                concertTickets.Add(t);
             }
         }
-
-        tickets = temptickets;
     }
-
-
-
 }

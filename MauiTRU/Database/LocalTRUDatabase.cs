@@ -30,7 +30,6 @@ public class LocalTRUDatabase
     {
         await Init();
         return await Database.GetAllWithChildrenAsync<Ticket>();
-        //return await Database.Table<Ticket>().ToListAsync();
     }
     public async Task<List<Concert>> GetConcertsAsync()
     {
@@ -55,10 +54,10 @@ public class LocalTRUDatabase
     public async Task UpdateMainDbFromLocalDb()
     {
         await Init();
-        await UpdateMainTicketsFromLocalTickets();
+        await UpdateMainTicketsFromLocal();
     }
 
-    private async Task UpdateMainTicketsFromLocalTickets()
+    private async Task UpdateMainTicketsFromLocal()
     {
         var localTickets = await Database.Table<Ticket>().ToListAsync();
         var mainTickets = await _client.GetFromJsonAsync<IEnumerable<Ticket>>("api/ticket/getall");
@@ -83,14 +82,14 @@ public class LocalTRUDatabase
                 if (result.Timescanned is not null) // If it has been scanned, update it
                     await Database.UpdateAsync(result);
             }
-            catch (InvalidOperationException) // Main Ticket not found in local db
+            catch (InvalidOperationException ex) // Main Ticket not found in local db
             {
                 await Database.InsertAsync(mainTicket);
             }
         }
 
         foreach (Ticket localTicket in localTickets)
-            if (!mainTickets.Contains(localTicket)) // Delete any tickets that are deleted in the main db
+            if (mainTickets.Where(mt => mt.Id == localTicket.Id).Count() < 1) // Delete any tickets that are deleted in the main db
                 await Database.DeleteAsync(localTicket);
     }
 
@@ -108,14 +107,14 @@ public class LocalTRUDatabase
                 if(result != mainConcert) // Not completely sure if this != will work for description and stuff...
                     await Database.UpdateAsync(mainConcert);
             }
-            catch (InvalidOperationException) // Main Concert not found in local db
+            catch (InvalidOperationException ex) // Main Concert not found in local db
             {
                 await Database.InsertAsync(mainConcert);
             }
         }
 
         foreach (var localConcert in localConcerts)
-            if (!mainConcerts.Contains(localConcert)) // Delete any concerts that are deleted in the main db
+            if (mainConcerts.Where(mt => mt.Id == localConcert.Id).Count() < 1) // Delete any concerts that are deleted in the main db
                 await Database.DeleteAsync(localConcert);
     }
 }

@@ -1,13 +1,20 @@
 ﻿@page "/tickets/{_concert_id:int}"
 @using Net.Codecrete.QrCodeGenerator
 @rendermode InteractiveServer
+@inject ITicketService ticketService
 
-<h3>TicketsPurchase</h3>
-<TicketsPurchaseComponent concert_id="_concert_id"></TicketsPurchaseComponent>
+<TicketsPurchaseComponent concert_id="_concert_id" tickets="tickets"></TicketsPurchaseComponent>
+<ViewTicketsComponent concert_id="_concert_id" tickets="tickets"></ViewTicketsComponent>
+
 
 @code {
     [Parameter]
     public int _concert_id { get; set; }
+    List<Ticket> tickets = new();
 
 
+    protected override async Task OnInitializedAsync()
+    {
+        tickets = (List<Ticket>) await ticketService.GetAll();
+    }
 }

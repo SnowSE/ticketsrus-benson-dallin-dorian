@@ -4,10 +4,9 @@ namespace WebApiTRU.Services;
 public class TicketService : ITicketService
 {
     PostgresContext _ticketContext;
-    public TicketService(PostgresContext _pgContext)
+    public TicketService(IDbContextFactory<PostgresContext> contxtFact)
     {
-        var strin = _pgContext.Database.GetConnectionString();
-        _ticketContext = _pgContext;
+        _ticketContext = contxtFact.CreateDbContext();
     }
 
     public async Task<Ticket> AddTicket(string email, int concertId)

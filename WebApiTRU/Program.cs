@@ -15,10 +15,10 @@ public class Program
             .AddInteractiveServerComponents();
 
         builder.Services.AddControllers();
-        builder.Services.AddDbContext<PostgresContext>(o =>
+        builder.Services.AddDbContextFactory<PostgresContext>(o =>
         {
             o.UseNpgsql(builder.Configuration["db"]);
-        });
+        }, ServiceLifetime.Scoped);
 
         builder.Services.AddScoped<IConcertService, ConcertService>();
         builder.Services.AddScoped<ITicketService, TicketService>();

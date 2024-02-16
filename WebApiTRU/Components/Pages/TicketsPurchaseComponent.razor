@@ -16,21 +16,21 @@
 @code {
     [Parameter]
     public int concert_id { get; set; }
+    [Parameter]
+    public List<Ticket>? tickets { get; set; }
 
-    public string userEmail;
-    List<Ticket> tickets;
+    public string? userEmail;
     Concert? concert;
 
 
     protected override async Task OnInitializedAsync()
     {
-        tickets = (List<Ticket>) await ticketService.GetAll();
         concert = (await concertService.GetAll()).Where(c => c.Id == concert_id).FirstOrDefault();
     }
 
     public async Task PurchaseTicket()
     {
-        if(userEmail is not null) // Maybe catch if they put in a non-email
+        if(userEmail is not null && concert is not null) // Maybe catch if they put in a non-email
         {
             var ticket = await ticketService.AddTicket(userEmail, concert.Id);
             EmailInfoDTO emailDto = new()
