@@ -48,16 +48,39 @@ public class LocalTRUDatabase
     public async Task UpdateLocalDbFromMainDb()
     {
         await Init();
+        await UpdateLocalTicketsFromMain();
+        await UpdateLocalConcertsFromMain();
+    }
+
+    public async Task UpdateMainDbFromLocalDb()
+    {
+        await Init();
+        await UpdateMainTicketsFromLocalTickets();
+    }
+
+    private async Task UpdateMainTicketsFromLocalTickets()
+    {
+        var localTickets = await Database.Table<Ticket>().ToListAsync();
+        var mainTickets = await _client.GetFromJsonAsync<IEnumerable<Ticket>>("api/ticket/getall");
+
+        foreach (Ticket localTicket in localTickets)
+            if(localTicket.Timescanned is not null) //If the local ticket is scanned
+                if (mainTickets.Where(mt => mt.Id == localTicket.Id).Single().Timescanned is not null) // And the main ticket is not scanned
+                    await _client.PutAsJsonAsync("api/ticket/scan", localTicket.Qrhash); // scan the main one
+    }
+
+    private async Task UpdateLocalTicketsFromMain()
+    {
         var mainTickets = await _client.GetFromJsonAsync<IEnumerable<Ticket>>("api/ticket/getall");
         var localTickets = await Database.Table<Ticket>().ToListAsync();
 
-        foreach(Ticket mainTicket in mainTickets)
+        foreach (Ticket mainTicket in mainTickets)
         {
-            try 
-            { 
+            try
+            {
                 var result = await Database.GetAsync<Ticket>(localTicket => localTicket.Id == mainTicket.Id);
 
-                if(result.Timescanned is not null) // If it has been scanned, update it
+                if (result.Timescanned is not null) // If it has been scanned, update it
                     await Database.UpdateAsync(result);
             }
             catch (InvalidOperationException) // Main Ticket not found in local db
@@ -67,21 +90,32 @@ public class LocalTRUDatabase
         }
 
         foreach (Ticket localTicket in localTickets)
-        {
-            if(!mainTickets.Contains(localTicket)) // Delete any tickets that are deleted in the main db
+            if (!mainTickets.Contains(localTicket)) // Delete any tickets that are deleted in the main db
                 await Database.DeleteAsync(localTicket);
-        }
     }
 
-    public async Task UpdateMainDbFromLocalDb()
+    private async Task UpdateLocalConcertsFromMain()
     {
-        await Init();
-        var localTickets = await Database.Table<Ticket>().ToListAsync();
-        var mainTickets = await _client.GetFromJsonAsync<IEnumerable<Ticket>>("api/ticket/getall");
+        var mainConcerts = await _client.GetFromJsonAsync<IEnumerable<Concert>>("api/concert/getall");
+        var localConcerts = await Database.Table<Concert>().ToListAsync();
 
-        foreach (Ticket localTicket in localTickets)
-            if(localTicket.Timescanned is not null) //If the local ticket is scanned
-                if (mainTickets.Where(mt => mt.Id == localTicket.Id).Single().Timescanned is not null) // And the main ticket is not scanned
-                    await _client.PutAsJsonAsync("api/ticket/scan", localTicket.Qrhash); // scan the main one
+        foreach (var mainConcert in mainConcerts)
+        {
+            try
+            {
+                var result = await Database.GetAsync<Concert>(lc => lc.Id == mainConcert.Id);
+
+                if(result != mainConcert) // Not completely sure if this != will work for description and stuff...
+                    await Database.UpdateAsync(mainConcert);
+            }
+            catch (InvalidOperationException) // Main Concert not found in local db
+            {
+                await Database.InsertAsync(mainConcert);
+            }
+        }
+
+        foreach (var localConcert in localConcerts)
+            if (!mainConcerts.Contains(localConcert)) // Delete any concerts that are deleted in the main db
+                await Database.DeleteAsync(localConcert);
     }
 }

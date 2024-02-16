@@ -3,7 +3,7 @@ using SQLiteNetExtensions.Attributes;
 
 namespace LibraryTRU.Data;
 
-public partial class Concert
+public partial class Concert : Object
 {
     [PrimaryKey]
     public int Id { get; set; }

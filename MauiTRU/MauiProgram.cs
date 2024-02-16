@@ -27,7 +27,7 @@ namespace MauiTRU
             builder.Services.AddScoped<ITicketService, MauiTicketService>();
             builder.Services.AddScoped<IConcertService, MauiConcertService>();
             builder.Services.AddSingleton(client);
-            builder.Services.AddScoped<BackgroundTimerService>();
+            builder.Services.AddSingleton<BackgroundTimerService>();
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
