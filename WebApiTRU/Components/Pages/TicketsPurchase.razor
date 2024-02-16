@@ -8,6 +8,7 @@
 
 
 @code {
+    //Right now we have to reload the page to see the new tickets, I don't want that
     [Parameter]
     public int _concert_id { get; set; }
     private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
