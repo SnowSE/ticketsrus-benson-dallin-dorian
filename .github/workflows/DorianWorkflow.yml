@@ -2,7 +2,7 @@ name: Dorian's deployment to alex server
 on:
   push:
     branches:
-    - main
+    - doriandocker
 jobs:
   run-on-github-actions:
     runs-on: dorian
