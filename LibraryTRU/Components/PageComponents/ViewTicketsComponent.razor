@@ -58,22 +58,26 @@
 @code {
     [Parameter]
     public int concert_id { get; set; }
-    [Parameter]
+    [Parameter, EditorRequired]
     public Func<Task<List<Ticket>>> GetTickets { get; set; }
-    public List<Ticket>? tickets { get; set; }
-    List<Ticket>? concertTickets = new();
+
+    List<Ticket> concertTickets = new();
 
 
     protected override async Task OnInitializedAsync()
     {
-        tickets = await GetTickets();
+        var tickets = await GetTickets();
+
+        if(concert_id == -1)
+        {
+            concertTickets = tickets;
+            return;
+        }
 
         foreach(var t in tickets)
         {
             if(t.ConcertId == concert_id)
-            {
                 concertTickets.Add(t);
-            }
         }
     }
 }
