@@ -10,7 +10,7 @@ jobs:
       - name: "clone the github"
         run: |
             pwd; ls -la
-            git clone https://${{secrets.DORIAN_PAT}}@github.com/SnowSE/ticketsrus-benson-dallin-dorian.git
+            git clone --single-branch --branch doriandocker https://${{secrets.DORIAN_PAT}}@github.com/SnowSE/ticketsrus-benson-dallin-dorian.git
         working-directory: ./../../../../
       - name: "Turn on the docker containers"
         run: |
