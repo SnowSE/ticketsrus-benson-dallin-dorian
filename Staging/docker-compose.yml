@@ -4,7 +4,7 @@ services:
   blazorapp:
     build: ..
     ports:
-      - 8080:5174
+      - 6943:5174
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - db=host=dbtru.postgres.database.azure.com;user id=bdd;password=Cl0udr0cks!;database=postgres;port=5432
