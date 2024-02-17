@@ -11,8 +11,7 @@ jobs:
         run: |
             pwd; ls -la
             cd ./ticketsrus-benson-dallin-dorian/ && ls
-            docker compose down -v
-            cd ../../
+            cd ../
             rm -rf ./ticketsrus-benson-dallin-dorian
         working-directory: ./../../../../
       - name: "clone the github"
