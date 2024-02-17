@@ -32,21 +32,19 @@ Scan Result: @scanResultLabel
 
         if (barcode != null && EnsureCorrectConcert(barcode))
         {
-            scanResultLabel = $"Barcodes: {scanResults.Format} -> {barcode}";
-
             try
             {
                 await its.ScanTicket(barcode);
-                scanResultLabel = "Scan Complete";
+                scanResultLabel = "Scan success!";
             }
             catch (TicketAlreadyScannedException)
             {
-                scanResultLabel = "Ticket was already scanned";
+                scanResultLabel = "Error -- Ticket was already scanned";
             }
         }
         else
         {
-            scanResultLabel = "Code does not connect to Concert";
+            scanResultLabel = "This code is for another event or invalid.";
         }
     }
 
