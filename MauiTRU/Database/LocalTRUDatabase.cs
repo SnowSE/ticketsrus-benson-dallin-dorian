@@ -26,7 +26,11 @@ public class LocalTRUDatabase
         await Database.CreateTableAsync<Concert>();
         await Database.CreateTableAsync<Ticket>();
     }
-
+    public async Task DeleteDatabase()
+    {
+        await Database.DeleteAllAsync<Ticket>();
+        await Database.DeleteAllAsync<Concert>();
+    }
     public async Task<List<Ticket>> GetTicketsAsync()
     {
         await Init();
