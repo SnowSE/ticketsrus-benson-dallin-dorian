@@ -38,10 +38,10 @@
     {
         if(APIUri is not null)
         {
-            await localDB.DeleteDatabase();
             htpc = new HttpClient();
             htpc.BaseAddress = new(APIUri);
             Preferences.Set(Constants.PreferenceKeyForAPI, APIUri);
+            await localDB.DeleteDatabase();
             await bts.ChangeTimePeriod(bts.GetTimePeriod);
         }
     }
