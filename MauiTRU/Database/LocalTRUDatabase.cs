@@ -2,6 +2,7 @@
 using LibraryTRU.Data;
 using System.Net.Http.Json;
 using SQLiteNetExtensionsAsync.Extensions;
+using LibraryTRU.Exceptions;
 
 namespace MauiTRU.Database;
 
@@ -40,6 +41,10 @@ public class LocalTRUDatabase
     {
         await Init();
         var ticket = await Database.Table<Ticket>().Where(t => t.Qrhash == qrHash).FirstOrDefaultAsync();
+
+        if (ticket.Timescanned is not null)
+            throw new TicketAlreadyScannedException();
+
         ticket.Timescanned = DateTime.Now;
         await Database.UpdateAsync(ticket);
     }
