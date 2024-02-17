@@ -5,7 +5,7 @@ on:
     - doriandocker
 jobs:
   run-on-github-actions:
-    runs-on: dorian
+    runs-on: self-hosted
     steps:
       - name: "stop old compose"
         run: |
