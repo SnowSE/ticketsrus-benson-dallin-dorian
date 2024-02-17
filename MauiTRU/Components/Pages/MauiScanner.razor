@@ -17,19 +17,24 @@ Scan Result: @scanResultLabel
     public Func<Task<List<Ticket>>> GetTickets { get; set; }
 
     private string scanResultLabel;
+    List<Ticket> tickets;
 
-
+    protected override async Task OnInitializedAsync()
+    {
+        tickets = await GetTickets();
+    }
 
     public async Task DoScanAsync()
     {
         var scanResults = await GetScanResultsAsync();
-        var barcode = scanResults;
-        if (barcode != null && EnsureCorrectConcert(barcode.Value))
+        var barcode = scanResults.Value;
+        if (barcode != null && EnsureCorrectConcert(barcode))
         {
-            scanResultLabel = $"Barcodes: {barcode.Format} -> {barcode.Value}";
+            scanResultLabel = $"Barcodes: {scanResults.Format} -> {barcode}";
+
             try
             {
-                await its.ScanTicket(barcode.Value);
+                await its.ScanTicket(barcode);
             }
             catch
             {
@@ -55,9 +60,13 @@ Scan Result: @scanResultLabel
         return results;
     }
 
-    public async bool EnsureCorrectConcert(string barcode)
+    public bool EnsureCorrectConcert(string barcode)
     {
-        throw new NotImplementedException();
-        // var tickets =await GetTickets();
+        var t = tickets.Where(t => t.Qrhash == barcode).SingleOrDefault();
+
+        if (t is null)
+            return true;
+
+        return false;
     }
 }
