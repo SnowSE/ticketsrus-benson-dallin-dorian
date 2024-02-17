@@ -23,7 +23,6 @@ jobs:
       - name: "Turn on the docker containers"
         run: |
             pwd; ls -la
-        run: |
             cd ./ticketsrus-benson-dallin-dorian/Staging
             docker compose up --build -d
         working-directory: ./../../../../
