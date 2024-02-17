@@ -4,11 +4,25 @@
 
 <h3>MauiScanner</h3>
 
-<button @onclick="DoScanAsync">Scan</button>
+<button class="" @onclick="DoScanAsync">Scan</button>
 
 <br />
 
-Scan Result: @scanResultLabel
+@if (!string.IsNullOrEmpty(successResultLabel))
+{
+    <div class="alert alert-success">
+        @successResultLabel
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(errorResultLabel))
+{
+    <div class="alert alert-danger">
+        @errorResultLabel
+    </div>
+}
+
+
 
 @code
 {
@@ -17,7 +31,8 @@ Scan Result: @scanResultLabel
     [Parameter]
     public Func<Task<List<Ticket>>> GetTickets { get; set; }
 
-    private string scanResultLabel;
+    private string successResultLabel = "";
+    private string errorResultLabel = "";
     List<Ticket> tickets;
 
     protected override async Task OnInitializedAsync()
@@ -30,7 +45,7 @@ Scan Result: @scanResultLabel
         var scanResults = await GetScanResultsAsync();
         if(scanResults is null)
             return;
-        
+
         var barcode = scanResults.Value;
 
         if (barcode != null && EnsureCorrectConcert(barcode))
@@ -38,16 +53,19 @@ Scan Result: @scanResultLabel
             try
             {
                 await its.ScanTicket(barcode);
-                scanResultLabel = "Scan success!";
+                errorResultLabel = "";
+                successResultLabel = "Scan success!";
             }
             catch (TicketAlreadyScannedException)
             {
-                scanResultLabel = "Error -- Ticket was already scanned";
+                successResultLabel = "";
+                errorResultLabel = "Error -- Ticket was already scanned";
             }
         }
         else
         {
-            scanResultLabel = "This code is for another event or invalid.";
+            successResultLabel = "";
+            errorResultLabel = "This code is for another event or invalid.";
         }
     }
 
