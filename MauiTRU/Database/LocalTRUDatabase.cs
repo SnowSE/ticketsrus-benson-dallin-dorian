@@ -46,6 +46,9 @@ public class LocalTRUDatabase
         await Init();
         var ticket = await Database.Table<Ticket>().Where(t => t.Qrhash == qrHash).FirstOrDefaultAsync();
 
+        if (ticket is null)
+            throw new TicketNotFoundException();
+
         if (ticket.Timescanned is not null)
             throw new TicketAlreadyScannedException();
 

@@ -2,6 +2,7 @@
 using MauiTRU.Database;
 using MauiTRU.Services;
 using Microsoft.Extensions.Logging;
+using System.Runtime.CompilerServices;
 using ZXing.Net.Maui.Controls;
 
 namespace MauiTRU
