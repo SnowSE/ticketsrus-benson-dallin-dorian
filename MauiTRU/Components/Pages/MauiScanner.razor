@@ -1,4 +1,5 @@
-﻿@using ZXing.Net.Maui;
+﻿@using LibraryTRU.Exceptions
+@using ZXing.Net.Maui;
 @inject ITicketService its
 
 <h3>MauiScanner</h3>
@@ -28,6 +29,7 @@ Scan Result: @scanResultLabel
     {
         var scanResults = await GetScanResultsAsync();
         var barcode = scanResults.Value;
+
         if (barcode != null && EnsureCorrectConcert(barcode))
         {
             scanResultLabel = $"Barcodes: {scanResults.Format} -> {barcode}";
@@ -35,15 +37,16 @@ Scan Result: @scanResultLabel
             try
             {
                 await its.ScanTicket(barcode);
+                scanResultLabel = "Scan Complete";
             }
-            catch
+            catch (TicketAlreadyScannedException)
             {
-                scanResultLabel = "There was a problem with that scan.";
+                scanResultLabel = "Ticket was already scanned";
             }
         }
         else
         {
-            scanResultLabel = "There was a problem with that code.";
+            scanResultLabel = "Code does not connect to Concert";
         }
     }
 
@@ -65,8 +68,8 @@ Scan Result: @scanResultLabel
         var t = tickets.Where(t => t.Qrhash == barcode).SingleOrDefault();
 
         if (t is null)
-            return true;
+            return false;
 
-        return false;
+        return true;
     }
 }

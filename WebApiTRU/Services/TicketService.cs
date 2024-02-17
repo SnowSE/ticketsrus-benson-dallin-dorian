@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LibraryTRU.Data;
+using LibraryTRU.Exceptions;
+using Microsoft.EntityFrameworkCore;
 namespace WebApiTRU.Services;
 
 public class TicketService : ITicketService
@@ -48,6 +50,10 @@ public class TicketService : ITicketService
         try
         {
             Ticket target = await _ticketContext.Tickets.Where(qr => qr.Qrhash == qrHash).SingleAsync();
+
+            if (target.Timescanned is not null)
+                throw new TicketAlreadyScannedException();
+
             target.Timescanned = DateTime.Now;
             _ticketContext.Update(target);
             await _ticketContext.SaveChangesAsync();
