@@ -12,7 +12,7 @@
 <InputText id="apiUri" @bind-Value="APIUri"/>
 <button class="submit" @onclick="ChangeHttpBase">Change API base address</button>
 <br />
-<label for="refreshrate">Refresh Frequency (mininutes): </label>
+<label for="refreshrate">Refresh Frequency (seconds): </label>
 <InputNumber TValue="int" id="refreshrate" @bind-Value="refreshrate"/>
 <button class="submit" @onclick="(async () => await UpdateRefreshRate())">Update Frequencey</button>
 
