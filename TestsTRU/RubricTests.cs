@@ -1,10 +1,18 @@
+using Bunit;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using LibraryTRU.Data;
 using LibraryTRU.Data.DTOs;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Newtonsoft.Json;
+using LibraryTRU.Exceptions;
+using LibraryTRU.IServices;
+using MauiTRU.Database;
+using MauiTRU.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.Engine.ClientProtocol;
+using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text;
+
+
 
 namespace TestsTRU;
 
@@ -20,54 +28,90 @@ public class RubricTests : IClassFixture<TRUWebAppFactory>
     [Fact]
     public async void SuccessfulScanUpdatesDatabase()
     {
-        //Arrange: create new ticket
-        string testEmail = "test@example.com";
-        TicketDTO data = new() {Email =  testEmail, ConcertId = 1};
-        var result = await client.PostAsJsonAsync("/api/ticket/new", data);
+        //Arrange: create fake maui app and new ticket
+        using var mauiApp = new TestContext();
+        mauiApp.Services.AddSingleton<IDbPath, TestDbPath>();
+        mauiApp.Services.AddScoped<ITicketService, MauiTicketService>();
+        mauiApp.Services.AddScoped<IConcertService, MauiConcertService>();
+        mauiApp.Services.AddSingleton<LocalTRUDatabase>();
+        mauiApp.Services.AddSingleton(client);
+        var db = mauiApp.Services.GetService<LocalTRUDatabase>();
+        var result = await client.PostAsJsonAsync("api/ticket/new", new TicketDTO() { Email = "test@example.com", ConcertId = 1 });
         var ticket = result.Content.ReadFromJsonAsync<Ticket>().Result;
-        int id = ticket.Id;
+        
+        await db.UpdateLocalDbFromMainDb();
 
-        //make sure the ticket hasnt been scanned
-        var testResult = await client.GetFromJsonAsync<Ticket>($"api/ticket/{id}");
-        testResult.Timescanned.Should().BeNull();
+        //Act
+        await db.ScanTicketAsync(ticket.Qrhash);
 
-        //Act: Scan the ticket
-        var qrHash = ticket.Qrhash;
-        await client.PutAsJsonAsync("/api/ticket/scan", qrHash);
+        var alltickets = await db.GetTicketsAsync();
 
-        //Assert: get the ticket and see if it was scanned
-        var testResult2 = await client.GetFromJsonAsync<Ticket>($"api/ticket/{id}");
-        testResult2.Timescanned.Should().NotBeNull();
-     
+        var testticket = alltickets.Where(t => t.Qrhash == ticket.Qrhash).FirstOrDefault();
+
+        testticket.Timescanned.Should().NotBeNull();
     }
 
     [Fact]
     public async void FailedScanDoesntUpdateDatabase()
     {
-        //Arrange: create new ticket
-        string testEmail = "test@example.com";
-        TicketDTO data = new() { Email = testEmail, ConcertId = 1 };
-        var result = await client.PostAsJsonAsync("/api/ticket/new", data);
+        //Arrange: create fake maui app and new ticket
+        using var mauiApp = new TestContext();
+        mauiApp.Services.AddSingleton<IDbPath, TestDbPath>();
+        mauiApp.Services.AddScoped<ITicketService, MauiTicketService>();
+        mauiApp.Services.AddScoped<IConcertService, MauiConcertService>();
+        mauiApp.Services.AddSingleton<LocalTRUDatabase>();
+        mauiApp.Services.AddSingleton(client);
+        var db = mauiApp.Services.GetService<LocalTRUDatabase>();
+        var result = await client.PostAsJsonAsync("api/ticket/new", new TicketDTO() { Email = "test@example.com", ConcertId = 1 });
         var ticket = result.Content.ReadFromJsonAsync<Ticket>().Result;
-        int id = ticket.Id;
 
-        //make sure the ticket hasnt been scanned
-        var testResult = await client.GetFromJsonAsync<Ticket>($"api/ticket/{id}");
-        testResult.Timescanned.Should().BeNull();
+        await db.UpdateLocalDbFromMainDb();
 
-        //Act: Scan the ticket with a bogus hash
-        await client.PutAsJsonAsync("/api/ticket/scan", "123");
+        //Act
+        try
+        {
+            await db.ScanTicketAsync("666");
+        }
+        catch (TicketNotFoundException)
+        {
+            Console.WriteLine(typeof(TicketNotFoundException) + " was thrown successfully.");
+            Assert.True(true);
+            return;
+        }
 
-        //Assert: get the ticket and make sure it wasn't scanned
-        var testResult2 = await client.GetFromJsonAsync<Ticket>($"api/ticket/{id}");
-        testResult2.Timescanned.Should().BeNull();
+        Assert.Fail();
     }
 
     [Fact]
-    public void APIAddressChangeRefreshesLocalDb()
+    public async void APIAddressChangeRefreshesLocalDb()
     {
+        //Arrange: create fake maui app and new ticket
+        using var mauiApp = new TestContext();
+        mauiApp.Services.AddSingleton<IDbPath, TestDbPath>();
+        mauiApp.Services.AddScoped<ITicketService, MauiTicketService>();
+        mauiApp.Services.AddScoped<IConcertService, MauiConcertService>();
+        mauiApp.Services.AddSingleton<LocalTRUDatabase>();
+        mauiApp.Services.AddSingleton(client);
+        var db = mauiApp.Services.GetService<LocalTRUDatabase>();
+
+        //Act part 1
+        await db.UpdateLocalDbFromMainDb();
+        var ticketlist = await db.GetTicketsAsync();
+        
+        //Assert part 1
+        ticketlist.Should().NotBeEmpty();
+        
+        //Act part 2
+        await db.DeleteDatabase();
+        ticketlist = await db.GetTicketsAsync();
+
+        //Assert part 2
+        ticketlist.Should().BeEmpty();
+
 
     }
+
+
 
 
 }
