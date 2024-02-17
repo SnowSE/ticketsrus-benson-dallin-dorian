@@ -7,11 +7,4 @@ services:
       - 6943:5174
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - db=host=dbtru.postgres.database.azure.com;user id=bdd;password=Cl0udr0cks!;database=postgres;port=5432
-    healthcheck:
-      test: wget --tries=1 http://localhost:8080/healthcheck || exit 1
-      interval: 3s
-      timeout: 1s
-      retries: 1
-      start_period: 6s
-    restart: unless-stopped
+   
