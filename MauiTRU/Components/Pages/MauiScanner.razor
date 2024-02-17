@@ -28,6 +28,9 @@ Scan Result: @scanResultLabel
     public async Task DoScanAsync()
     {
         var scanResults = await GetScanResultsAsync();
+        if(scanResults is null)
+            return;
+        
         var barcode = scanResults.Value;
 
         if (barcode != null && EnsureCorrectConcert(barcode))
