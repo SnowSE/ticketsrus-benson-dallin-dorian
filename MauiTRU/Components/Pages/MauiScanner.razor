@@ -86,7 +86,7 @@
     {
         var t = tickets.Where(t => t.Qrhash == barcode).SingleOrDefault();
 
-        if (t is null)
+        if (t is null || t.ConcertId != concertId)
             return false;
 
         return true;
