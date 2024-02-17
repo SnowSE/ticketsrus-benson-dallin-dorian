@@ -73,7 +73,7 @@ public class LocalTRUDatabase
 
         foreach (Ticket localTicket in localTickets)
             if(localTicket.Timescanned is not null) //If the local ticket is scanned
-                if (mainTickets.Where(mt => mt.Id == localTicket.Id).Single().Timescanned is not null) // And the main ticket is not scanned
+                if (mainTickets.Where(mt => mt.Id == localTicket.Id).Single().Timescanned is null) // And the main ticket is not scanned
                     await _client.PutAsJsonAsync("api/ticket/scan", localTicket.Qrhash); // scan the main one
     }
 
