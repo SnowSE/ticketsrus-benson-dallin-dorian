@@ -63,21 +63,32 @@
 
     List<Ticket> concertTickets = new();
 
-
     protected override async Task OnInitializedAsync()
     {
-        var tickets = await GetTickets();
+        Update();
+    }
 
-        if(concert_id == -1)
+    public async void Update()
+    {
+        while(true)
         {
-            concertTickets = tickets;
-            return;
-        }
+            var tickets = await GetTickets();
 
-        foreach(var t in tickets)
-        {
-            if(t.ConcertId == concert_id)
-                concertTickets.Add(t);
+            if (concert_id == -1)
+            {
+                concertTickets = tickets;
+                return;
+            }
+
+            foreach (var t in tickets)
+            {
+                if (t.ConcertId == concert_id)
+                    concertTickets.Add(t);
+            }
+            StateHasChanged();
+            Thread.Sleep(1000);
+            concertTickets = null;
+            tickets = null;
         }
     }
 }

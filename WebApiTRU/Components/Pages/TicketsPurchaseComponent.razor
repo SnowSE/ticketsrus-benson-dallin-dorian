@@ -36,7 +36,7 @@
                 {
                     Email = userEmail,
                     Subject = "Tickets-R-US Ticket Confirmation",
-                    Message = $"Thank you for purchasing a ticket for event: {concert.EventName}",
+                    Message = $"Thank you for purchasing a ticket for event: {concert.EventName}. Code {ticket.Id}",
                     QrHash = ticket.Qrhash
                 };
             emailService.SendEmail(emailDto);
