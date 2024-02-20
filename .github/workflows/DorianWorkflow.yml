@@ -32,4 +32,11 @@ jobs:
         if: failure()
         with:
           webhook_url: ${{ secrets.DORIAN_TEAMS_WEBHOOK }}
-        
+          raw: >-
+            {
+              "@type": "MessageCard",
+              "@context": "http://schema.org/extensions",
+              "correlationId": "0b72cc8a2cea509ba06b41892066784d7f602834",
+              "themeColor": "#999",
+              "title": "Dorian's app just got pwned!"
+            }
