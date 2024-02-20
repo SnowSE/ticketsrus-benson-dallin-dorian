@@ -4,6 +4,16 @@ on:
     branches:
     - doriandocker
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+    - name: Test
+      run: dotnet test "${{ env.WORKING_DIRECTORY }}"
   run-on-github-actions:
     runs-on: self-hosted
     steps:
@@ -36,3 +46,9 @@ jobs:
         if: failure()
         with:
           webhook_url: ${{ secrets.DORIAN_TEAMS_WEBHOOK }}
+          raw: >-
+          {
+            "@type": "MessageCard",
+            "@context": "http://schema.org/extensions",
+            "title": "Dorian just got pwned!"
+          }
