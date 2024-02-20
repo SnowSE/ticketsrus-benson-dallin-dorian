@@ -26,3 +26,14 @@ jobs:
             cd ./ticketsrus-benson-dallin-dorian/Staging
             docker compose up --build -d
         working-directory: ./../../../../
+  
+  if_failure:
+    name: Only if failure
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{ secrets.DORIAN_TEAMS_WEBHOOK }}
