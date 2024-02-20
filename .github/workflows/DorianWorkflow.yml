@@ -36,7 +36,5 @@ jobs:
             {
               "@type": "MessageCard",
               "@context": "http://schema.org/extensions",
-              "correlationId": "0b72cc8a2cea509ba06b41892066784d7f602834",
-              "themeColor": "#999",
-              "title": "Dorian's app just got pwned!",
+              "title": "Dorian's app just got pwned!"
             }
