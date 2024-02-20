@@ -39,7 +39,6 @@ jobs:
           needs: ${{ toJson(needs) }}
           job: ${{ toJson(job) }}
           steps: ${{ toJson(steps) }}
-          dry_run: True
   if_failure:
     name: Only if failure
     runs-on: self-hosted
