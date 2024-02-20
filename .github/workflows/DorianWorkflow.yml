@@ -4,16 +4,6 @@ on:
     branches:
     - doriandocker
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
-    - name: Test
-      run: dotnet test "${{ env.WORKING_DIRECTORY }}"
   run-on-github-actions:
     runs-on: self-hosted
     steps:
