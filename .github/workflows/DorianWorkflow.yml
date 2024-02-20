@@ -26,19 +26,6 @@ jobs:
             cd ./ticketsrus-benson-dallin-dorian/Staging
             docker compose up --build -d
         working-directory: ./../../../../
-  success:
-    name: One with everything
-    runs-on: self-hosted
-    steps:
-      - uses: actions/checkout@master
-      - name: Microsoft Teams Notification
-        uses: skitionek/notify-microsoft-teams@master
-        if: always()
-        with:
-          webhook_url: ${{ secrets.DORIAN_TEAMS_WEBHOOK }}
-          needs: ${{ toJson(needs) }}
-          job: ${{ toJson(job) }}
-          steps: ${{ toJson(steps) }}
   if_failure:
     name: Only if failure
     runs-on: self-hosted
