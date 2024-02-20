@@ -36,5 +36,38 @@ jobs:
             {
               "@type": "MessageCard",
               "@context": "http://schema.org/extensions",
-              "title": "Dorian's app just got pwned!"
+              "correlationId": "0b72cc8a2cea509ba06b41892066784d7f602834",
+              "themeColor": "#999",
+              "title": "TheRealDeLorian push initialised workflow \"Dorian's deployment to alex server\"",
+              "summary": "[SnowSE/ticketsrus-benson-dallin-dorian](https://github.com/SnowSE/ticketsrus-benson-dallin-dorian)",
+              "sections": [
+                {
+                  "activityTitle": "No job context has been provided",
+                  "activitySubtitle": "2024-02-20T17:32:33Z",
+                  "activityImage": "https://raw.githubusercontent.com/Skitionek/notify-microsoft-teams/master/icons/unknown.png"
+                }
+              ],
+              "potentialAction": [
+                {
+                  "@type": "OpenUri",
+                  "name": "Repository",
+                  "targets": [
+                    {
+                      "os": "default",
+                      "uri": "https://github.com/SnowSE/ticketsrus-benson-dallin-dorian"
+                    }
+                  ]
+                },
+                {
+                  "@type": "OpenUri",
+                  "name": "Compare",
+                  "targets": [
+                    {
+                      "os": "default",
+                      "uri": "https://github.com/SnowSE/ticketsrus-benson-dallin-dorian/compare/fff6296f7ed1...0b72cc8a2cea"
+                    }
+                  ]
+                }
+              ],
+              "text": "**Changelog:**\n\n+ if this fails I did something right"
             }
