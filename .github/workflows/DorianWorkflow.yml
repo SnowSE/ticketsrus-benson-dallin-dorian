@@ -47,8 +47,8 @@ jobs:
         with:
           webhook_url: ${{ secrets.DORIAN_TEAMS_WEBHOOK }}
           raw: >-
-          {
-            "@type": "MessageCard",
-            "@context": "http://schema.org/extensions",
-            "title": "Dorian just got pwned!"
-          }
+            {
+              "@type": "MessageCard",
+              "@context": "http://schema.org/extensions",
+              "title": "Dorian just got pwned!"
+            }
