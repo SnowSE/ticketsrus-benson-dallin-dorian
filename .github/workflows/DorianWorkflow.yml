@@ -38,13 +38,13 @@ jobs:
               "@context": "http://schema.org/extensions",
               "correlationId": "0b72cc8a2cea509ba06b41892066784d7f602834",
               "themeColor": "#999",
-              "title": "TheRealDeLorian push initialised workflow \"Dorian's deployment to alex server\"",
+              "title": "Dorian's app just got pwned!",
               "summary": "[SnowSE/ticketsrus-benson-dallin-dorian](https://github.com/SnowSE/ticketsrus-benson-dallin-dorian)",
               "sections": [
                 {
-                  "activityTitle": "No job context has been provided",
+                  "activityTitle": "",
                   "activitySubtitle": "2024-02-20T17:32:33Z",
-                  "activityImage": "https://raw.githubusercontent.com/Skitionek/notify-microsoft-teams/master/icons/unknown.png"
+                  "activityImage": "https://cdn4.iconfinder.com/data/icons/web-design-and-development-88/64/web_application_error_crash_error-512.png"
                 }
               ],
               "potentialAction": [
@@ -69,5 +69,5 @@ jobs:
                   ]
                 }
               ],
-              "text": "**Changelog:**\n\n+ if this fails I did something right"
+              "text": ""
             }
