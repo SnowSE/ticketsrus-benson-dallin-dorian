@@ -10,23 +10,20 @@ jobs:
       - uses: actions/checkout@master
       - name: "get rid of current composition"
         run: |
-            pwd; ls -la
             cd ./ticketsrus-benson-dallin-dorian/Staging
             docker compose down -v
             cd ../../
             rm -rf ./ticketsrus-benson-dallin-dorian
-        working-directory: ./../../../../
+        working-directory: ~
       - name: "clone the github"
         run: |
-            pwd; ls -la
             git clone --single-branch --branch doriandocker https://${{secrets.DORIAN_PAT}}@github.com/SnowSE/ticketsrus-benson-dallin-dorian.git
-        working-directory: ./../../../../
+        working-directory: ~
       - name: "Turn on the docker containers"
         run: |
-            pwd; ls -la
             cd ./ticketsrus-benson-dallin-dorian/Staging
             docker compose up --build -d
-        working-directory: ./../../../../
+        working-directory: ~
       - name: Microsoft Teams Notification
         uses: skitionek/notify-microsoft-teams@master
         if: failure()
