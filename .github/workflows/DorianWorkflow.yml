@@ -24,7 +24,7 @@ jobs:
             cd ./ticketsrus-benson-dallin-dorian/Staging
             docker compose up --build -d
         working-directory: ./../../../../
-      - name: Microsoft Teams Notification
+      - name: Microsoft Teams Failure Notification
         uses: skitionek/notify-microsoft-teams@master
         if: failure()
         with:
@@ -68,8 +68,10 @@ jobs:
               ],
               "text": ""
             }
-        else:
-           with:
+      - name: Microsoft Teams Failure Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: always()
+        with:
           webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
           needs: ${{ toJson(needs) }}
           job: ${{ toJson(job) }}
