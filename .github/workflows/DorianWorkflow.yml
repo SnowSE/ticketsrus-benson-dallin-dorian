@@ -70,7 +70,7 @@ jobs:
             }
       - name: Microsoft Teams Success Notification
         uses: skitionek/notify-microsoft-teams@master
-        if: always()
+        if: success()
         with:
           webhook_url: ${{ secrets.DORIAN_TEAMS_WEBHOOK }}
           needs: ${{ toJson(needs) }}
