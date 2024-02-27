@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+
 namespace LibraryTRU.Data.DTOs;
 
 public class EmailInfoDTO

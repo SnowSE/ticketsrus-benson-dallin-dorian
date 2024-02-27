@@ -1,4 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using MauiTRU.Database
+@using MauiTRU.Services
+@inherits LayoutComponentBase
+@inject BackgroundTimerService bts
 
 <div class="page">
     <div class="sidebar">
@@ -15,3 +18,29 @@
         </article>
     </main>
 </div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+            if (Preferences.ContainsKey(Constants.RefreshRateKey) && !bts.isRunning)
+            {
+                await bts.ExecuteAsync(new());
+                await bts.ChangeTimePeriod(Preferences.Get(Constants.RefreshRateKey, Constants.DefaultRefreshRate));
+            }
+            else if (!bts.isRunning)
+            {
+                Preferences.Set(Constants.RefreshRateKey, Constants.DefaultRefreshRate);
+                await bts.ExecuteAsync(new());
+            }
+
+            return;
+        }
+        catch(Exception e)
+        {
+            throw;
+        }
+    }
+}

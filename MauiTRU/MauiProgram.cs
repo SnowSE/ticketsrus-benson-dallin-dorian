@@ -11,7 +11,8 @@ namespace MauiTRU
         public static MauiApp CreateMauiApp()
         {
             HttpClient client = new HttpClient();
-            client.BaseAddress = new("https://localhost:7288"); //Needs different URI for production - azure or testing
+            client.BaseAddress = new(Preferences.Get(Constants.PreferenceKeyForAPI, Constants.ProductionDefault));
+            // client.BaseAddress = new(Preferences.Get(Constants.PreferenceKeyForAPI, Constants.LocalHostDefault));
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -22,17 +23,18 @@ namespace MauiTRU
                 });
 
             builder.Services.AddMauiBlazorWebView();
-            builder.Services.AddSingleton<LocalTRUDatabase>();
+            builder.Services.AddScoped<LocalTRUDatabase>();
             builder.Services.AddSingleton<IDbPath, MauiDbPath>();
             builder.Services.AddScoped<ITicketService, MauiTicketService>();
             builder.Services.AddScoped<IConcertService, MauiConcertService>();
             builder.Services.AddSingleton(client);
+            builder.Services.AddSingleton<BackgroundTimerService>();
+            builder.Services.AddSingleton<ConnectivityForPhone>();
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
-
             return builder.Build();
         }
     }

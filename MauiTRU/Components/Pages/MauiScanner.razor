@@ -1,5 +1,6 @@
-﻿@page "/scanner"
+﻿@using LibraryTRU.Exceptions
 @using ZXing.Net.Maui;
+@inject ITicketService its
 
 <h3>MauiScanner</h3>
 
@@ -11,15 +12,42 @@ Scan Result: @scanResultLabel
 
 @code
 {
+    [Parameter]
+    public int concertId { get; set; }
+    [Parameter]
+    public Func<Task<List<Ticket>>> GetTickets { get; set; }
+
     private string scanResultLabel;
+    List<Ticket> tickets;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tickets = await GetTickets();
+    }
 
     public async Task DoScanAsync()
     {
         var scanResults = await GetScanResultsAsync();
-        var barcode = scanResults;
-        if (barcode != null)
-            scanResultLabel = $"Barcodes: {barcode.Format} -> {barcode.Value}";
+        var barcode = scanResults.Value;
 
+        if (barcode != null && EnsureCorrectConcert(barcode))
+        {
+            scanResultLabel = $"Barcodes: {scanResults.Format} -> {barcode}";
+
+            try
+            {
+                await its.ScanTicket(barcode);
+                scanResultLabel = "Scan Complete";
+            }
+            catch (TicketAlreadyScannedException)
+            {
+                scanResultLabel = "Ticket was already scanned";
+            }
+        }
+        else
+        {
+            scanResultLabel = "Code does not connect to Concert";
+        }
     }
 
     public async Task<BarcodeResult> GetScanResultsAsync()
@@ -33,5 +61,15 @@ Scan Result: @scanResultLabel
         await Application.Current.MainPage.Navigation.PopModalAsync();
 
         return results;
+    }
+
+    public bool EnsureCorrectConcert(string barcode)
+    {
+        var t = tickets.Where(t => t.Qrhash == barcode).SingleOrDefault();
+
+        if (t is null)
+            return false;
+
+        return true;
     }
 }

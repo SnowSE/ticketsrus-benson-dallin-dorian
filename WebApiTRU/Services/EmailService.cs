@@ -3,10 +3,10 @@ using LibraryTRU.Data.DTOs;
 using MimeKit;
 using MimeKit.Utils;
 using Net.Codecrete.QrCodeGenerator;
-namespace WebApiTRU.Email;
 using System.IO;
 using Aspose.Html.Converters;
 using Aspose.Html.Saving;
+namespace WebApiTRU.Email;
 
 public class EmailService : IEmailService
 {
