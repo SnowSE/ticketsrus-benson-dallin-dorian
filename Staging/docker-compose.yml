@@ -2,6 +2,31 @@
 version: '3'
 
 services:
+  blackbox:
+    image: prom/blackbox-exporter:v0.23.0
+    container_name: blackbox
+    restart: unless-stopped
+    ports:
+      - 9115:9115
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - blackbox/blackbox.yml:etc/blackbox/blackbox.yml #${PWD}/blackbox/blackbox.yml:etc/blackbox/blackbox.yml
+    command: --config.file=/etc/blackbox/blackbox.yml
+    networks:
+      etel:
+  prometheus:
+    image: prom/prometheus:v2.43.0
+    container_name: prometheus
+    hostname: prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - etc/localtime:/etc/localtime:ro
+      - prometheus/prometheus.yml:/etc/prometheus/prometheus.yml #${PWD}/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+     - blackbox
+    networks:
+      etel:
   db:
     container_name: bensons_postgres
     image: postgres
@@ -11,14 +36,10 @@ services:
       POSTGRES_DB: bensonsdb
       POSTGRES_PASSWORD: P@ssw0rd!
     volumes:
-     - ./init.sql:/docker-entrypoint-initdb.d/init.sq
+     - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      etel:
     #health check for db too
-  adminer:
-    container_name: bensons_adminer
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
   website:
     container_name: bensons_website
     image: website
@@ -29,12 +50,40 @@ services:
      - db
     build: ..
     environment:
-      connectionStrings: user id=bbird;database=bensonsdb;password=P@assw0rd!; #host?
+     connectionStrings: "user id=bbird;database=bensonsdb;password=P@assw0rd!;" #host?
     healthcheck:
     #Get wget downloaded
-      test: wget --tries=1 http://localhost8081/healthcheck || exit 1
+      test: wget --tries=1 http://localhost:8081/healthcheck || exit 1
       interval: 2s #60s
       retries: 5
       start_period: 5s #20s
       timeout: 1s #10s
+    networks:
+      etel:
+  grafana:
+    # https://github.com/grafana/grafana/releases
+    image: grafana/grafana:9.4.7
+    container_name: grafana
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    restart: unless-stopped
+    user: root
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+      - db
+      - website
+
+networks:
+    etel:
+
+# docker compose -f docker-compose.yml up -d
+
      

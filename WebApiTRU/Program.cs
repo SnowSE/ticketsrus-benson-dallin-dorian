@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using WebApiTRU.Components;
 using WebApiTRU.Email;
 using WebApiTRU.Services;
@@ -48,9 +50,15 @@ public class Program
             .AddInteractiveServerRenderMode();
 
         app.MapControllers();
-        app.MapGet("/helathcheck", () =>
+        app.MapHealthChecks("/helathcheck", new HealthCheckOptions
         {
-            return "Healthy";
+            AllowCachingResponses = false,
+            ResultStatusCodes =
+            {
+                [HealthStatus.Healthy] = StatusCodes.Status200OK,
+                [HealthStatus.Degraded] = StatusCodes.Status200OK,
+                [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable,
+            }
         });
 
         app.Run();
