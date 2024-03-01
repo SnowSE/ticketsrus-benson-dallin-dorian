@@ -45,7 +45,7 @@ services:
     image: website
     restart: always
     ports:
-     - 8070:8081
+     - 8372:8081
     depends_on: 
      - db
     build: ..
