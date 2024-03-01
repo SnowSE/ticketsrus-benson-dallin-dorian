@@ -10,7 +10,7 @@ services:
       - 9115:9115
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./blackbox.yml:etc/blackbox/blackbox.yml
+      - ./blackbox.yml:/etc/blackbox/blackbox.yml
     command: --config.file=/etc/blackbox/blackbox.yml
     networks:
       etel:
