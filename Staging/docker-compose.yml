@@ -10,7 +10,7 @@ services:
       - 9115:9115
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - blackbox/blackbox.yml:etc/blackbox/blackbox.yml #${PWD}/blackbox/blackbox.yml:etc/blackbox/blackbox.yml
+      - blackbox.yml:etc/blackbox/blackbox.yml #${PWD}/blackbox/blackbox.yml:etc/blackbox/blackbox.yml
     command: --config.file=/etc/blackbox/blackbox.yml
     networks:
       etel:
@@ -22,7 +22,7 @@ services:
       - 9090:9090
     volumes:
       - etc/localtime:/etc/localtime:ro
-      - prometheus/prometheus.yml:/etc/prometheus/prometheus.yml #${PWD}/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus.yml:/etc/prometheus/prometheus.yml #${PWD}/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
      - blackbox
     networks:
