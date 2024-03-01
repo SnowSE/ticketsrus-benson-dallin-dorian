@@ -60,25 +60,24 @@ services:
     networks:
       etel:
   grafana:
-    # https://github.com/grafana/grafana/releases
     image: grafana/grafana:9.4.7
-    container_name: grafana
+    container_name: Bensongrafana
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
       - GF_AUTH_DISABLE_LOGIN_FORM=true
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      #- /etc/localtime:/etc/localtime:ro
       - grafana-data:/var/lib/grafana
-      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ../grafana/provisioning:/etc/grafana/provisioning
     restart: unless-stopped
     user: root
     ports:
       - 3000:3000
     depends_on:
       - prometheus
-      - db
-      - website
+    networks:
+      etel:
 
 networks:
     etel:
