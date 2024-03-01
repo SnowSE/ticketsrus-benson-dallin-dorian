@@ -1,21 +1,24 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 as base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 RUN apt-get update && apt-get install -y wget
-
+USER app
 WORKDIR /app
-FROM mcr.microsoft.com/dotnet/sdk:8.0 as build
+EXPOSE 8081
 
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["WebApp.csproj", "."]
-RUN dotnet restore "WebApp.csproj"
-
+COPY ["WebApiTRU/WebApiTRU.csproj", "WebApiTRU/"]
+COPY ["LibraryTRU/LibraryTRU.csproj", "LibraryTRU/"]
+RUN dotnet restore "./WebApiTRU/./WebApiTRU.csproj"
 COPY . .
-WORKDIR /src
-RUN dotnet build "WebApp.csproj" -c Release -o /app/build
+WORKDIR "/src/WebApiTRU"
+RUN dotnet build "./WebApiTRU.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-FROM build as publish 
-RUN dotnet publish "WebApp.csproj" -c Release -o /app/publish
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./WebApiTRU.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-from base as final
+FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-CMD ["dotnet", "WebApp.dll"]
+ENTRYPOINT ["dotnet", "WebApiTRU.dll"]
