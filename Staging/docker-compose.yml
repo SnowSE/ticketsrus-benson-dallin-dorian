@@ -9,7 +9,7 @@ services:
     ports:
       - 9115:9115
     volumes:
-      - ./etc/localtime:/etc/localtime:ro
+      - /etc/localtime:/etc/localtime:ro
       - ./blackbox.yml:etc/blackbox/blackbox.yml
     command: --config.file=/etc/blackbox/blackbox.yml
     networks:
@@ -21,7 +21,7 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - ./etc/localtime:/etc/localtime:ro
+      - /etc/localtime:/etc/localtime:ro
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
      - blackbox
@@ -69,9 +69,9 @@ services:
       #- GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
       #- GF_AUTH_DISABLE_LOGIN_FORM=true
     volumes:
-      - ./etc/localtime:/etc/localtime:ro
-      - ./grafana-data:/var/lib/grafana
-      - ../grafana/provisioning:/etc/grafana/provisioning
+      - /etc/localtime:/etc/localtime:ro
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisionin:/etc/grafana/provisioning
     restart: unless-stopped
     user: root
     ports:
@@ -80,8 +80,13 @@ services:
       - prometheus
     networks:
       etel:
+
 networks:
     etel:
+
+volumes:
+  prometheus:
+  grafana-data:
 
 # docker compose -f docker-compose.yml up -d
 
