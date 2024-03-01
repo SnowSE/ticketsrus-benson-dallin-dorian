@@ -29,6 +29,23 @@ services:
     networks:
       otel:
 
+  tempo:
+    image: grafana/tempo:2.0.1
+    container_name: bensons_tempo
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./tempo.yml:/etc/tempo.yaml
+      - tempo:/tmp/tempo
+    restart: unless-stopped
+    ports:
+      - 3200:3200  # tempo
+      - 4007:4317  # otlp grpc
+    depends_on:
+      - otel-collector
+    networks:
+      otel:
+
   db:
     container_name: bensons_postgres
     image: postgres
