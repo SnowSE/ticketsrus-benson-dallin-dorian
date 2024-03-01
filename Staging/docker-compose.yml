@@ -4,7 +4,7 @@ version: '3'
 services:
   blackbox:
     image: prom/blackbox-exporter:v0.23.0
-    container_name: blackbox
+    container_name: Bensonblackbox
     restart: unless-stopped
     ports:
       - 9115:9115
@@ -16,7 +16,7 @@ services:
       etel:
   prometheus:
     image: prom/prometheus:v2.43.0
-    container_name: prometheus
+    container_name: Bensonprometheus
     hostname: prometheus
     ports:
       - 9090:9090
