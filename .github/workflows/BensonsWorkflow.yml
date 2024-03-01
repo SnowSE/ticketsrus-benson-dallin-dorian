@@ -5,7 +5,7 @@ on:
     - ClassServerRunninerForBenson
 jobs:
   run-on-github-actions:
-    runs-on: [self-hosted, linux, Alex-Off02-Benson]
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@master
       #- name: "get rid of current composition"
