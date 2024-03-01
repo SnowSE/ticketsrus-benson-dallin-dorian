@@ -4,7 +4,7 @@ version: '3'
 services:
   blackbox:
     image: prom/blackbox-exporter:v0.23.0
-    container_name: Bensonblackbox
+    container_name: benson_blackbox
     restart: unless-stopped
     ports:
       - 9115:9115
@@ -13,10 +13,11 @@ services:
       - ./blackbox.yml:/etc/blackbox/blackbox.yml
     command: --config.file=/etc/blackbox/blackbox.yml
     networks:
-      etel:
+      otel:
+
   prometheus:
     image: prom/prometheus:v2.43.0
-    container_name: Bensonprometheus
+    container_name: bensons_prometheus
     hostname: prometheus
     ports:
       - 9090:9090
@@ -26,7 +27,8 @@ services:
     depends_on:
      - blackbox
     networks:
-      etel:
+      otel:
+
   db:
     container_name: bensons_postgres
     image: postgres
@@ -38,8 +40,8 @@ services:
     volumes:
      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      etel:
-    #health check for db too
+      otel:
+    
   website:
     container_name: bensons_website
     image: website
@@ -58,10 +60,11 @@ services:
       start_period: 5s #20s
       timeout: 1s #10s
     networks:
-      etel:
+      otel:
+
   grafana:
     image: grafana/grafana:9.4.7
-    container_name: Bensongrafana
+    container_name: bensons_grafana
     environment:
       - GF_SECURITY_ADMIN_USER=Benson
       - GF_SECURITY_ADMIN_PASSWORD=B0bby
@@ -79,10 +82,38 @@ services:
     depends_on:
       - prometheus
     networks:
-      etel:
+      otel:
+
+  otel-collector:
+    container_name: bensons_otel
+    hostname: otel
+    image: otel/opentelemetry-collector-contrib:0.75.0
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel.yml:/etc/otel-collector-config.yaml
+    restart: unless-stopped
+    ports:
+      - 8888:8888   # Prometheus metrics exposed by the collector
+      - 8889:8889   # Prometheus exporter metrics
+      - 4317:4317   # OTLP gRPC receiver
+      - 9200:55679  # zpages
+      - 13133:13133 # Health check
+    networks:
+      otel:
+
+  rabbitmq:
+    image: rabbitmq:3.11.0-management-alpine
+    container_name: bensons_rabbitmq
+    restart: unless-stopped
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      otel:
+
 
 networks:
-    etel:
+    otel:
 
 volumes:
   prometheus:

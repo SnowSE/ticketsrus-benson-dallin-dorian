@@ -1,0 +1,38 @@
+recievers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+exporters:
+  debug:
+    verbosity: detailed
+  prometheus:
+    endpoint: otel:8889
+  otlp:
+    endpoint: tempo:4007
+    tls:
+      insecure: true
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+    tls:
+      insecure: true
+
+extensions:
+  zpages:
+     endpoint: otel:55679
+
+service:
+  extentions: [zpages, health_check]
+  pipelines:
+    metrics:
+      recievers: [otlp]
+      exporters: [prometheus]
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp]
+    logs:
+      recievers: [otlp]
+      processors: [batch]
+      exporters: [loki]

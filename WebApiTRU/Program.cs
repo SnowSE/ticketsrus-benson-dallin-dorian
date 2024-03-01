@@ -1,14 +1,30 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Serilog;
 using WebApiTRU.Components;
 using WebApiTRU.Email;
 using WebApiTRU.Services;
+using Aspose.Html;
+using Microsoft.AspNetCore;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Metrics;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 public class Program
 {
     private static void Main(string[] args)
     {
+
+        IConfiguration cfig = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables()
+                .AddCommandLine(args)
+                .Build();
 
         var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +45,52 @@ public class Program
         builder.Services.AddTransient<IEmailService, EmailService>();
         builder.Services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
         builder.Services.AddHealthChecks();
+        builder.Services.AddLogging();
+
+        //they used two, this is one
+       /* Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(cfig)
+                .WriteTo.OpenTelemetry(options =>
+                {
+                    options.Endpoint = $"{cfig.GetValue<string>("Otlp:Endpoint")}/v1/logs";
+                    options.Protocol = Serilog.Sinks.OpenTelemetry.OtlpProtocol.Grpc;
+                    options.ResourceAttributes = new Dictionary<string, object>
+                    {
+                        ["service.name"] = cfig.GetValue<string>("Otlp:ServiceName")
+                    };
+                })
+                .CreateLogger();*/
+        //This is the other
+        builder.Host.UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
+            .ReadFrom.Configuration(hostingContext.Configuration)
+            .WriteTo.OpenTelemetry(options =>
+            {
+                options.Endpoint = $"{cfig.GetValue<string>("Otlp:Endpoint")}/v1/logs";
+                options.Protocol = Serilog.Sinks.OpenTelemetry.OtlpProtocol.Grpc;
+                options.ResourceAttributes = new Dictionary<string, object>
+                {
+                    ["service.name"] = cfig.GetValue<string>("Otlp:ServiceName")
+                };
+            }));
+
+        Action<ResourceBuilder> appResourceBuilder =
+            resource => resource
+                .AddTelemetrySdk()
+                .AddService(cfig.GetValue<string>("Otlp:ServiceName"));
+
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(appResourceBuilder)
+            .WithTracing(builder => builder
+                .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
+                .AddSource("APITracing")
+                //.AddConsoleExporter()
+                .AddOtlpExporter(options => options.Endpoint = new Uri(cfig.GetValue<string>("Otlp:Endpoint")))
+            )
+            .WithMetrics(builder => builder
+                .AddRuntimeInstrumentation()
+                .AddAspNetCoreInstrumentation()
+                .AddOtlpExporter(options => options.Endpoint = new Uri(cfig.GetValue<string>("Otlp:Endpoint"))));
 
         var app = builder.Build();
 
@@ -41,6 +103,8 @@ public class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+
+        app.Logger.LogInformation("Benson logged this in program.cs");
 
         app.UseHttpsRedirection();
 
