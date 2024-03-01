@@ -1,4 +1,5 @@
 ﻿using LibraryTRU.Data.DTOs;
+using LibraryTRU.Exceptions;
 
 namespace WebApiTRU.Controllers;
 
@@ -52,7 +53,7 @@ public class TicketController : Controller
         {
             await _ts.ScanTicket(qrHash);
         }
-        catch (TicketNotFoundException tex)
+        catch (TicketNotFoundException)
         {
             Response.StatusCode = 410;
         }

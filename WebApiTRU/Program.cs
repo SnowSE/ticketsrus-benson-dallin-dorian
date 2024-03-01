@@ -28,11 +28,12 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddTransient<IEmailService, EmailService>();
         builder.Services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
+        builder.Services.AddHealthChecks();
 
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+        if (!app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
