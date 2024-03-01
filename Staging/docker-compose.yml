@@ -101,6 +101,20 @@ services:
     networks:
       otel:
 
+  loki:
+    image: grafana/loki:2.8.0
+    container_name: bensons_loki
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+        - /etc/localtime:/etc/localtime:ro      
+        - ./loki.yml:/etc/loki/local-config.yaml
+        - loki:/data/loki
+    restart: unless-stopped
+    ports:
+        - 3100:3100
+    networks:
+        otel:
+
   otel-collector:
     container_name: bensons_otel
     hostname: otel
@@ -133,7 +147,9 @@ networks:
     otel:
 
 volumes:
+  loki:
   prometheus:
+  tempo:
   grafana-data:
 
 # docker compose -f docker-compose.yml up -d
