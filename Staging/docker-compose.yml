@@ -69,7 +69,7 @@ services:
       #- GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
       #- GF_AUTH_DISABLE_LOGIN_FORM=true
     volumes:
-      #- /etc/localtime:/etc/localtime:ro
+      - /etc/localtime:/etc/localtime:ro
       - grafana-data:/var/lib/grafana
       - ../grafana/provisioning:/etc/grafana/provisioning
     restart: unless-stopped
