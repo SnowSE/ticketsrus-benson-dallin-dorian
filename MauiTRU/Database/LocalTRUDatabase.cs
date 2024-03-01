@@ -26,7 +26,11 @@ public class LocalTRUDatabase
         await Database.CreateTableAsync<Concert>();
         await Database.CreateTableAsync<Ticket>();
     }
-
+    public async Task DeleteDatabase()
+    {
+        await Database.DeleteAllAsync<Ticket>();
+        await Database.DeleteAllAsync<Concert>();
+    }
     public async Task<List<Ticket>> GetTicketsAsync()
     {
         await Init();
@@ -41,6 +45,9 @@ public class LocalTRUDatabase
     {
         await Init();
         var ticket = await Database.Table<Ticket>().Where(t => t.Qrhash == qrHash).FirstOrDefaultAsync();
+
+        if (ticket is null)
+            throw new TicketNotFoundException();
 
         if (ticket.Timescanned is not null)
             throw new TicketAlreadyScannedException();
@@ -69,7 +76,7 @@ public class LocalTRUDatabase
 
         foreach (Ticket localTicket in localTickets)
             if(localTicket.Timescanned is not null) //If the local ticket is scanned
-                if (mainTickets.Where(mt => mt.Id == localTicket.Id).Single().Timescanned is not null) // And the main ticket is not scanned
+                if (mainTickets.Where(mt => mt.Id == localTicket.Id).Single().Timescanned is null) // And the main ticket is not scanned
                     await _client.PutAsJsonAsync("api/ticket/scan", localTicket.Qrhash); // scan the main one
     }
 

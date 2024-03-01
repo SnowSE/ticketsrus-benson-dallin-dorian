@@ -2,6 +2,7 @@
 @inject HttpClient htpc
 @inject BackgroundTimerService bts
 @inject ConnectivityForPhone cfp
+@inject LocalTRUDatabase localDB
 
 <h3>Settings</h3>
 <label for="control">Offline Mode: </label>
@@ -11,7 +12,7 @@
 <InputText id="apiUri" @bind-Value="APIUri"/>
 <button class="submit" @onclick="ChangeHttpBase">Change API base address</button>
 <br />
-<label for="refreshrate">Refresh Frequency (mininutes): </label>
+<label for="refreshrate">Refresh Frequency (seconds): </label>
 <InputNumber TValue="int" id="refreshrate" @bind-Value="refreshrate"/>
 <button class="submit" @onclick="(async () => await UpdateRefreshRate())">Update Frequencey</button>
 
@@ -33,13 +34,15 @@
         Preferences.Set(Constants.RefreshRateKey, refreshrate);
     }
 
-    void ChangeHttpBase()
+    async Task ChangeHttpBase()
     {
         if(APIUri is not null)
         {
             htpc = new HttpClient();
             htpc.BaseAddress = new(APIUri);
             Preferences.Set(Constants.PreferenceKeyForAPI, APIUri);
+            await localDB.DeleteDatabase();
+            await bts.ChangeTimePeriod(bts.GetTimePeriod);
         }
     }
 

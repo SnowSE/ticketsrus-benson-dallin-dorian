@@ -57,6 +57,10 @@ public class TicketController : Controller
         {
             Response.StatusCode = 410;
         }
+        catch (TicketAlreadyScannedException)
+        {
+            Response.StatusCode = 411;
+        }
         catch
         {
             Response.StatusCode = 500;

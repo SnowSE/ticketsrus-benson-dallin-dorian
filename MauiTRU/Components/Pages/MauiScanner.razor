@@ -4,11 +4,25 @@
 
 <h3>MauiScanner</h3>
 
-<button @onclick="DoScanAsync">Scan</button>
+<button class="" @onclick="DoScanAsync">Scan</button>
 
 <br />
 
-Scan Result: @scanResultLabel
+@if (!string.IsNullOrEmpty(successResultLabel))
+{
+    <div class="alert alert-success">
+        @successResultLabel
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(errorResultLabel))
+{
+    <div class="alert alert-danger">
+        @errorResultLabel
+    </div>
+}
+
+
 
 @code
 {
@@ -17,7 +31,8 @@ Scan Result: @scanResultLabel
     [Parameter]
     public Func<Task<List<Ticket>>> GetTickets { get; set; }
 
-    private string scanResultLabel;
+    private string successResultLabel = "";
+    private string errorResultLabel = "";
     List<Ticket> tickets;
 
     protected override async Task OnInitializedAsync()
@@ -28,25 +43,29 @@ Scan Result: @scanResultLabel
     public async Task DoScanAsync()
     {
         var scanResults = await GetScanResultsAsync();
+        if(scanResults is null)
+            return;
+
         var barcode = scanResults.Value;
 
         if (barcode != null && EnsureCorrectConcert(barcode))
         {
-            scanResultLabel = $"Barcodes: {scanResults.Format} -> {barcode}";
-
             try
             {
                 await its.ScanTicket(barcode);
-                scanResultLabel = "Scan Complete";
+                errorResultLabel = "";
+                successResultLabel = "Scan success!";
             }
             catch (TicketAlreadyScannedException)
             {
-                scanResultLabel = "Ticket was already scanned";
+                successResultLabel = "";
+                errorResultLabel = "Error -- Ticket was already scanned";
             }
         }
         else
         {
-            scanResultLabel = "Code does not connect to Concert";
+            successResultLabel = "";
+            errorResultLabel = "This code is for another event or invalid.";
         }
     }
 
@@ -67,7 +86,7 @@ Scan Result: @scanResultLabel
     {
         var t = tickets.Where(t => t.Qrhash == barcode).SingleOrDefault();
 
-        if (t is null)
+        if (t is null || t.ConcertId != concertId)
             return false;
 
         return true;

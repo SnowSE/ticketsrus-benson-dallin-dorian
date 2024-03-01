@@ -8,6 +8,7 @@ namespace MauiTRU.Services
         private readonly ConnectivityForPhone _connectivity;
         private int _timeperiod = Constants.DefaultRefreshRate;
         public bool isRunning;
+        public int GetTimePeriod { get => _timeperiod; }
         
         public BackgroundTimerService(LocalTRUDatabase database, ConnectivityForPhone cfp)
         {
