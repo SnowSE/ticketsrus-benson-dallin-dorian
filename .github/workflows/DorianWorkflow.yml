@@ -3,6 +3,9 @@ on:
   push:
     branches:
     - doriandocker
+env:
+  DOTNET_CORE_VERSION: 8.0.x
+  WORKING_DIRECTORY: WebApiTRU
 jobs:
   test:
     runs-on: self-hosted
