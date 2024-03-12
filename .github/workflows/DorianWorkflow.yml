@@ -4,7 +4,17 @@ on:
     branches:
     - doriandocker
 jobs:
-  run-on-github-actions:
+  test:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+    - name: Test
+      run: dotnet test "${{ env.WORKING_DIRECTORY }}"
+  deploy:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@master
@@ -77,4 +87,3 @@ jobs:
           job: ${{ toJson(job) }}
           steps: ${{ toJson(steps) }}
 
-          
