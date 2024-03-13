@@ -4,6 +4,50 @@ on:
     branches:
     - ClassServerRunninerForBenson
 jobs:
+  unit-test:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@master
+      - name: "get rid of current composition"
+        run: |
+            cd ./ticketsrus-benson-dallin-dorian/Staging
+            docker compose down -v
+            cd ../../
+            rm -rf ./ticketsrus-benson-dallin-dorian
+        working-directory: ./../../../../
+      - name: "clone the github"
+        run: |
+            git clone --single-branch --branch ClassServerRunninerForBenson https://${{secrets.BENSONS_PAT}}@github.com/SnowSE/ticketsrus-benson-dallin-dorian.git
+        working-directory: ./../../../../
+      - name: "Turn on the docker containers"
+        run: |
+            cd ./ticketsrus-benson-dallin-dorian/Staging
+            docker compose up --build -d
+        working-directory: ./../../../../
+      - name: Test
+        run: dotnet test UnitTests/UnitTests.csproj
+  integration-test:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@master
+      - name: "get rid of current composition"
+        run: |
+            cd ./ticketsrus-benson-dallin-dorian/Staging
+            docker compose down -v
+            cd ../../
+            rm -rf ./ticketsrus-benson-dallin-dorian
+        working-directory: ./../../../../
+      - name: "clone the github"
+        run: |
+            git clone --single-branch --branch ClassServerRunninerForBenson https://${{secrets.BENSONS_PAT}}@github.com/SnowSE/ticketsrus-benson-dallin-dorian.git
+        working-directory: ./../../../../
+      - name: "Turn on the docker containers"
+        run: |
+            cd ./ticketsrus-benson-dallin-dorian/Staging
+            docker compose up --build -d
+        working-directory: ./../../../../
+      - name: Test
+        run: dotnet test TestsTRU/TestsTRU.csproj
   run-on-github-actions:
     runs-on: self-hosted
     steps:
