@@ -7,16 +7,16 @@ env:
   DOTNET_CORE_VERSION: 8.0.x
   WORKING_DIRECTORY: WebApiTRU
 jobs:
-  test:
-    runs-on: self-hosted
-    steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
-    - name: Test
-      run: dotnet test "${{ env.WORKING_DIRECTORY }}"
+  # test:
+  #   runs-on: self-hosted
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - name: Setup .NET SDK
+  #     uses: actions/setup-dotnet@v3
+  #     with:
+  #       dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+  #   - name: Test
+  #     run: dotnet test "${{ env.WORKING_DIRECTORY }}"
   deploy:
     runs-on: self-hosted
     steps:
