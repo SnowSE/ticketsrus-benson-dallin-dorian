@@ -21,13 +21,13 @@ jobs:
     runs-on: [alex-office1]
     steps:
       - uses: actions/checkout@master
-      # - name: "get rid of current composition"
-      #   run: |
-      #       cd ./ticketsrus-benson-dallin-dorian/Staging
-      #       docker compose down -v
-      #       cd ../../
-      #       rm -rf ./ticketsrus-benson-dallin-dorian
-      #   working-directory: ./../../../../
+      - name: "get rid of current composition"
+        run: |
+            cd ./ticketsrus-benson-dallin-dorian/Staging
+            docker compose down -v
+            cd ../../
+            rm -rf ./ticketsrus-benson-dallin-dorian
+        working-directory: ./../../../../
       - name: "clone the github"
         run: |
             git clone --single-branch --branch doriandocker https://${{secrets.DORIAN_PAT}}@github.com/SnowSE/ticketsrus-benson-dallin-dorian.git
@@ -35,6 +35,7 @@ jobs:
       - name: "Turn on the docker containers"
         run: |
             cd ./ticketsrus-benson-dallin-dorian/Staging
+            sudo service docker restart
             docker compose up --build -d
         working-directory: ./../../../../
       - name: Microsoft Teams Failure Notification
