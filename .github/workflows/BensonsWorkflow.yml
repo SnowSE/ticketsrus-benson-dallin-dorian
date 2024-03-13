@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Unit Test
-        run: docker run -t --rm -v $(pwd):/appUT -w /appUT mcr.microsoft.com/dotnet/sdk:8.0 dotnet test UnitTests/UnitTests.csproj
+        run: docker run -t --rm -v $(pwd):/appUT -w /appUT mcr.microsoft.com/dotnet/sdk:8.0 -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g)  dotnet test UnitTests/UnitTests.csproj
 
   Linting: 
     runs-on: self-hosted
@@ -32,7 +32,7 @@ jobs:
       - name: Integration tests
         run: |
             dotnet workload install maui
-            docker run -t --rm -v $(pwd):/appIT -w /appIT mcr.microsoft.com/dotnet/sdk:8.0
+            docker run -t --rm -v $(pwd):/appIT -w /appIT -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0
             dotnet test TestsTRU/TestsTRU.csproj
 
   run-on-github-actions:
@@ -46,15 +46,18 @@ jobs:
             cd ../../
             rm -rf ./ticketsrus-benson-dallin-dorian
         working-directory: ./../../../../
+
       - name: "clone the github"
         run: |
             git clone --single-branch --branch ClassServerRunninerForBenson https://${{secrets.BENSONS_PAT}}@github.com/SnowSE/ticketsrus-benson-dallin-dorian.git
         working-directory: ./../../../../
+
       - name: "Turn on the docker containers"
         run: |
             cd ./ticketsrus-benson-dallin-dorian/Staging
             docker compose up --build -d
         working-directory: ./../../../../
+
       - name: Microsoft Teams Failure Notification
         uses: skitionek/notify-microsoft-teams@master
         if: failure()
@@ -99,6 +102,7 @@ jobs:
               ],
               "text": ""
             }
+
       - name: Microsoft Teams Success Notification
         uses: skitionek/notify-microsoft-teams@master
         if: success()
