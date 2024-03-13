@@ -10,10 +10,10 @@ jobs:
       - uses: actions/checkout@master
       - name: Unit Test
         run: docker run -t --rm \
-              -v $(pwd):/appUT \
-              -w /appUT \
               -e DOTNET_CLI_HOME="/tmp/dotnet" \
               --user $(id -u):$(id -g) \
+              -v $(pwd):/appUT \
+              -w /appUT \
               mcr.microsoft.com/dotnet/sdk:8.0 \
               dotnet test UnitTests/UnitTests.csproj
 
@@ -22,7 +22,7 @@ jobs:
     steps: 
       - uses: actions/checkout@master
       - name: linting test
-        run: docker run -t --rm -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) -v $(pwd):/appL -w /appL mcr.microsoft.com/dotnet/sdk:8.0 dotnet format --verify-no-changes
+        run: docker run -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) -t --rm -v $(pwd):/appL -w /appL mcr.microsoft.com/dotnet/sdk:8.0 dotnet format --verify-no-changes
 
   BuildWarnings: 
     runs-on: self-hosted
