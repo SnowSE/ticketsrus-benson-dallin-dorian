@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Unit Test
-        run: docker run -t --rm -v $(pwd):/appUT -w /appUT mcr.microsoft.com/dotnet/sdk:8.0 -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g)  dotnet test UnitTests/UnitTests.csproj
+        run: docker run -t --rm -v $(pwd):/appUT -w /appUT -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet test UnitTests/UnitTests.csproj
 
   Linting: 
     runs-on: self-hosted
