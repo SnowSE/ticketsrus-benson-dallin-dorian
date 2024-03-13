@@ -82,4 +82,12 @@
       </MauiXaml>
     </ItemGroup>
 
+    <ItemGroup>
+      <EditorConfigFiles Remove="C:\Users\benso\source\repos\ticketsrus-benson-dallin-dorian\MauiTRU\.editorconfig" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="C:\Users\benso\source\repos\ticketsrus-benson-dallin-dorian\MauiTRU\.editorconfig" />
+    </ItemGroup>
+
 </Project>

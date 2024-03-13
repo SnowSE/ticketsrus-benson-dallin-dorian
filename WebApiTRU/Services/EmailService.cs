@@ -1,11 +1,11 @@
-﻿using System.Text;
+﻿using Aspose.Html.Converters;
+using Aspose.Html.Saving;
 using LibraryTRU.Data.DTOs;
 using MimeKit;
 using MimeKit.Utils;
 using Net.Codecrete.QrCodeGenerator;
 using System.IO;
-using Aspose.Html.Converters;
-using Aspose.Html.Saving;
+using System.Text;
 namespace WebApiTRU.Email;
 
 public class EmailService : IEmailService
@@ -50,7 +50,8 @@ public class EmailService : IEmailService
 
         builder.TextBody = emailInfo.Message;
         message.Body = builder.ToMessageBody();
-        using (var client = new MailKit.Net.Smtp.SmtpClient()){
+        using (var client = new MailKit.Net.Smtp.SmtpClient())
+        {
             client.Connect("smtp.gmail.com", 587, false);
             client.Authenticate("ticketsrus4@gmail.com", $"{_config["emailpassword"]}");
             client.Send(message);

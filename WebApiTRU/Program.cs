@@ -1,19 +1,19 @@
+using Aspose.Html;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Hosting;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Serilog;
 using WebApiTRU.Components;
 using WebApiTRU.Email;
 using WebApiTRU.Services;
-using Aspose.Html;
-using Microsoft.AspNetCore;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Logs;
-using OpenTelemetry.Trace;
-using OpenTelemetry.Metrics;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 public class Program
 {
@@ -48,18 +48,18 @@ public class Program
         builder.Services.AddLogging();
 
         //they used two, this is one
-       /* Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(cfig)
-                .WriteTo.OpenTelemetry(options =>
-                {
-                    options.Endpoint = $"{cfig.GetValue<string>("Otlp:Endpoint")}/v1/logs";
-                    options.Protocol = Serilog.Sinks.OpenTelemetry.OtlpProtocol.Grpc;
-                    options.ResourceAttributes = new Dictionary<string, object>
-                    {
-                        ["service.name"] = cfig.GetValue<string>("Otlp:ServiceName")
-                    };
-                })
-                .CreateLogger();*/
+        /* Log.Logger = new LoggerConfiguration()
+                 .ReadFrom.Configuration(cfig)
+                 .WriteTo.OpenTelemetry(options =>
+                 {
+                     options.Endpoint = $"{cfig.GetValue<string>("Otlp:Endpoint")}/v1/logs";
+                     options.Protocol = Serilog.Sinks.OpenTelemetry.OtlpProtocol.Grpc;
+                     options.ResourceAttributes = new Dictionary<string, object>
+                     {
+                         ["service.name"] = cfig.GetValue<string>("Otlp:ServiceName")
+                     };
+                 })
+                 .CreateLogger();*/
         //This is the other
         builder.Host.UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
             .ReadFrom.Configuration(hostingContext.Configuration)

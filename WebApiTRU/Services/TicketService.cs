@@ -45,7 +45,7 @@ public class TicketService : ITicketService
         await _ticketContext.Tickets.Where(hc => hc.Id == id).ExecuteDeleteAsync();
     }
 
-    public async Task ScanTicket(string qrHash) 
+    public async Task ScanTicket(string qrHash)
     {
         try
         {
@@ -73,7 +73,7 @@ public class TicketService : ITicketService
 
         IEnumerable<Ticket> tickets = await GetAll();
 
-        if(tickets.Where(t => t.Qrhash == hash.ToString()).Count() > 0)
+        if (tickets.Where(t => t.Qrhash == hash.ToString()).Count() > 0)
             return await GenerateTicketHash();
 
         return new string(hash);

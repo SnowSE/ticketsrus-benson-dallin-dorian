@@ -1,8 +1,8 @@
-﻿using SQLite;
-using LibraryTRU.Data;
-using System.Net.Http.Json;
-using SQLiteNetExtensionsAsync.Extensions;
+﻿using LibraryTRU.Data;
 using LibraryTRU.Exceptions;
+using SQLite;
+using SQLiteNetExtensionsAsync.Extensions;
+using System.Net.Http.Json;
 
 namespace MauiTRU.Database;
 
@@ -75,7 +75,7 @@ public class LocalTRUDatabase
         var mainTickets = await _client.GetFromJsonAsync<IEnumerable<Ticket>>("api/ticket/getall");
 
         foreach (Ticket localTicket in localTickets)
-            if(localTicket.Timescanned is not null) //If the local ticket is scanned
+            if (localTicket.Timescanned is not null) //If the local ticket is scanned
                 if (mainTickets.Where(mt => mt.Id == localTicket.Id).Single().Timescanned is null) // And the main ticket is not scanned
                     await _client.PutAsJsonAsync("api/ticket/scan", localTicket.Qrhash); // scan the main one
     }
@@ -116,7 +116,7 @@ public class LocalTRUDatabase
             {
                 var result = await Database.GetAsync<Concert>(lc => lc.Id == mainConcert.Id);
 
-                if(result != mainConcert) // Not completely sure if this != will work for description and stuff...
+                if (result != mainConcert) // Not completely sure if this != will work for description and stuff...
                     await Database.UpdateAsync(mainConcert);
             }
             catch (InvalidOperationException ex) // Main Concert not found in local db

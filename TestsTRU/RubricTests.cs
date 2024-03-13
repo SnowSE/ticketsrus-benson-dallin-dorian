@@ -38,7 +38,7 @@ public class RubricTests : IClassFixture<TRUWebAppFactory>
         var db = mauiApp.Services.GetService<LocalTRUDatabase>();
         var result = await client.PostAsJsonAsync("api/ticket/new", new TicketDTO() { Email = "test@example.com", ConcertId = 1 });
         var ticket = result.Content.ReadFromJsonAsync<Ticket>().Result;
-        
+
         await db.UpdateLocalDbFromMainDb();
 
         //Act
@@ -97,10 +97,10 @@ public class RubricTests : IClassFixture<TRUWebAppFactory>
         //Act part 1
         await db.UpdateLocalDbFromMainDb();
         var ticketlist = await db.GetTicketsAsync();
-        
+
         //Assert part 1
         ticketlist.Should().NotBeEmpty();
-        
+
         //Act part 2
         await db.DeleteDatabase();
         ticketlist = await db.GetTicketsAsync();

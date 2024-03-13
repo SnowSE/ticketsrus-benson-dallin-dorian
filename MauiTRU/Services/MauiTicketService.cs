@@ -1,7 +1,7 @@
-﻿using LibraryTRU.IServices;
-using System.Net.Http.Json;
-using LibraryTRU.Data;
+﻿using LibraryTRU.Data;
+using LibraryTRU.IServices;
 using MauiTRU.Database;
+using System.Net.Http.Json;
 
 namespace MauiTRU.Services
 {

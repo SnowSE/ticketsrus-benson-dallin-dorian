@@ -28,7 +28,8 @@ namespace TestsTRU
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.ConfigureTestServices(services => {
+            builder.ConfigureTestServices(services =>
+            {
                 services.RemoveAll(typeof(DbContextOptions<PostgresContext>));
 
                 services.AddDbContext<PostgresContext>(o =>

@@ -9,7 +9,7 @@ namespace MauiTRU.Services
         private int _timeperiod = Constants.DefaultRefreshRate;
         public bool isRunning;
         public int GetTimePeriod { get => _timeperiod; }
-        
+
         public BackgroundTimerService(LocalTRUDatabase database, ConnectivityForPhone cfp)
         {
             _db = database;
@@ -19,7 +19,7 @@ namespace MauiTRU.Services
         public async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             Console.WriteLine("Starting timer");
-            
+
             await DoWork();
             isRunning = true;
 
@@ -44,7 +44,7 @@ namespace MauiTRU.Services
 
             try
             {
-                if (_db is not null && _connectivity.GetNetworkAccess() == NetworkAccess.Internet )
+                if (_db is not null && _connectivity.GetNetworkAccess() == NetworkAccess.Internet)
                 {
                     await _db.UpdateLocalDbFromMainDb();
                     await _db.UpdateMainDbFromLocalDb();

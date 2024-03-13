@@ -47,7 +47,7 @@ public class TicketController : Controller
     }
 
     [HttpPut("scan")]
-    public async Task ScanTicket([FromBody]string qrHash)
+    public async Task ScanTicket([FromBody] string qrHash)
     {
         try
         {
@@ -68,7 +68,7 @@ public class TicketController : Controller
     }
 
     [HttpDelete("{id}")]
-    public async Task DeleteTicket([FromBody]int id)
+    public async Task DeleteTicket([FromBody] int id)
     {
         await _ts.DeleteTicket(id);
     }
