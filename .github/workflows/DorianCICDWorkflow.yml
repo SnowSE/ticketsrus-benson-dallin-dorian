@@ -5,7 +5,8 @@ on:
       - DorianCICD
 jobs: 
   deploy:
-    runs-on: [alex-server1]
+    runs-on: [alex-office1]
+
     steps:
     - name: remove old code
       run: |
@@ -23,4 +24,3 @@ jobs:
         docker compose up --build -d
       working-directory: ./ticketsrus-benson-dallin-dorian/Staging 
 
-      
