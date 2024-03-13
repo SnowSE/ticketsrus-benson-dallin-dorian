@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  blazorapp:
+    build: ..
+    ports:
+      - 6943:6943
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+   
+   
