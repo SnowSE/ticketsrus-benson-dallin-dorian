@@ -7,7 +7,7 @@ services:
     container_name: benson_blackbox
     restart: unless-stopped
     ports:
-      - 9115:9115
+      - 9999:9115
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./blackbox.yml:/etc/blackbox/blackbox.yml
@@ -20,7 +20,7 @@ services:
     container_name: bensons_prometheus
     hostname: prometheus
     ports:
-      - 9090:9090
+      - 5666:9090
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
@@ -39,7 +39,7 @@ services:
       - tempo:/tmp/tempo
     restart: unless-stopped
     ports:
-      - 3200:3200  # tempo
+      - 3233:3200  # tempo
       - 4007:4317  # otlp grpc
     depends_on:
       - otel-collector
@@ -95,7 +95,7 @@ services:
     restart: unless-stopped
     user: root
     ports:
-      - 3000:3000
+      - 3024:3000
     depends_on:
       - prometheus
     networks:
@@ -111,7 +111,7 @@ services:
         - loki:/data/loki
     restart: unless-stopped
     ports:
-        - 3100:3100
+        - 3111:3100
     networks:
         otel:
 
@@ -137,8 +137,8 @@ services:
     container_name: bensons_rabbitmq
     restart: unless-stopped
     ports:
-      - 5672:5672
-      - 15672:15672
+      - 5688:5672
+      - 15872:15672
     networks:
       otel:
 
