@@ -124,11 +124,11 @@ services:
       - ./otel.yml:/etc/otel-collector-config.yaml
     restart: unless-stopped
     ports:
-      - 8888:8888   # Prometheus metrics exposed by the collector
-      - 8889:8889   # Prometheus exporter metrics
-      - 4317:4317   # OTLP gRPC receiver
-      - 9200:55679  # zpages
-      - 13133:13133 # Health check
+      - 8560:8888   # Prometheus metrics exposed by the collector
+      - 8127:8889   # Prometheus exporter metrics
+      - 4441:4317   # OTLP gRPC receiver
+      - 9222:55679  # zpages
+      - 13111:13133 # Health check
     networks:
       otel:
 
