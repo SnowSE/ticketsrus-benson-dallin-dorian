@@ -35,7 +35,6 @@ jobs:
       - name: "Turn on the docker containers"
         run: |
             cd ./ticketsrus-benson-dallin-dorian/Staging
-            sudo service docker restart
             docker compose up --build -d
         working-directory: ./../../../../
       - name: Microsoft Teams Failure Notification
