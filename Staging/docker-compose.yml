@@ -4,7 +4,7 @@ services:
   blazorapp:
     build: ..
     ports:
-      - 6943:8080
+      - 6943:6943
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
    
