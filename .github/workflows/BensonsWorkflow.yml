@@ -22,14 +22,14 @@ jobs:
     steps: 
       - uses: actions/checkout@master
       - name: linting test
-        run: docker run -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) -t --rm -v $(pwd):/appL -w /appL mcr.microsoft.com/dotnet/sdk:8.0 dotnet format --verify-no-changes
+        run: docker run -t --rm -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) -v $(pwd):/appL -w /appL mcr.microsoft.com/dotnet/sdk:8.0 dotnet format --verify-no-changes
 
   BuildWarnings: 
     runs-on: self-hosted
     steps: 
       - uses: actions/checkout@master
       - name: warning tests, fails if any
-        run: docker run -t --rm -v $(pwd):/appBW -w /appBW -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet build -warnaserror
+        run: docker run -t --rm -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) -v $(pwd):/appBW -w /appBW mcr.microsoft.com/dotnet/sdk:8.0 dotnet build -warnaserror
 
   integration-test:
     runs-on: self-hosted
@@ -38,7 +38,7 @@ jobs:
       - name: Integration tests
         run: |
             dotnet workload install maui
-            docker run -t --rm -v $(pwd):/appIT -w /appIT mcr.microsoft.com/dotnet/sdk:8.0 -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g)
+            docker run -t --rm -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) -v $(pwd):/appIT -w /appIT mcr.microsoft.com/dotnet/sdk:8.0
             dotnet test TestsTRU/TestsTRU.csproj
 
   run-on-github-actions:
