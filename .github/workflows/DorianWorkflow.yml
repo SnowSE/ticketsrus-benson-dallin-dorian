@@ -18,7 +18,7 @@ jobs:
   #   - name: Test
   #     run: dotnet test "${{ env.WORKING_DIRECTORY }}"
   deploy:
-    runs-on: self-hosted
+    runs-on: [alex-office1]
     steps:
       - uses: actions/checkout@master
       - name: "get rid of current composition"
