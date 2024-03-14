@@ -43,14 +43,18 @@ jobs:
     needs: integration-test
     steps: 
       - name: linting test
-        run: docker run -t --rm -v $(pwd):/appL -w /appL -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet format
+        run: |
+            cd ./ticketsrus-benson-dallin-dorian
+            docker run -t --rm -v $(pwd):/appL -w /appL -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet format
 
   BuildWarnings: 
     runs-on: [ Benson ]
     needs: Linting
     steps: 
       - name: warning tests, fails if any
-        run: docker run -t --rm -v $(pwd):/appBW -w /appBW -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet build -warnaserror
+        run: |
+            cd ./ticketsrus-benson-dallin-dorian
+            docker run -t --rm -v $(pwd):/appBW -w /appBW -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet build -warnaserror
 
   run-on-github-actions:
     runs-on: [ Benson ]
