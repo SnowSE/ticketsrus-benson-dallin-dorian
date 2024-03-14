@@ -7,10 +7,9 @@ jobs:
   takedownprevous:
     runs-on: [ Benson ]
     steps:
-      - uses: actions/checkout@master
       - name: "get rid of current composition"
         run: |
-            cd ./ticketsrus-benson-dallin-dorian/ticketsrus-benson-dallin-dorian/Staging
+            cd ./ticketsrus-benson-dallin-dorian/Staging
             docker compose down -v
             cd ../../
             rm -rf ./ticketsrus-benson-dallin-dorian
@@ -19,7 +18,6 @@ jobs:
     runs-on: [ Benson ]
     needs: takedownprevous
     steps:
-      - uses: actions/checkout@master
       - name: "clone the github"
         run: |
             git clone --single-branch --branch ClassServerRunninerForBenson https://${{secrets.BENSONS_PAT}}@github.com/SnowSE/ticketsrus-benson-dallin-dorian.git
@@ -28,7 +26,6 @@ jobs:
     runs-on: [ Benson ]
     needs: clonerepo
     steps:
-      - uses: actions/checkout@master
       - name: Unit Test
         run: docker run -t --rm -e DOTNET_CLI_HOME="/tmp/dotnet" -v $(pwd):/appUT -w /appUT -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet test UnitTests/UnitTests.csproj
 
@@ -36,7 +33,6 @@ jobs:
     runs-on: [ Benson ]
     needs: clonerepo
     steps: 
-      - uses: actions/checkout@master
       - name: linting test
         run: docker run -t --rm -v $(pwd):/appL -w /appL -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet format --verify-no-changes
 
@@ -52,7 +48,6 @@ jobs:
     runs-on: [ Benson ]
     needs: clonerepo
     steps:
-      - uses: actions/checkout@master
       - name: Integration tests
         run: docker run -t --rm -v $(pwd):/appit -w /appit -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet test teststru/teststru.csproj
 
@@ -60,8 +55,6 @@ jobs:
     runs-on: [ Benson ]
     needs: [ integration-test, BuildWarnings, Linting, unit-test]
     steps:
-      - uses: actions/checkout@master
-
       - name: "Turn on the docker containers"
         run: |
             cd ./ticketsrus-benson-dallin-dorian/Staging
