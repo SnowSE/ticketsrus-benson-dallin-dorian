@@ -7,3 +7,5 @@ services:
       - 6943:6943
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+
+      
