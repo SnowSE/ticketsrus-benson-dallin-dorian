@@ -9,6 +9,7 @@ jobs:
     steps:
     - name: remove old code
       run: |
+       cd ../
        ls -la  
        cd ./ticketsrus-benson-dallin-dorian/Staging
        docker compose down -v
