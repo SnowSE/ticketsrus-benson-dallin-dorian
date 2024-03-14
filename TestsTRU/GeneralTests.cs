@@ -23,7 +23,7 @@ public class GeneralTests : IClassFixture<TRUWebAppFactory>
     [Fact]
     public async void GetOneTicketById()
     {
-        var ticket = await client.GetFromJsonAsync<Ticket>("api/ticket/9");
+        var ticket = await client.GetFromJsonAsync<Ticket>("api/ticket/1");
         ticket.Id.Should().Be(1);
     }
 
