@@ -9,8 +9,6 @@ jobs:
     steps:
       - name: "get rid of current composition"
         run: |
-            ls -la
-            echo "-----"
             cd ./ticketsrus-benson-dallin-dorian/Staging
             docker compose down -v
             cd ../../
@@ -29,7 +27,10 @@ jobs:
     needs: clonerepo
     steps:
       - name: Unit Test
-        run: docker run -t --rm -v $(pwd):/appUT -w /appUT -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet test UnitTests/UnitTests.csproj
+        run: |
+            ls -la
+            echo "------=----------"
+            docker run -t --rm -v $(pwd):/appUT -w /appUT -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet test UnitTests/UnitTests.csproj
 
   integration-test:
     runs-on: [ Benson ]
