@@ -9,6 +9,7 @@ jobs:
     steps:
     - name: remove old code
       run: |
+       ls -la  
        cd ./Staging
        docker compose down -v
        cd ../../
