@@ -28,10 +28,17 @@ jobs:
         run: |
             cd ./ticketsrus-benson-dallin-dorian
             docker run -t --rm -v $(pwd):/appLint -w /appLint -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet format
-        
+  BuildWarnings: 
+    runs-on: [ alex-office4 ]
+    needs: Linting
+    steps: 
+      - name: buildwarnings
+        run: |
+            cd ./ticketsrus-benson-dallin-dorian
+            docker run -t --rm -v $(pwd):/appBW -w /appBW -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet build -warnaserror
   runintegrationtestsanddeploy:
     runs-on: [alex-office4]
-    needs: Linting
+    needs: BuildWarnings
     steps:
       - name: integrationtests
         run: |
