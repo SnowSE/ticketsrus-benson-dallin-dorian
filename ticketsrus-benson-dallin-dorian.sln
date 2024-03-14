@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiTRU", "MauiTRU\MauiTRU.csproj", "{EFF1F6A0-BFB3-4BF1-81B0-05AB10315821}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiTRU", "WebApiTRU\WebApiTRU.csproj", "{75596ED1-F04B-4067-956D-EAD5726A1038}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryTRU", "LibraryTRU\LibraryTRU.csproj", "{B38D2BFB-520A-4E93-96AF-BCA81227617B}"
@@ -19,12 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EFF1F6A0-BFB3-4BF1-81B0-05AB10315821}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EFF1F6A0-BFB3-4BF1-81B0-05AB10315821}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EFF1F6A0-BFB3-4BF1-81B0-05AB10315821}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{EFF1F6A0-BFB3-4BF1-81B0-05AB10315821}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EFF1F6A0-BFB3-4BF1-81B0-05AB10315821}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EFF1F6A0-BFB3-4BF1-81B0-05AB10315821}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{75596ED1-F04B-4067-956D-EAD5726A1038}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{75596ED1-F04B-4067-956D-EAD5726A1038}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75596ED1-F04B-4067-956D-EAD5726A1038}.Release|Any CPU.ActiveCfg = Release|Any CPU
