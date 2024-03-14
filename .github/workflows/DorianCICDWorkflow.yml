@@ -28,15 +28,17 @@ jobs:
       run: | 
         cd ./ticketsrus-benson-dallin-dorian/TestsTRU
         dotnet test
-  deploy:
-    runs-on: [alex-office4]
-    needs: [rununittests]
-    steps:
-    - name: Start docker-compose
-      run: |
-        cd ./ticketsrus-benson-dallin-dorian/Staging
+        cd ../Staging
         docker compose up --build -d
-      working-directory: ./../../../../
+  # deploy:
+  #   runs-on: [alex-office4]
+  #   needs: [rununittests]
+  #   steps:
+  #   - name: Start docker-compose
+  #     run: |
+  #       cd ./ticketsrus-benson-dallin-dorian/Staging
+  #       docker compose up --build -d
+  #     working-directory: ./../../../../
 
     # - name: Microsoft Teams Failure Notification
     #   uses: skitionek/notify-microsoft-teams@master
