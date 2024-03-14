@@ -17,7 +17,7 @@ public class GeneralTests : IClassFixture<TRUWebAppFactory>
     public async void GetAllTicketsTest()
     {
         var tickets = await client.GetFromJsonAsync<IEnumerable<Ticket>>("api/ticket/getall");
-        tickets.Where(o => o.Id == 1).Should().HaveCount(1);
+        tickets?.Where(o => o.Id == 1).Should().HaveCount(1);
     }
 
     [Fact]
@@ -33,7 +33,7 @@ public class GeneralTests : IClassFixture<TRUWebAppFactory>
         string testEmail = "test@example.com";
         TicketDTO data = new() { Email = testEmail, ConcertId = 1 };
         var ticket = await client.PostAsJsonAsync("/api/ticket/new", data);
-        ticket.Content.ReadFromJsonAsync<Ticket>().Result.Email.Should().Be(testEmail);
+        ticket?.Content?.ReadFromJsonAsync<Ticket>()?.Result?.Email.Should().Be(testEmail);
     }
 
     //[Fact]

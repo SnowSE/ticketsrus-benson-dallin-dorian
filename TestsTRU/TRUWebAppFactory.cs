@@ -44,9 +44,6 @@ namespace TestsTRU
             await _dbContainer.StartAsync();
         }
 
-        public async Task DisposeAsync()
-        {
-            await _dbContainer.StopAsync();
-        }
+        async Task IAsyncLifetime.DisposeAsync() => await _dbContainer.StopAsync();
     }
 }
