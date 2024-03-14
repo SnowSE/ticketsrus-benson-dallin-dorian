@@ -15,18 +15,19 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+        dotnet-install-dir: ~/.dotnet
     - name: Test
       run: dotnet test "${{ env.WORKING_DIRECTORY }}"
 
   deploy:
     runs-on: [alex-office4]
     steps:
-    # - name: remove old code
-    #   run: |
-    #    docker compose down -v
-    #    cd ../../
-    #    rm -rf ./ticketsrus-benson-dallin-dorian
-    #   working-directory: ./ticketsrus-benson-dallin-dorian/Staging 
+    - name: remove old code
+      run: |
+       docker compose down -v
+       cd ../../
+       rm -rf ./ticketsrus-benson-dallin-dorian
+      working-directory: ./ticketsrus-benson-dallin-dorian/Staging 
 
     - name: Clone repo
       run: |
