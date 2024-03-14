@@ -9,6 +9,7 @@ jobs:
     steps:
       - name: "get rid of current composition"
         run: |
+            ls -la    
             cd ./ticketsrus-benson-dallin-dorian/Staging
             docker compose down -v
             cd ../../
