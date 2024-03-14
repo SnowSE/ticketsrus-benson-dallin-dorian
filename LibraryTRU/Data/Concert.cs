@@ -1,12 +1,9 @@
-﻿using SQLite;
-using SQLiteNetExtensions.Attributes;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace LibraryTRU.Data;
 
 public partial class Concert : Object
 {
-    [PrimaryKey]
     public int Id { get; set; }
 
     public DateTime StartTime { get; set; }
@@ -17,6 +14,5 @@ public partial class Concert : Object
 
     public string? Description { get; set; }
     [JsonIgnore]
-    [OneToMany]
     public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }
