@@ -31,7 +31,7 @@ jobs:
         
   rununittestsanddeploy:
     runs-on: [alex-office4]
-    needs: clonerepository
+    needs: Linting
     steps:
       - name: unittests
         run: |
