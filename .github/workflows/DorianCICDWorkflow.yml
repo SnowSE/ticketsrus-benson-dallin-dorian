@@ -9,7 +9,6 @@ jobs:
     steps:
     - name: remove old code
       run: |
-       ls -la  
        cd ./ticketsrus-benson-dallin-dorian/Staging
        docker compose down -v
        cd ../../
@@ -21,17 +20,17 @@ jobs:
     - name: Clone repo
       run: |
         git clone --single-branch --branch DorianCICD https://${{secrets.DORIAN_PAT}}@github.com/SnowSE/ticketsrus-benson-dallin-dorian.git
-  # rununittests:
-  #   runs-on: [alex-office4]
-  #   needs: clonerepository
-  #   steps:
-  #   - name: unittests
-  #     run: | 
-  #       cd ./ticketsrus-benson-dallin-dorian/TestsTRU
-  #       dotnet test
+  rununittests:
+    runs-on: [alex-office4]
+    needs: clonerepository
+    steps:
+    - name: unittests
+      run: | 
+        cd ./ticketsrus-benson-dallin-dorian/TestsTRU
+        docker run -t --rm -v $(pwd):/appUT -w /appUT -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet test UnitTests/UnitTests.csproj
   deploy:
     runs-on: [alex-office4]
-    # needs: [rununittests]
+    needs: [rununittests]
     needs: [clonerepository]
     steps:
     - name: Start docker-compose
