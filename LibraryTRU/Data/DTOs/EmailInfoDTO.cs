@@ -7,14 +7,14 @@ public class EmailInfoDTO
 {
     [Required]
     [EmailAddress]
-    public string Email { get; set; }
+    public required string Email { get; set; }
 
     [Required]
-    public string Subject { get; set; }
+    public required string Subject { get; set; }
 
     [Required]
-    public string Message { get; set; }
+    public required string Message { get; set; }
 
     [Required]
-    public string QrHash { get; set; }
+    public required string QrHash { get; set; }
 }

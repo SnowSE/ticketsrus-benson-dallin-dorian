@@ -23,10 +23,10 @@
                                 @t.Id
                             </td>
                             <td>
-                                @t.Concert.EventName
+                                @t.Concert?.EventName
                             </td>
                             <td>
-                                @t.Concert.StartTime
+                                @t.Concert?.StartTime
                             </td>
                             <td>
                                 Checked in!
@@ -40,10 +40,10 @@
                                 @t.Id
                             </td>
                             <td>
-                                @t.Concert.EventName
+                                @t.Concert?.EventName
                             </td>
                             <td>
-                                @t.Concert.StartTime
+                                @t.Concert?.StartTime
                             </td>
                             <td>
                                 NOT checked in...
@@ -60,6 +60,11 @@
     public int concert_id { get; set; }
     [Parameter, EditorRequired]
     public Func<Task<List<Ticket>>> GetTickets { get; set; }
+
+    public ViewTicketsComponent(Func<Task<List<Ticket>>> getTickets)
+    {
+        GetTickets = getTickets;
+    }
 
     List<Ticket> concertTickets = new();
 

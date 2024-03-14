@@ -67,17 +67,23 @@ public class Program
             {
                 options.Endpoint = $"{cfig.GetValue<string>("Otlp:Endpoint")}/v1/logs";
                 options.Protocol = Serilog.Sinks.OpenTelemetry.OtlpProtocol.Grpc;
+#pragma warning disable CS8601 // Possible null reference assignment.
                 options.ResourceAttributes = new Dictionary<string, object>
                 {
                     ["service.name"] = cfig.GetValue<string>("Otlp:ServiceName")
                 };
+#pragma warning restore CS8601 // Possible null reference assignment.
             }));
 
+#pragma warning disable CS8604 // Possible null reference argument.
         Action<ResourceBuilder> appResourceBuilder =
             resource => resource
                 .AddTelemetrySdk()
                 .AddService(cfig.GetValue<string>("Otlp:ServiceName"));
+#pragma warning restore CS8604 // Possible null reference argument.
 
+#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8604 // Possible null reference argument.
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(appResourceBuilder)
             .WithTracing(builder => builder
@@ -91,6 +97,8 @@ public class Program
                 .AddRuntimeInstrumentation()
                 .AddAspNetCoreInstrumentation()
                 .AddOtlpExporter(options => options.Endpoint = new Uri(cfig.GetValue<string>("Otlp:Endpoint"))));
+#pragma warning restore CS8604 // Possible null reference argument.
+#pragma warning restore CS8604 // Possible null reference argument.
 
         var app = builder.Build();
 

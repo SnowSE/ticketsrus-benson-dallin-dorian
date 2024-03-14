@@ -2,6 +2,6 @@
 
 public class TicketDTO
 {
-    public string Email { get; set; }
+    public required string Email { get; set; }
     public int ConcertId { get; set; }
 }

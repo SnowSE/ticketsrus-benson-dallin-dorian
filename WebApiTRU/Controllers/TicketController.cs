@@ -15,14 +15,12 @@ public class TicketController : Controller
 
 
     [HttpGet("{id}")]
-    public async Task<Ticket> GetTicketById(int id)
+    public async Task<Ticket?> GetTicketById(int id)
     {
         var ticket = await _ts.GetTicketById(id);
 
         if (ticket == null)
-        {
             Response.StatusCode = 410;
-        }
 
         return ticket;
     }

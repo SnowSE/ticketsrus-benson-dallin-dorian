@@ -30,6 +30,12 @@
     public int concert_id { get; set; }
     [Parameter]
     public Func<Task<List<Ticket>>> GetTickets { get; set; }
+
+    public TicketsPurchaseComponent(Func<Task<List<Ticket>>> getTickets)
+    {
+        GetTickets = getTickets;
+    }
+
     public List<Ticket>? tickets { get; set; }
 
     string successResultLabel = "";
