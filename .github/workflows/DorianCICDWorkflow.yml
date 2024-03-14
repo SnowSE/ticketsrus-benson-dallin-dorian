@@ -24,10 +24,12 @@ jobs:
     runs-on: [alex-office4]
     needs: clonerepository
     steps:
-    - name: unittestsanddeploy
+    - name: unittests
       run: | 
         cd ./ticketsrus-benson-dallin-dorian/TestsTRU
         dotnet test
+    - name: deploy
+      run: |
         cd ../Staging
         docker compose up --build -d
     - name: Microsoft Teams Failure Notification
