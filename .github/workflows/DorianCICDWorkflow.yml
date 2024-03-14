@@ -15,7 +15,6 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
-        dotnet-install-dir: ~/.dotnet
     - name: Test
       run: dotnet test "${{ env.WORKING_DIRECTORY }}"
 
