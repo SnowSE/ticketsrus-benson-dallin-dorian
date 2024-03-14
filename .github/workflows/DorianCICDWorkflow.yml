@@ -21,10 +21,9 @@ jobs:
 
     - name: Start docker-compose
       run: |
-        docker compose build --no-cache blazorapp
+        docker compose build --no-cache dorianblazorapp
         docker compose up --build -d
       working-directory: ./ticketsrus-benson-dallin-dorian/Staging 
 
 
 
-      
