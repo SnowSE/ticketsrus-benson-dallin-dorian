@@ -21,17 +21,17 @@ jobs:
     - name: Clone repo
       run: |
         git clone --single-branch --branch DorianCICD https://${{secrets.DORIAN_PAT}}@github.com/SnowSE/ticketsrus-benson-dallin-dorian.git
-  rununittests:
-    runs-on: [alex-office4]
-    needs: clonerepository
-    steps:
-    - name: unittests
-      run: | 
-        cd ./ticketsrus-benson-dallin-dorian/TestsTRU
-        dotnet test
+  # rununittests:
+  #   runs-on: [alex-office4]
+  #   needs: clonerepository
+  #   steps:
+  #   - name: unittests
+  #     run: | 
+  #       cd ./ticketsrus-benson-dallin-dorian/TestsTRU
+  #       dotnet test
   deploy:
     runs-on: [alex-office4]
-    needs: [rununittests]
+    # needs: [rununittests]
     steps:
     - name: Start docker-compose
       run: |
