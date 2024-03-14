@@ -17,6 +17,7 @@ jobs:
   
   clonerepo:
     runs-on: [ Benson ]
+    needs: takedownprevous
     steps:
       - uses: actions/checkout@master
       - name: "clone the github"
@@ -25,13 +26,15 @@ jobs:
   
   unit-test:
     runs-on: [ Benson ]
+    needs: clonerepo
     steps:
       - uses: actions/checkout@master
       - name: Unit Test
-        run: docker run -t --rm -e DOTNET_CLI_HOME="/tmp/dotnet" -v $(pwd):/appUT -w /appUT --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet test UnitTests/UnitTests.csproj
+        run: docker run -t --rm -e DOTNET_CLI_HOME="/tmp/dotnet" -v $(pwd):/appUT -w /appUT -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet test UnitTests/UnitTests.csproj
 
   Linting: 
     runs-on: [ Benson ]
+    needs: clonerepo
     steps: 
       - uses: actions/checkout@master
       - name: linting test
@@ -39,6 +42,7 @@ jobs:
 
   BuildWarnings: 
     runs-on: [ Benson ]
+    needs: clonerepo
     steps: 
       - uses: actions/checkout@master
       - name: warning tests, fails if any
@@ -46,13 +50,15 @@ jobs:
 
   integration-test:
     runs-on: [ Benson ]
+    needs: clonerepo
     steps:
       - uses: actions/checkout@master
       - name: Integration tests
-        run: docker run -t --rm -v $(pwd):/appit -w /appit -e dotnet_cli_home="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet test teststru/teststru.csproj
+        run: docker run -t --rm -v $(pwd):/appit -w /appit -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet test teststru/teststru.csproj
 
   run-on-github-actions:
     runs-on: [ Benson ]
+    needs: [ integration-test, BuildWarnings, Linting, unit-test]
     steps:
       - uses: actions/checkout@master
 
