@@ -27,8 +27,8 @@ jobs:
     steps:
     - name: unittests
       run: | 
-        cd TestsTRU
-        dotnet test TestsTRU
+        cd ./ticketsrus-benson-dallin-dorian/TestsTRU
+        dotnet test
   deploy:
     runs-on: [alex-office4]
     needs: [rununittests]
