@@ -5,7 +5,7 @@ on:
       - DorianCICD
 jobs: 
   deploy:
-    runs-on: [alex-office1]
+    runs-on: [alex-office4]
 
     steps:
     - name: remove old code
