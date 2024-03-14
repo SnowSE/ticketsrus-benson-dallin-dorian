@@ -32,12 +32,4 @@
     <ProjectReference Include="..\WebApiTRU\WebApiTRU.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EditorConfigFiles Remove="C:\Users\benson.bird\Source\Repos\ticketsrus-benson-dallin-dorian\TestsTRU\.editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="C:\Users\benson.bird\Source\Repos\ticketsrus-benson-dallin-dorian\TestsTRU\.editorconfig" />
-  </ItemGroup>
-
 </Project>

@@ -22,12 +22,4 @@
     <PackageReference Include="SQLiteNetExtensions" Version="2.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EditorConfigFiles Remove="C:\Users\benso\source\repos\ticketsrus-benson-dallin-dorian\LibraryTRU\.editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="C:\Users\benso\source\repos\ticketsrus-benson-dallin-dorian\LibraryTRU\.editorconfig" />
-  </ItemGroup>
-
 </Project>

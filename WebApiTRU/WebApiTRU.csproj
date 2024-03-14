@@ -45,12 +45,4 @@
     <ProjectReference Include="..\LibraryTRU\LibraryTRU.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EditorConfigFiles Remove="C:\Users\benso\source\repos\ticketsrus-benson-dallin-dorian\WebApiTRU\.editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="C:\Users\benso\source\repos\ticketsrus-benson-dallin-dorian\WebApiTRU\.editorconfig" />
-  </ItemGroup>
-
 </Project>
