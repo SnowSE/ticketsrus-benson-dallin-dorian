@@ -7,5 +7,17 @@ services:
       - 6943:6943
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+  db:
+    container_name: dorianpostgres
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: dorian
+      POSTGRES_DB: doriandb
+      POSTGRES_PASSWORD: P@ssw0rd!
+    volumes:
+     - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    # networks:
+    #   otel:
 
       
