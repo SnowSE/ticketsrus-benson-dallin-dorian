@@ -50,7 +50,7 @@ jobs:
     needs: clonerepo
     steps:
       - name: Integration tests
-        run: docker run -t --rm -v $(pwd):/appit -w /appit -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet test
+        run: dotnet test
 
   run-on-github-actions:
     runs-on: [ Benson ]

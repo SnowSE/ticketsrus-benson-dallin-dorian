@@ -58,7 +58,7 @@ public class TicketService : ITicketService
             _ticketContext.Update(target);
             await _ticketContext.SaveChangesAsync();
         }
-        catch (ArgumentNullException e)
+        catch (ArgumentNullException)
         {
             throw new TicketNotFoundException();
         }
