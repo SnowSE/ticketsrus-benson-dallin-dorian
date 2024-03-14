@@ -32,6 +32,7 @@ jobs:
   deploy:
     runs-on: [alex-office4]
     # needs: [rununittests]
+    needs: [clonerepository]
     steps:
     - name: Start docker-compose
       run: |
