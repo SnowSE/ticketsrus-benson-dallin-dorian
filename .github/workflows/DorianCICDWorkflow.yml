@@ -7,17 +7,17 @@ env:
   DOTNET_CORE_VERSION: 8.0.x
   WORKING_DIRECTORY: WebApiTRU
 jobs:
-  removeoldcode:
-    runs-on: [alex-office4]
-    steps:
-    - name: remove old code
-      run: |
-       docker compose down -v
-       cd ../../
-       rm -rf ./ticketsrus-benson-dallin-dorian
+  # removeoldcode:
+  #   runs-on: [alex-office4]
+  #   steps:
+  #   - name: remove old code
+  #     run: |
+  #      docker compose down -v
+  #      cd ../../
+  #      rm -rf ./ticketsrus-benson-dallin-dorian
   clonerepository:
     runs-on: [alex-office4]
-    needs: removeoldcode
+    # needs: removeoldcode
     steps:
     - name: Clone repo
       run: |
