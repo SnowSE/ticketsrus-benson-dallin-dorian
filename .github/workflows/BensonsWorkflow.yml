@@ -34,9 +34,6 @@ jobs:
             docker run -t --rm -v $(pwd):/appit -w -e dotnet_cli_home="/tmp/dotnet" --user $(id -u):$(id -g) /appit mcr.microsoft.com/dotnet/sdk:8.0
             dotnet test teststru/teststru.csproj
 
-#dotnet workload install maui --user $(id -u):$(id -g)
-#dotnet workload restore --user $(id -u):$(id -g)cd    
-
   run-on-github-actions:
     runs-on: [ Benson ]
     steps:
