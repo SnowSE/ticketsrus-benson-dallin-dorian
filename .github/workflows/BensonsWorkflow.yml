@@ -36,7 +36,9 @@ jobs:
     needs: unit-test
     steps:
       - name: Integration tests
-        run: dotnet test
+        run: |
+            cd ./ticketsrus-benson-dallin-dorian
+            dotnet test
 
   Linting: 
     runs-on: [ Benson ]
