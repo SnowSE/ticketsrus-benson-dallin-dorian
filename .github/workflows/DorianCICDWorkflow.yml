@@ -31,13 +31,10 @@ jobs:
   deploy:
     runs-on: [alex-office4]
     needs: [rununittests]
-    # needs: [clonerepository]
     steps:
     - name: Start docker-compose
       run: |
-        ls -la
         cd ./ticketsrus-benson-dallin-dorian/Staging
-        docker compose build --no-cache dorianblazorapp
         docker compose up --build -d
       working-directory: ./../../../../
 
