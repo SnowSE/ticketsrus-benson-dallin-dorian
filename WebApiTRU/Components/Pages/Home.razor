@@ -4,3 +4,18 @@
 @page "/"
 
 <HomeComponent></HomeComponent>
+
+
+@code {
+
+  protected override void OnInitialized()
+  {
+      TestActivity();
+  }
+      void TestActivity()
+      {
+          using var myActivity = Telemetry.MyActivitySource.StartActivity("SayHello");
+      }
+
+
+}

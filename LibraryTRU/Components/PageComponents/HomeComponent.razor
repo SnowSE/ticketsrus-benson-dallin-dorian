@@ -2,6 +2,7 @@
 @using LibraryTRU.IServices
 @inject IConcertService ics
 @inject NavigationManager nm
+
 <PageTitle>Home</PageTitle>
 
 <div class="container">
@@ -28,6 +29,8 @@
 
 @code {
     List<Concert> Concerts;
+
+   
 
     protected override async Task OnInitializedAsync()
     {

@@ -8,6 +8,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
+using OpenTelemetry;
 
 public class Program
 {
@@ -20,14 +21,38 @@ public class Program
         builder.Services.AddHealthChecks();
         builder.Services.AddLogging();
 
-        const string serviceName = "myTRUservice";
 
+        //stuff added on 3/14
+        
+        builder.Services.AddOpenTelemetry()
+            .WithTracing(b =>
+            {
+                b
+                .AddSource(Constants.serviceName2)
+                .ConfigureResource(resource =>
+                    resource.AddService(
+                        serviceName: Constants.serviceName2,
+                        serviceVersion: Constants.serviceVersion))
+                .AddAspNetCoreInstrumentation()
+                .AddConsoleExporter();
+            });
+
+        using var tracerProvider = Sdk.CreateTracerProviderBuilder()
+            .AddSource(Constants.serviceName2)
+            .ConfigureResource(resource =>
+                resource.AddService(
+                  serviceName: Constants.serviceName2,
+                  serviceVersion: Constants.serviceVersion))
+            .AddConsoleExporter()
+            .Build();
+
+        ///stuff i had before 3/14
         builder.Logging.AddOpenTelemetry(options =>
         {
             options
                 .SetResourceBuilder(
                     ResourceBuilder.CreateDefault()
-                        .AddService(serviceName))
+                        .AddService(Constants.serviceName))
                     .AddOtlpExporter(opt =>
                     {
                         opt.Endpoint = new Uri("http://otel-collector:4317/");
