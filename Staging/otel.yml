@@ -5,8 +5,6 @@ receivers:
       http:
 
 exporters:
-  debug:
-    verbosity: detailed
   prometheus:
     endpoint: otel:8889
   otlp:
