@@ -14,7 +14,7 @@ ingester:
 
 compactor:
   compaction:
-    block_retention: 1h                # overall Tempo trace retention. set for demo purposes, default is 14 days
+    block_retention: 1h                # overall Tempo trace retention, set for demo purposes, default is 14 days
 
 storage:
   trace:
