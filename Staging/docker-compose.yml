@@ -1,10 +1,10 @@
 version: '3'
 
 services:
-  dorianblazorapp:
+  webapitruservice:
     build: ..
     ports:
-      - 6943:6943
+      - 6943:8080
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
   db:
@@ -17,7 +17,101 @@ services:
       POSTGRES_PASSWORD: P@ssw0rd!
     volumes:
      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    # networks:
-    #   otel:
+
+  blackbox:
+    # https://github.com/prometheus/blackbox_exporter/releases
+    image: prom/blackbox-exporter:v0.23.0
+    container_name: blackbox
+    restart: unless-stopped
+    ports:
+      - 9115:9115
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../WebApiTRU/blackbox/blackbox.yml:/etc/blackbox/blackbox.yml
+    command: --config.file=/etc/blackbox/blackbox.yml
+    networks:
+      otel:
+
+  prometheus:
+    # https://github.com/prometheus/prometheus/releases
+    image: prom/prometheus:v2.43.0
+    container_name: prometheus
+    hostname: prometheus
+    restart: unless-stopped
+    ports:
+        - "9090:9090"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../WebApiTRU/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+        - blackbox 
+    networks:
+      otel: 
+
+  grafana:
+    # https://github.com/grafana/grafana/releases
+    image: grafana/grafana:9.4.7
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      # - GF_AUTH_ANONYMOUS_ENABLED=true
+      # - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      # - GF_AUTH_DISABLE_LOGIN_FORM=true
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ../WebApiTRU/grafana/provisioning:/etc/grafana/provisioning
+    restart: unless-stopped
+    user: root
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus 
+      - loki
+    networks:
+      otel: 
+      
+  loki:
+    # https://github.com/grafana/loki/releases
+    image: grafana/loki:2.8.0
+    container_name: loki
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - /etc/localtime:/etc/localtime:ro      
+      - ../WebApiTRU/loki/loki.yml:/etc/loki/local-config.yaml
+      - loki:/data/loki
+    restart: unless-stopped
+    ports:
+      - 3100:3100
+    networks:
+      otel:
+
+ 
+
+  otel-collector:
+    # https://github.com/open-telemetry/opentelemetry-collector-contrib/releases
+    container_name: otel
+    hostname: otel
+    image: otel/opentelemetry-collector-contrib:0.75.0
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ../WebApiTRU/otel/otel.yml:/etc/otel-collector-config.yaml
+    restart: unless-stopped
+    ports:
+      - 8888:8888   # Prometheus metrics exposed by the collector
+      - 8889:8889   # Prometheus exporter metrics
+      - 4317:4317   # OTLP gRPC receiver
+      - 9200:55679  # zpages
+      - 13133:13133 # Health check
+    networks:
+      otel: 
+
+networks:
+  otel:
+
+volumes:
+  prometheus:
+  grafana-data:
+  loki:
 
       

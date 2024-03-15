@@ -2,6 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using WebApiTRU.Components;
 using WebApiTRU.Email;
 using WebApiTRU.Services;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
 
 public class Program
 {
@@ -9,6 +15,27 @@ public class Program
     {
 
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddRazorPages();
+        builder.Services.AddHealthChecks();
+        builder.Services.AddLogging();
+
+        const string serviceName = "myTRUservice";
+
+        builder.Logging.AddOpenTelemetry(options =>
+        {
+            options
+                .SetResourceBuilder(
+                    ResourceBuilder.CreateDefault()
+                        .AddService(serviceName))
+                    .AddOtlpExporter(opt =>
+                    {
+                        opt.Endpoint = new Uri("http://otel-collector:4317/");
+                    })
+                .AddConsoleExporter();
+        });
+
+
 
         // Add services to the container.
         builder.Services.AddRazorComponents()
@@ -39,10 +66,23 @@ public class Program
             app.UseHsts();
         }
 
+        app.MapHealthChecks("/health", new HealthCheckOptions
+        {
+            AllowCachingResponses = false,
+            ResultStatusCodes =
+                {
+                    [HealthStatus.Healthy] = StatusCodes.Status200OK,
+                    [HealthStatus.Degraded] = StatusCodes.Status200OK,
+                    [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+                }
+        });
+
         app.UseHttpsRedirection();
 
         app.UseStaticFiles();
         app.UseAntiforgery();
+
+        app.UseAuthorization();
 
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode();

@@ -1,0 +1,16 @@
+scrape_configs:
+  - job_name: 'blackbox'
+    scrape_interval: 5s
+    metrics_path: /probe
+    params:
+      module: [http_2xx] #Look for 200 reposne
+    static_configs:
+    - targets:
+      - http://host.docker.internal:8080/health #Healthcheck API endpoint
+    relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: blackbox:9115

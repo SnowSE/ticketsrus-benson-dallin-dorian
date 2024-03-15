@@ -1,6 +1,6 @@
 ﻿@page "/tickets/{_concert_id:int}"
 @using Net.Codecrete.QrCodeGenerator
-@rendermode InteractiveServer
+@* @rendermode InteractiveServer *@
 @inject ITicketService ticketService
 
 <TicketsPurchaseComponent concert_id="_concert_id" GetTickets="GetTickets" />
