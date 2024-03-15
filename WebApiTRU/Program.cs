@@ -90,6 +90,7 @@ public class Program
                 .AddAspNetCoreInstrumentation()
                 .AddHttpClientInstrumentation()
                 .AddSource("APITracing")
+                .AddSource(WebApiTRU.TelemetryStuff.TRUActivitySource.ActivitySourceName)
                 //.AddConsoleExporter()
                 .AddOtlpExporter(options => options.Endpoint = new Uri(cfig.GetValue<string>("Otlp:Endpoint")))
             )

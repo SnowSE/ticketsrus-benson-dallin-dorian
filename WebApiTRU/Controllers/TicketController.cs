@@ -28,6 +28,7 @@ public class TicketController : Controller
     [HttpGet("getall")]
     public async Task<IEnumerable<Ticket>> GetAll()
     {
+        using var myActivity = TelemetryStuff.TRUActivitySource.ActualActivitySource.StartActivity();
         return await _ts.GetAll();
     }
 

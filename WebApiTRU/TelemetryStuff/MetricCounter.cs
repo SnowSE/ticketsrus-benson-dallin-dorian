@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.Metrics;
 
-namespace WebApiTRU.Telemetry
+namespace WebApiTRU.TelemetryStuff
 {
     public static class MetricCounter
     {
