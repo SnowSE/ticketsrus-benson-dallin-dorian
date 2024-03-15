@@ -30,7 +30,8 @@ jobs:
   #           docker run -t --rm -v $(pwd):/appLint -w /appLint -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet format
   BuildWarnings: 
     runs-on: [ alex-office4 ]
-    needs: Linting
+    # needs: Linting
+    needs: clonerepository
     steps: 
       - name: buildwarnings
         run: |
