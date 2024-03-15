@@ -23,16 +23,16 @@ extensions:
      endpoint: otel:55679
 
 service:
-  extentions: [zpages, health_check]
+  extensions: [zpages, health_check]
   pipelines:
     metrics:
-      recievers: [otlp]
+      receivers: [otlp]
       exporters: [prometheus]
     traces:
       receivers: [otlp]
       processors: [batch]
       exporters: [otlp]
     logs:
-      recievers: [otlp]
+      receivers: [otlp]
       processors: [batch]
       exporters: [loki]
