@@ -33,7 +33,7 @@ jobs:
 
   integration-test:
     runs-on: [ Benson ]
-    needs: unit-test
+    needs: clonerepo
     steps:
       - name: Integration tests
         run: |
@@ -42,7 +42,7 @@ jobs:
 
   Linting: 
     runs-on: [ Benson ]
-    needs: integration-test
+    needs: clonerepo
     steps: 
       - name: linting test
         run: |
@@ -51,7 +51,7 @@ jobs:
 
   BuildWarnings: 
     runs-on: [ Benson ]
-    needs: Linting
+    needs: clonerepo
     steps: 
       - name: warning tests, fails if any
         run: |
@@ -60,7 +60,7 @@ jobs:
 
   run-on-github-actions:
     runs-on: [ Benson ]
-    needs: BuildWarnings
+    needs: [ BuildWarnings, Linting, integration-test, unit-test ]
     steps:
       - name: "Turn on the docker containers"
         run: |
