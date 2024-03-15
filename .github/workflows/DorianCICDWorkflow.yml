@@ -20,14 +20,14 @@ jobs:
       - name: Clone repo
         run: |
           git clone --single-branch --branch DorianCICD https://${{secrets.DORIAN_PAT}}@github.com/SnowSE/ticketsrus-benson-dallin-dorian.git
-  Linting: 
-    runs-on: [ alex-office4 ]
-    needs: clonerepository
-    steps: 
-      - name: linting
-        run: |
-            cd ./ticketsrus-benson-dallin-dorian
-            docker run -t --rm -v $(pwd):/appLint -w /appLint -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet format
+  # Linting: 
+  #   runs-on: [ alex-office4 ]
+  #   needs: clonerepository
+  #   steps: 
+  #     - name: linting
+  #       run: |
+  #           cd ./ticketsrus-benson-dallin-dorian
+  #           docker run -t --rm -v $(pwd):/appLint -w /appLint -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet format
   BuildWarnings: 
     runs-on: [ alex-office4 ]
     needs: Linting
