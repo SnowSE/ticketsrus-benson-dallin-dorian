@@ -47,7 +47,7 @@ jobs:
       - name: linting test
         run: |
             cd ./ticketsrus-benson-dallin-dorian
-            docker run -t --rm -v $(pwd):/appL -w /appL -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet format #--verify-no-changes
+            docker run -t --rm -v $(pwd):/appL -w /appL -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet format --verify-no-changes
 
   BuildWarnings: 
     runs-on: [ Benson ]
@@ -60,19 +60,15 @@ jobs:
 
   run-on-github-actions:
     runs-on: [ Benson ]
-    needs: [ BuildWarnings, Linting, integration-test, unit-test ]
+    needs: [ BuildWarnings, integration-test, unit-test ]
     steps:
       - name: "Turn on the docker containers"
         run: |
             dir
             echo "========================================"
-            cd ./ticketsrus-benson-dallin-dorian
-            dir
-            echo "-----------------------------------------------"
-            cd ./ticketsrus-benson-dallin-dorian/Staging
+            cd ./actions/_work/ticketsrus-benson-dallin-dorian/ticketsrus-benson-dallin-dorian/ticketsrus-benson-dallin-dorian/Staging
             docker compose up --build -d
     
-#cd ./actions-runner/_work/ticketsrus-benson-dallin-dorian/ticketsrus-benson-dallin-dorian/ticketsrus-benson-dallin-dorian/Staging
         working-directory: ./../../../../
 
       - name: Microsoft Teams Failure Notification
