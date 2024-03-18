@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  blackbox:
+  benson_blackbox:
     image: prom/blackbox-exporter:v0.23.0
     container_name: benson_blackbox
     restart: unless-stopped
@@ -14,7 +14,7 @@ services:
     networks:
       otel:
 
-  prometheus:
+  bensons_prometheus:
     image: prom/prometheus:v2.43.0
     container_name: bensons_prometheus
     hostname: prometheus
@@ -28,7 +28,7 @@ services:
     networks:
       otel:
 
-  tempo:
+  bensons_tempo:
     image: grafana/tempo:2.0.1
     container_name: bensons_tempo
     command: [ "-config.file=/etc/tempo.yaml" ]
@@ -41,11 +41,11 @@ services:
       - 3233:3200  # tempo
       - 4007:4317  # otlp grpc
     depends_on:
-      - otel-collector
+      - bensons_otel
     networks:
       otel:
 
-  db:
+  bensons_postgres:
     container_name: bensons_postgres
     image: postgres
     restart: always
@@ -58,14 +58,14 @@ services:
     networks:
       otel:
     
-  website:
+  bensons_website:
     container_name: bensons_website
     image: website
     restart: always
     ports:
      - 8372:8081
     depends_on: 
-     - db
+     - bensons_postgres
     build: ..
     environment:
      connectionStrings: "user id=bbird;database=bensonsdb;password=P@assw0rd!;" #host?
@@ -78,13 +78,12 @@ services:
     networks:
       otel:
 
-  grafana:
+  bensons_grafana:
     image: grafana/grafana:9.4.7
     container_name: bensons_grafana
     environment:
       - GF_SECURITY_ADMIN_USER=Benson
       - GF_SECURITY_ADMIN_PASSWORD=B0bby
-
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - grafana-data:/var/lib/grafana
@@ -94,11 +93,11 @@ services:
     ports:
       - 3024:3000
     depends_on:
-      - prometheus
+      - bensons_prometheus
     networks:
       otel:
 
-  loki:
+  bensons_loki:
     image: grafana/loki:2.8.0
     container_name: bensons_loki
     command: -config.file=/etc/loki/local-config.yaml
@@ -112,7 +111,7 @@ services:
     networks:
         otel:
 
-  otel-collector:
+  bensons_otel:
     container_name: bensons_otel
     hostname: otel
     image: otel/opentelemetry-collector-contrib:0.75.0
@@ -129,7 +128,7 @@ services:
     networks:
       otel:
 
-  rabbitmq:
+  bensons_rabbitmq:
     image: rabbitmq:3.11.0-management-alpine
     container_name: bensons_rabbitmq
     restart: unless-stopped
@@ -144,9 +143,9 @@ networks:
     otel:
 
 volumes:
-  loki:
-  prometheus:
-  tempo:
+  bensons_loki:
+  bensons_prometheus:
+  bensons_tempo:
   grafana-data:
 
 # docker compose -f docker-compose.yml up -d
