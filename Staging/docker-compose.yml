@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  benson_blackbox:
+  blackbox:
     image: prom/blackbox-exporter:v0.23.0
     container_name: benson_blackbox
     restart: unless-stopped
@@ -14,7 +14,7 @@ services:
     networks:
       otel:
 
-  bensons_prometheus:
+  prometheus:
     image: prom/prometheus:v2.43.0
     container_name: bensons_prometheus
     hostname: prometheus
@@ -24,11 +24,11 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
-     - benson_blackbox
+     - blackbox
     networks:
       otel:
 
-  bensons_tempo:
+  tempo:
     image: grafana/tempo:2.0.1
     container_name: bensons_tempo
     command: [ "-config.file=/etc/tempo.yaml" ]
@@ -78,7 +78,7 @@ services:
     networks:
       otel:
 
-  bensons_grafana:
+  grafana:
     image: grafana/grafana:9.4.7
     container_name: bensons_grafana
     environment:
@@ -94,11 +94,11 @@ services:
     ports:
       - 3024:3000
     depends_on:
-      - bensons_prometheus
+      - prometheus
     networks:
       otel:
 
-  bensons_loki:
+  loki:
     image: grafana/loki:2.8.0
     container_name: bensons_loki
     command: -config.file=/etc/loki/local-config.yaml
@@ -144,9 +144,9 @@ networks:
     otel:
 
 volumes:
-  bensons_loki:
-  bensons_prometheus:
-  bensons_tempo:
+  loki:
+  prometheus:
+  tempo:
   grafana-data:
 
 # docker compose -f docker-compose.yml up -d
