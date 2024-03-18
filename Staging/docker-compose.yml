@@ -31,7 +31,7 @@ services:
   tempo:
     image: grafana/tempo:2.0.1
     container_name: bensons_tempo
-    command: [ "--config.file=/etc/tempo.yaml" ]
+    command: [ "-config.file=/etc/tempo.yaml" ]
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./tempo.yml:/etc/tempo.yaml
