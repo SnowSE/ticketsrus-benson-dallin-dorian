@@ -65,6 +65,10 @@ jobs:
     steps:
       - name: "Turn on the docker containers"
         run: |
+            dir
+            cd ./actions-runner
+            dir
+            cd ./_work
             cd ./actions-runner/_work/ticketsrus-benson-dallin-dorian/ticketsrus-benson-dallin-dorian/ticketsrus-benson-dallin-dorian/Staging
             docker compose up --build -d
         working-directory: ./../../../../
