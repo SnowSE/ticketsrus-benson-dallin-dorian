@@ -124,7 +124,7 @@ public class Program
             .AddInteractiveServerRenderMode();
 
         app.MapControllers();
-        app.MapHealthChecks("/helathcheck", new HealthCheckOptions
+        app.MapHealthChecks("/healthcheck", new HealthCheckOptions
         {
             AllowCachingResponses = false,
             ResultStatusCodes =
