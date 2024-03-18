@@ -46,9 +46,12 @@ jobs:
     steps: 
       - name: linting test
         run: |
+            dir
+            echo "========================"
             cd ./ticketsrus-benson-dallin-dorian
-            dotnet format --verify-no-changes --severity warn
-        # docker run -t --rm -v $(pwd):/appL -w /appL -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet format --verify-no-changes --severity warn
+            dir
+            echo "----------------------"
+            docker run -t --rm -v $(pwd):/appL -w /appL -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet format --verify-no-changes --severity warn
 
   BuildWarnings: 
     runs-on: [ Benson ]
