@@ -17,9 +17,10 @@ exporters:
       insecure: true
 
 extensions:
-  health_check:
   zpages:
      endpoint: otel:55679
+  health_check:
+  batch:
 
 service:
   extensions: [zpages, health_check]
