@@ -24,7 +24,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
-     - blackbox
+     - benson_blackbox
     networks:
       otel:
 
@@ -84,6 +84,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=Benson
       - GF_SECURITY_ADMIN_PASSWORD=B0bby
+
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - grafana-data:/var/lib/grafana
