@@ -85,9 +85,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=Benson
       - GF_SECURITY_ADMIN_PASSWORD=B0bby
-      #- GF_AUTH_ANONYMOUS_ENABLED=true
-      #- GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-      #- GF_AUTH_DISABLE_LOGIN_FORM=true
+
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - grafana-data:/var/lib/grafana
@@ -119,7 +117,7 @@ services:
     container_name: bensons_otel
     hostname: otel
     image: otel/opentelemetry-collector-contrib:0.75.0
-    command: ["--config=/etc/otel-collector-config.yaml"]
+    command: -config.file=/etc/otel-collector-config.yaml
     volumes:
       - ./otel.yml:/etc/otel-collector-config.yaml
     restart: unless-stopped
