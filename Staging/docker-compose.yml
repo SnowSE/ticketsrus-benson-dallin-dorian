@@ -83,7 +83,7 @@ services:
     container_name: bensons_grafana
     environment:
       - GF_SECURITY_ADMIN_USER=Benson
-      - GF_SECURITY_ADMIN_PASSWORD=B0bby
+      - GF_SECURITY_ADMIN_PASSWORD= ${{secrets.BENSONS_PAT}}
 
     volumes:
       - /etc/localtime:/etc/localtime:ro
