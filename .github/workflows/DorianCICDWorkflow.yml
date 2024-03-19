@@ -15,7 +15,7 @@ jobs:
   #         rm -rf ./ticketsrus-benson-dallin-dorian
   clonerepository:
     runs-on: [alex-office4]
-    needs: removeoldcode
+    # needs: removeoldcode
     steps:
       - name: Clone repo
         run: |
