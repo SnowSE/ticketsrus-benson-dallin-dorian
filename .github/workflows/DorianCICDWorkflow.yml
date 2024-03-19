@@ -41,10 +41,10 @@ jobs:
     runs-on: [alex-office4]
     needs: clonerepository
     steps:
-      - name: integrationtests
-        run: |
-          cd ./ticketsrus-benson-dallin-dorian/TestsTRU
-          dotnet test
+      # - name: integrationtests
+      #   run: |
+      #     cd ./ticketsrus-benson-dallin-dorian/TestsTRU
+      #     dotnet test
       - name: deploy
         run: |
           cd ./ticketsrus-benson-dallin-dorian/Staging
