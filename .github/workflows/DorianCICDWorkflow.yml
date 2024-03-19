@@ -4,15 +4,15 @@ on:
     branches:
       - DorianCICD
 jobs:
-  removeoldcode:
-    runs-on: [alex-office4]
-    steps:
-      - name: remove old code
-        run: |
-          cd ./ticketsrus-benson-dallin-dorian/Staging
-          docker compose down -v
-          cd ../../
-          rm -rf ./ticketsrus-benson-dallin-dorian
+  # removeoldcode:
+  #   runs-on: [alex-office4]
+  #   steps:
+  #     - name: remove old code
+  #       run: |
+  #         cd ./ticketsrus-benson-dallin-dorian/Staging
+  #         docker compose down -v
+  #         cd ../../
+  #         rm -rf ./ticketsrus-benson-dallin-dorian
   clonerepository:
     runs-on: [alex-office4]
     needs: removeoldcode
