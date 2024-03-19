@@ -9,6 +9,9 @@ using OpenTelemetry.Trace;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry;
+using System.Diagnostics.Metrics;
+using OpenTelemetry.Exporter.Zipkin;
+
 
 public class Program
 {
@@ -21,44 +24,51 @@ public class Program
         builder.Services.AddHealthChecks();
         builder.Services.AddLogging();
 
-
-        //stuff added on 3/14
-        
-        builder.Services.AddOpenTelemetry()
-            .WithTracing(b =>
-            {
-                b
-                .AddSource(Constants.serviceName2)
-                .ConfigureResource(resource =>
-                    resource.AddService(
-                        serviceName: Constants.serviceName2,
-                        serviceVersion: Constants.serviceVersion))
-                .AddAspNetCoreInstrumentation()
-                .AddConsoleExporter();
-            });
-
-        using var tracerProvider = Sdk.CreateTracerProviderBuilder()
-            .AddSource(Constants.serviceName2)
-            .ConfigureResource(resource =>
-                resource.AddService(
-                  serviceName: Constants.serviceName2,
-                  serviceVersion: Constants.serviceVersion))
-            .AddConsoleExporter()
-            .Build();
-
-        ///stuff i had before 3/14
         builder.Logging.AddOpenTelemetry(options =>
         {
-            options
-                .SetResourceBuilder(
+            options.SetResourceBuilder(
                     ResourceBuilder.CreateDefault()
                         .AddService(Constants.serviceName))
+                    .AddConsoleExporter()
                     .AddOtlpExporter(opt =>
                     {
                         opt.Endpoint = new Uri("http://otel-collector:4317/");
-                    })
-                .AddConsoleExporter();
+                    });
         });
+
+        var greeterMeter = new Meter(Constants.serviceName, Constants.serviceVersion);
+
+        builder.Services.AddOpenTelemetry()
+                .ConfigureResource(resource =>
+                    resource.AddService(
+                        serviceName: Constants.serviceName,
+                        serviceVersion: Constants.serviceVersion))
+            .WithTracing(b => b
+                .AddAspNetCoreInstrumentation()
+                .AddSource(Constants.sourceName)
+                .ConfigureResource(r => r
+                    .AddService(serviceName: Constants.serviceName, serviceVersion: Constants.serviceVersion))
+                .AddSource(Constants.sourceName)
+                .ConfigureResource(resource =>
+                resource.AddService(serviceName: Constants.serviceName, serviceVersion: Constants.serviceVersion
+                )).AddOtlpExporter(opt =>
+                {
+                    opt.Endpoint = new Uri("http://otel-collector:4317/");
+                })
+                .AddConsoleExporter())
+
+
+            .WithMetrics(metrics => metrics
+                .AddMeter(greeterMeter.Name) //custom meter name
+                .AddAspNetCoreInstrumentation()
+                .AddConsoleExporter()
+                .AddPrometheusExporter()
+                .AddOtlpExporter(opt =>
+                    {
+                        opt.Endpoint = new Uri("http://otel-collector:4317/");
+                    }));
+
+
 
 
 
@@ -80,6 +90,9 @@ public class Program
         builder.Services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
 
         var app = builder.Build();
+
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
+
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

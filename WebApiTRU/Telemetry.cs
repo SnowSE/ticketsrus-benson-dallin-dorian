@@ -3,6 +3,6 @@ using System.Diagnostics;
 public static class Telemetry
 {
 
-    public static readonly ActivitySource MyActivitySource = new(Constants.serviceName2);
+    public static readonly ActivitySource MyActivitySource = new(Constants.serviceName);
 
 }
