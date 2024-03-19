@@ -28,7 +28,7 @@ services:
     image: prom/blackbox-exporter:v0.23.0
     restart: unless-stopped
     ports:
-      - 9115:9115
+      - 9151:9115
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ../WebApiTRU/blackbox/blackbox.yml:/etc/blackbox/blackbox.yml
@@ -42,7 +42,7 @@ services:
     hostname: prometheus
     restart: unless-stopped
     ports:
-        - "9090:9090"
+        - "9097:9090"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ../WebApiTRU/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -62,7 +62,7 @@ services:
       # - JAVA_OPTS=-Xms128m -Xmx128m -XX:+ExitOnOutOfMemoryError
     ports:
       # Port used for the Zipkin UI and HTTP Api
-      - 9411:9411
+      - 9141:9411
     networks:
       otel: 
 
@@ -81,7 +81,7 @@ services:
     restart: unless-stopped
     user: root
     ports:
-      - "3000:3000"
+      - "3090:3000"
     depends_on:
       - prometheus 
       - loki
@@ -98,11 +98,9 @@ services:
       - loki:/data/loki
     restart: unless-stopped
     ports:
-      - 3100:3100
+      - 3103:3100
     networks:
       otel:
-
- 
 
   otel-collector:
     # https://github.com/open-telemetry/opentelemetry-collector-contrib/releases
