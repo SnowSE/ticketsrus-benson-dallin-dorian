@@ -119,6 +119,12 @@ public class Program
         // {
         //     return "healthy";
         // });
+        app.MapGet("api/dosomething", () =>
+        {
+            DorianMetric.CounterNumber += 1;
+            DorianLogging.LogApplicationAccess(app.Logger, "fgsdgfsdf");
+            return DorianMetric.CounterNumber;
+        });
 
         app.UseHttpsRedirection();
 
