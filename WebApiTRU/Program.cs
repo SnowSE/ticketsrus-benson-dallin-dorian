@@ -104,21 +104,21 @@ public class Program
             app.UseHsts();
         }
 
-        // app.MapHealthChecks("/health", new HealthCheckOptions
-        // {
-        //     AllowCachingResponses = false,
-        //     ResultStatusCodes =
-        //         {
-        //             [HealthStatus.Healthy] = StatusCodes.Status200OK,
-        //             [HealthStatus.Degraded] = StatusCodes.Status200OK,
-        //             [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
-        //         }
-        // });
-
-        app.MapGet("/health", () =>
+        app.MapHealthChecks("/health", new HealthCheckOptions
         {
-            return "healthy";
+            AllowCachingResponses = false,
+            ResultStatusCodes =
+                {
+                    [HealthStatus.Healthy] = StatusCodes.Status200OK,
+                    [HealthStatus.Degraded] = StatusCodes.Status200OK,
+                    [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+                }
         });
+
+        // app.MapGet("/health", () =>
+        // {
+        //     return "healthy";
+        // });
 
         app.UseHttpsRedirection();
 
