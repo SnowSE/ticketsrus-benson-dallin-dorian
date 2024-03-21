@@ -5,6 +5,8 @@ services:
     build: ..
     ports:
       - 6943:8080
+    depends_on:
+      - db
     healthcheck:
       test: curl --fail http://localhost:6943/health || exit 1
       interval: 60s
@@ -26,7 +28,7 @@ services:
       POSTGRES_DB: doriandb
       POSTGRES_PASSWORD: P@ssw0rd!
     volumes:
-     - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+     - ../TestsTRU/20240209.11.58.33.sql:/docker-entrypoint-initdb.d/a_init.sql
     networks:
         otel: 
 
