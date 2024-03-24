@@ -44,51 +44,40 @@ public class Program
         var greeterMeter = new Meter(Constants.serviceName, Constants.serviceVersion);
 
 
+  
+
         builder.Services.AddOpenTelemetry()
-        .WithMetrics(x => 
-        {
-            x.AddPrometheusExporter();
-            x.AddMeter("TicketGetting");
-            x.AddView("request-duration",
-            new ExplicitBucketHistogramConfiguration
-            {
-                Boundaries = [0, 0.005, 0.01, 0.025, 0.05, 0.7]
-            });
-        });
-
-        // builder.Services.AddOpenTelemetry()
-        //         .ConfigureResource(resource =>
-        //             resource.AddService(
-        //                 serviceName: Constants.serviceName,
-        //                 serviceVersion: Constants.serviceVersion))
-        //     .WithTracing(b => b
-        //         .AddAspNetCoreInstrumentation()
-        //         .AddSource(Constants.sourceName)
-        //         .ConfigureResource(r => r
-        //             .AddService(serviceName: Constants.serviceName, serviceVersion: Constants.serviceVersion))
-        //         .AddSource(Constants.sourceName)
-        //         .ConfigureResource(resource =>
-        //         resource.AddService(serviceName: Constants.serviceName, serviceVersion: Constants.serviceVersion
-        //         )).AddOtlpExporter(opt =>
-        //         {
-        //             opt.Endpoint = new Uri("http://otel-collector:4317/");
-        //         })
-        //         .AddConsoleExporter())
-
-
-            // .WithMetrics(metrics => metrics
-            //     .AddPrometheusExporter()
-            //     .AddMeter(greeterMeter.Name,
-            //     "Microsoft.AspNetCore.Hosting",
-            //     "Microsoft.AspNetCore.Server.Kestrel",
-            //     "Ticket.Store",
-            //     "TicketPurchase")
-            //     .AddAspNetCoreInstrumentation()
-            //     .AddConsoleExporter()
-            //     .AddOtlpExporter(opt =>
-            //         {
-            //             opt.Endpoint = new Uri("http://otel-collector:4317/");
-            //         }));
+                .ConfigureResource(resource =>
+                    resource.AddService(
+                        serviceName: Constants.serviceName,
+                        serviceVersion: Constants.serviceVersion))
+            .WithTracing(b => b
+                .AddAspNetCoreInstrumentation()
+                .AddSource(Constants.sourceName)
+                .ConfigureResource(r => r
+                    .AddService(serviceName: Constants.serviceName, serviceVersion: Constants.serviceVersion))
+                .AddSource(Constants.sourceName)
+                .ConfigureResource(resource =>
+                resource.AddService(serviceName: Constants.serviceName, serviceVersion: Constants.serviceVersion
+                )).AddOtlpExporter(opt =>
+                {
+                    opt.Endpoint = new Uri("http://otel-collector:4317/");
+                })
+                .AddConsoleExporter())
+            .WithMetrics(metrics => metrics
+                .AddPrometheusExporter()
+                .AddMeter(greeterMeter.Name,
+                "Microsoft.AspNetCore.Hosting",
+                "Microsoft.AspNetCore.Server.Kestrel",
+                "Ticket.Store",
+                "TicketPurchase", 
+                "TicketGetting")
+                .AddAspNetCoreInstrumentation()
+                .AddConsoleExporter()
+                .AddOtlpExporter(opt =>
+                    {
+                        opt.Endpoint = new Uri("http://otel-collector:4317/");
+                    }));
 
 
 
