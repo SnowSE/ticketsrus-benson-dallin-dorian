@@ -4,7 +4,7 @@
 @inject IEmailService emailService
 @inject IConcertService concertService
 @inject ITicketService ticketService
-
+@inject TicketMetrics ticketMetrics
 <p>Please enter your email</p>
 
 <input type="text" @bind=@userEmail />
@@ -49,10 +49,10 @@
     {
         try
         {
-
             if (userEmail is not null && concert is not null) // Maybe catch if they put in a non-email
             {
                 var ticket = await ticketService.AddTicket(userEmail, concert.Id);
+                ticketMetrics.TicketsSold(1);
                 EmailInfoDTO emailDto = new()
                     {
                         Email = userEmail,
@@ -60,7 +60,7 @@
                         Message = $"Thank you for purchasing a ticket for event: {concert.EventName}",
                         QrHash = ticket.Qrhash
                     };
-                emailService.SendEmail(emailDto);
+                @* emailService.SendEmail(emailDto);  *@
                 userEmail = null;
                 errorResultLabel = "";
                 successResultLabel = "Your ticket has been reserved. Please check your email for your QR code.";

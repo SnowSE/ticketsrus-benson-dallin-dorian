@@ -13,12 +13,17 @@ using System.Diagnostics.Metrics;
 using OpenTelemetry.Exporter.Zipkin;
 
 
+
 public class Program
 {
     private static void Main(string[] args)
     {
 
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddSingleton<TicketMetrics>();
+
+        builder.Services.AddMetrics();
 
         builder.Services.AddRazorPages();
         builder.Services.AddHealthChecks();
@@ -38,35 +43,52 @@ public class Program
 
         var greeterMeter = new Meter(Constants.serviceName, Constants.serviceVersion);
 
+
         builder.Services.AddOpenTelemetry()
-                .ConfigureResource(resource =>
-                    resource.AddService(
-                        serviceName: Constants.serviceName,
-                        serviceVersion: Constants.serviceVersion))
-            .WithTracing(b => b
-                .AddAspNetCoreInstrumentation()
-                .AddSource(Constants.sourceName)
-                .ConfigureResource(r => r
-                    .AddService(serviceName: Constants.serviceName, serviceVersion: Constants.serviceVersion))
-                .AddSource(Constants.sourceName)
-                .ConfigureResource(resource =>
-                resource.AddService(serviceName: Constants.serviceName, serviceVersion: Constants.serviceVersion
-                )).AddOtlpExporter(opt =>
-                {
-                    opt.Endpoint = new Uri("http://otel-collector:4317/");
-                })
-                .AddConsoleExporter())
+        .WithMetrics(x => 
+        {
+            x.AddPrometheusExporter();
+            x.AddMeter("TicketGetting");
+            x.AddView("request-duration",
+            new ExplicitBucketHistogramConfiguration
+            {
+                Boundaries = [0, 0.005, 0.01, 0.025, 0.05, 0.7]
+            });
+        });
+
+        // builder.Services.AddOpenTelemetry()
+        //         .ConfigureResource(resource =>
+        //             resource.AddService(
+        //                 serviceName: Constants.serviceName,
+        //                 serviceVersion: Constants.serviceVersion))
+        //     .WithTracing(b => b
+        //         .AddAspNetCoreInstrumentation()
+        //         .AddSource(Constants.sourceName)
+        //         .ConfigureResource(r => r
+        //             .AddService(serviceName: Constants.serviceName, serviceVersion: Constants.serviceVersion))
+        //         .AddSource(Constants.sourceName)
+        //         .ConfigureResource(resource =>
+        //         resource.AddService(serviceName: Constants.serviceName, serviceVersion: Constants.serviceVersion
+        //         )).AddOtlpExporter(opt =>
+        //         {
+        //             opt.Endpoint = new Uri("http://otel-collector:4317/");
+        //         })
+        //         .AddConsoleExporter())
 
 
-            .WithMetrics(metrics => metrics
-                .AddMeter(greeterMeter.Name) //custom meter name
-                .AddAspNetCoreInstrumentation()
-                .AddConsoleExporter()
-                .AddPrometheusExporter()
-                .AddOtlpExporter(opt =>
-                    {
-                        opt.Endpoint = new Uri("http://otel-collector:4317/");
-                    }));
+            // .WithMetrics(metrics => metrics
+            //     .AddPrometheusExporter()
+            //     .AddMeter(greeterMeter.Name,
+            //     "Microsoft.AspNetCore.Hosting",
+            //     "Microsoft.AspNetCore.Server.Kestrel",
+            //     "Ticket.Store",
+            //     "TicketPurchase")
+            //     .AddAspNetCoreInstrumentation()
+            //     .AddConsoleExporter()
+            //     .AddOtlpExporter(opt =>
+            //         {
+            //             opt.Endpoint = new Uri("http://otel-collector:4317/");
+            //         }));
 
 
 
@@ -92,7 +114,7 @@ public class Program
         var app = builder.Build();
 
         app.UseOpenTelemetryPrometheusScrapingEndpoint();
-
+        app.MapPrometheusScrapingEndpoint();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -124,6 +146,11 @@ public class Program
             DorianMetric.CounterNumber += 1;
             DorianLogging.LogApplicationAccess(app.Logger, "fgsdgfsdf");
             return DorianMetric.CounterNumber;
+        });
+
+        app.MapPost("/sellticket", (TicketMetrics metrics) =>
+        {
+            metrics.TicketsSold(1);
         });
 
         app.UseHttpsRedirection();

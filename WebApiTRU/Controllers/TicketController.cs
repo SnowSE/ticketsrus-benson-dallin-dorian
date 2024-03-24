@@ -1,4 +1,5 @@
-﻿using LibraryTRU.Data.DTOs;
+﻿using System.Diagnostics.Metrics;
+using LibraryTRU.Data.DTOs;
 using LibraryTRU.Exceptions;
 
 namespace WebApiTRU.Controllers;
@@ -8,10 +9,13 @@ namespace WebApiTRU.Controllers;
 public class TicketController : Controller
 {
     ITicketService _ts;
-    public TicketController(ITicketService ticketService)
+    private readonly IMeterFactory _meterFactory;
+    public TicketController(ITicketService ticketService, IMeterFactory meterFactory)
     {
         _ts = ticketService;
+        _meterFactory = meterFactory;
     }
+
 
 
     [HttpGet("{id}")]
@@ -30,6 +34,10 @@ public class TicketController : Controller
     [HttpGet("getall")]
     public async Task<IEnumerable<Ticket>> GetAll()
     {
+         var meter = _meterFactory.Create("TicketGetting");
+
+        var instrument = meter.CreateCounter<int>("a_ticket_getting_counter");
+        instrument.Add(1);
         return await _ts.GetAll();
     }
 
@@ -42,6 +50,11 @@ public class TicketController : Controller
         {
             return BadRequest(); // Or any appropriate status code indicating failure
         }
+
+        var meter = _meterFactory.Create("TicketPurchase");
+
+        var instrument = meter.CreateCounter<int>("a_ticket_purchase_counter");
+        instrument.Add(1);
 
         return CreatedAtAction(nameof(GetTicketById), new { id = ticket.Id }, ticket);
     }
