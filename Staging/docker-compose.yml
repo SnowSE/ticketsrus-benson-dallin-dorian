@@ -132,7 +132,7 @@ services:
     image: nginx
     container_name: dorian-proxy
     ports:
-     - 5467:80
+     - 5937:80
     volumes:
      - ./nginx-default.conf:/etc/nginx/conf.d/default.conf
     networks:
