@@ -55,6 +55,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ../WebApiTRU/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
     depends_on:
         - blackbox 
     networks:
@@ -147,6 +148,7 @@ networks:
 
 volumes:
   prometheus:
+  prometheus-data:
   grafana-data:
   loki:
 
