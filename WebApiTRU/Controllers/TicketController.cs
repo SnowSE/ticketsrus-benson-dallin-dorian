@@ -34,10 +34,10 @@ public class TicketController : Controller
     [HttpGet("getall")]
     public async Task<IEnumerable<Ticket>> GetAll()
     {
-         var meter = _meterFactory.Create("TicketGetting");
-
-        var instrument = meter.CreateCounter<int>("a_ticket_getting_counter");
-        instrument.Add(1);
+        //  var meter = _meterFactory.Create("TicketGetting");
+        // var instrument = meter.CreateCounter<int>("a_ticket_getting_counter");
+        // instrument.Add(1);
+        TicketGettingMeterClass.counter.Add(1);
         return await _ts.GetAll();
     }
 
@@ -48,13 +48,16 @@ public class TicketController : Controller
 
         if (ticket == null)
         {
-            return BadRequest(); // Or any appropriate status code indicating failure
+            return BadRequest(); 
         }
 
-        var meter = _meterFactory.Create("TicketPurchase");
+        // var meter = _meterFactory.Create("TicketPurchase");
 
-        var instrument = meter.CreateCounter<int>("a_ticket_purchase_counter");
-        instrument.Add(1);
+        // var instrument = meter.CreateCounter<int>("a_ticket_purchase_counter");
+        // instrument.Add(1);
+
+        TicketGettingMeterClass.counter.Add(1);
+
 
         return CreatedAtAction(nameof(GetTicketById), new { id = ticket.Id }, ticket);
     }
