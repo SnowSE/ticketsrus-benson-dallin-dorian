@@ -65,13 +65,14 @@ public class Program
                 })
                 .AddConsoleExporter())
             .WithMetrics(metrics => metrics
-                .AddPrometheusExporter()
                 .AddMeter(greeterMeter.Name,
                 "Microsoft.AspNetCore.Hosting",
                 "Microsoft.AspNetCore.Server.Kestrel",
                 "Ticket.Store",
                 "TicketPurchase", 
                 "TicketGetting")
+                .AddMeter("TicketGetting")
+                .AddPrometheusExporter()
                 .AddAspNetCoreInstrumentation()
                 .AddConsoleExporter()
                 .AddOtlpExporter(opt =>

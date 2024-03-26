@@ -5,6 +5,8 @@
 
 <HomeComponent></HomeComponent>
 
+<button @onclick="BuyTicket">BUY A DARN TICKET</button>
+
 
 @code {
 
@@ -12,10 +14,13 @@
   {
     TestActivity();
   }
-      void TestActivity()
-      {
-          using var myActivity = Telemetry.MyActivitySource.StartActivity("SayHello");
-      }
+  void TestActivity()
+  {
+      using var myActivity = Telemetry.MyActivitySource.StartActivity("SayHello");
+  }
 
-
+  void BuyTicket()
+  {
+    TicketGettingMeterClass.counter.Add(1);
+  }
 }

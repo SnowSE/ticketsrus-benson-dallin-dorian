@@ -52,7 +52,6 @@
             if (userEmail is not null && concert is not null) // Maybe catch if they put in a non-email
             {
                 var ticket = await ticketService.AddTicket(userEmail, concert.Id);
-                ticketMetrics.TicketsSold(1);
                 EmailInfoDTO emailDto = new()
                     {
                         Email = userEmail,

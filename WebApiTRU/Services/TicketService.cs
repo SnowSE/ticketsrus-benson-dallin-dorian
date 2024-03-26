@@ -20,6 +20,8 @@ public class TicketService : ITicketService
             Qrhash = await GenerateTicketHash()
         };
 
+        //TODO: this might also be a good place to put the metric
+
         await _ticketContext.Tickets.AddAsync(ticket);
         await _ticketContext.SaveChangesAsync();
         return ticket;
