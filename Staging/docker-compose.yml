@@ -131,6 +131,9 @@ services:
 
   proxy:
     image: nginx
+    depends_on:
+      - webapitruservice
+      - grafana
     container_name: dorian-proxy
     ports:
      - 5937:80
@@ -147,6 +150,6 @@ volumes:
   grafana-data:
   loki:
 
-  
+
 
        
