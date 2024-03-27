@@ -4,9 +4,10 @@ using WebApiTRU.Components;
 public class DorianMetric
 {
   public static int CounterNumber {get; set;} = 2;
-  public const string MetricCounterName  = "dorian_counter";
+  public const string MetricCounterName  = "DorianMetric";
   public static Meter DorianMeter = new (MetricCounterName, "1.0.0");
   public  static Counter<int> DorianCounter = DorianMeter.CreateCounter<int>(MetricCounterName);
+  
 }
 
 

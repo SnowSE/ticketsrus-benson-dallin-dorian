@@ -5,7 +5,7 @@
 
 <HomeComponent></HomeComponent>
 
-<button @onclick="BuyTicket">BUY A DARN TICKET</button>
+<button class="btn btn-warning" @onclick="BuyTicket">BUY A TICKET</button>
 
 
 @code {
@@ -21,6 +21,7 @@
 
   void BuyTicket()
   {
+    DorianMetric.DorianCounter.Add(1);
     TicketGettingMeterClass.counter.Add(1);
   }
 }
