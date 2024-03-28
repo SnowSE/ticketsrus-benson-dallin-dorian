@@ -65,13 +65,9 @@ public class Program
                 })
                 .AddConsoleExporter())
             .WithMetrics(metrics => metrics
-                .AddMeter(greeterMeter.Name,
-                "Microsoft.AspNetCore.Hosting",
-                "Microsoft.AspNetCore.Server.Kestrel",
-                "Ticket.Store",
-                "TicketPurchase", 
+                .AddMeter(greeterMeter.Name, 
+                "DorianMeter", 
                 "TicketGetting")
-                .AddMeter("TicketGetting")
                 .AddPrometheusExporter()
                 .AddAspNetCoreInstrumentation()
                 .AddConsoleExporter()
@@ -136,11 +132,6 @@ public class Program
             DorianMetric.CounterNumber += 1;
             DorianLogging.LogApplicationAccess(app.Logger, "fgsdgfsdf");
             return DorianMetric.CounterNumber;
-        });
-
-        app.MapPost("/sellticket", (TicketMetrics metrics) =>
-        {
-            metrics.TicketsSold(1);
         });
 
         app.UseHttpsRedirection();
