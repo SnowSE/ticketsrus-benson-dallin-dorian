@@ -158,7 +158,7 @@ services:
       - DUCKDNSTOKEN=55c6f3a0-5530-4df8-b939-58b27a9cb991 #optional
       - STAGING=true #optional
     volumes:
-      - swag_data:/config
+      - swag-data:/config
       - ./nginx.conf:/config/nginx/site-confs/default.conf
     # ports:
     #   - 443:443
@@ -181,6 +181,7 @@ volumes:
   prometheus:
   prometheus-data:
   grafana-data:
+  swag-data:
   loki:
 
   
