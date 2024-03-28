@@ -130,18 +130,40 @@ services:
     networks:
       otel: 
 
-  proxy:
-    image: nginx
-    depends_on:
-      - webapitruservice
-      - grafana
-    container_name: dorian-proxy
-    ports:
-     - 5937:80
+  # proxy:
+  #   image: nginx
+  #   depends_on:
+  #     - webapitruservice
+  #     - grafana
+  #   container_name: dorian-proxy
+  #   ports:
+  #    - 5937:80
+  #   volumes:
+  #    - ./nginx-default.conf:/etc/nginx/conf.d/default.conf
+  #   networks:
+  #     otel:
+
+  swag:
+    image: lscr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+      - URL=ticketsrus.duckdns.com
+      # - SUBDOMAINS=www,
+      - VALIDATION=http
+      - DUCKDNSTOKEN=55c6f3a0-5530-4df8-b939-58b27a9cb991 #optional
+      - STAGING=true #optional
     volumes:
-     - ./nginx-default.conf:/etc/nginx/conf.d/default.conf
-    networks:
-      otel:
+      - swag_data:/config
+      - ./nginx.conf:/config/nginx/site-confs/default.conf
+    # ports:
+    #   - 443:443
+    #   - 80:80 #optional
+    restart: unless-stopped
 
 networks:
   otel:
