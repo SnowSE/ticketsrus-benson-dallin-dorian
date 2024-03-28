@@ -521,7 +521,7 @@
           "refId": "A"
         }
       ],
-      "title": "Total time people have been on our page in the last two days",
+      "title": "Total minutes people have been on our page in the last two days",
       "type": "stat"
     }
   ],
@@ -541,6 +541,6 @@
   "timezone": "",
   "title": "Custom Metrics",
   "uid": "wU__H_1Sk",
-  "version": 6,
+  "version": 1,
   "weekStart": ""
 }
