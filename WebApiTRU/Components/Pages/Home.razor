@@ -1,27 +1,67 @@
 ﻿@using LibraryTRU
+@using System.Diagnostics;
 @rendermode InteractiveServer
 
 @page "/"
 
 <HomeComponent></HomeComponent>
 
-<button class="btn btn-warning" @onclick="BuyTicket">BUY A TICKET</button>
+<button class="btn btn-warning" @onclick="@( () => BuyTicket("olivia") )">BUY A TICKET TO OLIVIA</button>
+<button class="btn btn-warning" @onclick="@( () => BuyTicket("ariana") )">BUY A TICKET TO ARIANA</button>
+<button class="btn btn-warning" @onclick="@( () => BuyTicket("ronnie") )">BUY A TICKET TO RONNIE</button>
+
+
+
+  <p>You have currently spent @elapsedTime seconds on this page.</p>
 
 
 @code {
 
+  Stopwatch sw = new();
+  long elapsedTime;
   protected override void OnInitialized()
   {
+    DorianMetric.TimesVisitedHomePage.Add(1);
+    sw.Start();
     TestActivity();
+    UpdateTimerEverySecondAsync();
   }
-  void TestActivity()
+  public void Dispose()
   {
-      using var myActivity = Telemetry.MyActivitySource.StartActivity("SayHello");
+    sw.Stop();
   }
 
-  void BuyTicket()
+  void TestActivity()
   {
-    DorianMetric.DorianCounter.Add(1);
+    using var myActivity = Telemetry.MyActivitySource.StartActivity("SayHello");
+  }
+
+  void BuyTicket(string artist)
+  {
+    switch (artist)
+    {
+      case "ariana":
+        DorianMetric.ArianaTicketsSold.Add(1);
+        break;
+      case "olivia":
+        DorianMetric.OliviaTicketsSold.Add(1);
+        break;
+      case "ronnie":
+        DorianMetric.RonnieTicketsSold.Add(1);
+        break;
+    }
     TicketGettingMeterClass.counter.Add(1);
   }
+
+  private async Task UpdateTimerEverySecondAsync()
+  {
+    while (true)
+    {
+      await Task.Delay(1000);
+      elapsedTime = sw.ElapsedMilliseconds / 1000;
+      DorianMetric.TimeOnHomePageCounter.Add(elapsedTime);
+      StateHasChanged();
+    }
+  }
+
 }

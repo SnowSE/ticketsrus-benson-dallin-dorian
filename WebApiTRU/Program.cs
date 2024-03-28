@@ -65,12 +65,8 @@ public class Program
                 })
                 .AddConsoleExporter())
             .WithMetrics(metrics => metrics
-                .AddMeter(greeterMeter.Name,
-                "Microsoft.AspNetCore.Hosting",
-                "Microsoft.AspNetCore.Server.Kestrel",
-                "Ticket.Store",
-                "TicketPurchase", 
-                "DorianMetric",
+                .AddMeter(greeterMeter.Name, 
+                "DorianMeter", 
                 "TicketGetting")
                 .AddPrometheusExporter()
                 .AddAspNetCoreInstrumentation()
