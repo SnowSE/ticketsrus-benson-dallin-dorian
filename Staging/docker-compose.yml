@@ -143,8 +143,17 @@ services:
     networks:
       otel:
 
+  node-exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - 9450:9100
+    networks:
+      - monitoring
+
 networks:
   otel:
+  monitoring:
+    driver: bridge
 
 volumes:
   prometheus:
