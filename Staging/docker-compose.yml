@@ -156,8 +156,8 @@ services:
       - DUCKDNSTOKEN=55c6f3a0-5530-4df8-b939-58b27a9cb991 #optional
       - STAGING=true #optional
     volumes:
-      - swag-data:/config
-      - ./nginx.conf:/config/nginx/site-confs/default.conf
+      - swag_data:/config
+      - ./nginx-default.conf:/config/nginx/site-confs/default.conf
     ports:
       - 6943:443
     #   - 80:80 #optional
