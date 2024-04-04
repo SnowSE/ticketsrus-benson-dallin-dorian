@@ -53,7 +53,7 @@ jobs:
       - name: deploy2
         run: | 
           cd ./ticketsrus-benson-dallin-dorian
-          docker build -t 144.17.92.12:5000/dorian/blazor-web:1
+          docker build -t 144.17.92.12:5000/dorian/blazor-web:1 .
           docker push 144.17.92.12:5000/dorian/blazor-web:1
           kubectl apply -f kube/
       - name: Microsoft Teams Failure Notification
