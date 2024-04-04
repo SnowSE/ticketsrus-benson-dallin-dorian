@@ -145,29 +145,29 @@ services:
       otel:
 
 
-  swag:
-    image: lscr.io/linuxserver/swag
-    container_name: swag
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Denver
-      # - URL=distributeddemo.duckdns.org
-      - URL=ticketsrus.duckdns.org
-      # - SUBDOMAINS=wildcard
-      - VALIDATION=duckdns
-      - DUCKDNSTOKEN=55c6f3a0-5530-4df8-b939-58b27a9cb991
-      # - STAGING=true # protect from rate limiting
-      - STAGING=false
-    volumes:
-      - swag_data:/config
-      - ./nginx-default.conf:/config/nginx/site-confs/default.conf
-    ports:
-      - 4443:443
-      # - 80:80 #optional
-    restart: unless-stopped
+  # swag:
+  #   image: lscr.io/linuxserver/swag
+  #   container_name: dorianswag
+  #   cap_add:
+  #     - NET_ADMIN
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=America/Denver
+  #     # - URL=distributeddemo.duckdns.org
+  #     - URL=ticketsrus.duckdns.org
+  #     # - SUBDOMAINS=wildcard
+  #     - VALIDATION=duckdns
+  #     - DUCKDNSTOKEN=55c6f3a0-5530-4df8-b939-58b27a9cb991
+  #     # - STAGING=true # protect from rate limiting
+  #     - STAGING=false
+  #   volumes:
+  #     - swag_data:/config
+  #     - ./nginx-default.conf:/config/nginx/site-confs/default.conf
+  #   ports:
+  #     - 4443:443
+  #     # - 80:80 #optional
+  #   restart: unless-stopped
 
   node-exporter:
     image: prom/node-exporter:latest
@@ -185,7 +185,7 @@ volumes:
   prometheus:
   prometheus-data:
   grafana-data:
-  swag_data:
+  # swag_data:
   loki:
 
   
