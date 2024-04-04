@@ -49,7 +49,7 @@ jobs:
         run: |
           cd ./ticketsrus-benson-dallin-dorian/Staging
           docker compose up --build -d
-          ../../
+          cd ../../
       - name: deploy2
         run: | 
           cd ./ticketsrus-benson-dallin-dorian
