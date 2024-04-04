@@ -131,18 +131,18 @@ services:
     networks:
       otel: 
 
-  proxy:
-    image: nginx
-    depends_on:
-      - webapitruservice
-      - grafana
-    container_name: dorian-proxy
-    ports:
-     - 5937:80
-    volumes:
-     - ./nginx-default.conf:/etc/nginx/conf.d/default.conf
-    networks:
-      otel:
+  # proxy:
+  #   image: nginx
+  #   depends_on:
+  #     - webapitruservice
+  #     - grafana
+  #   container_name: dorian-proxy
+  #   ports:
+  #    - 5937:80
+  #   volumes:
+  #    - ./nginx-default.conf:/etc/nginx/conf.d/default.conf
+  #   networks:
+  #     otel:
 
 
   swag:

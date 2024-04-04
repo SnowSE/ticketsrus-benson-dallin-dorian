@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: dorian
+  name: blazor-web-ingress
+spec: 
+  ingressClassName: nginx
+  rules: 
+  - host: ticketsrus.duckdns.org
+    http: 
+      paths:
+      - path: /
+        pathtype: Prefix
+        backend:
+          service: 
+            name: blazor-web-service
+            port:
+              number: 80
+

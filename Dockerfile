@@ -4,6 +4,8 @@ RUN apt-get update && apt-get install -y wget
 FROM mcr.microsoft.com/dotnet/sdk:8.0 as build
 WORKDIR /app
 
+EXPOSE 8080
+
 WORKDIR /src
 COPY ["WebApiTRU/WebApiTRU.csproj", "WebApiTRU/"]
 RUN dotnet restore "WebApiTRU/WebApiTRU.csproj"

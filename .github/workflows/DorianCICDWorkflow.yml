@@ -49,6 +49,13 @@ jobs:
         run: |
           cd ./ticketsrus-benson-dallin-dorian/Staging
           docker compose up --build -d
+          ../../
+      - name: deploy2
+        run: | 
+          cd ./ticketsrus-benson-dallin-dorian
+          docker build -t 144.17.92.12:5000/dorian/blazor-web:1
+          docker push 144.17.92.12:5000/dorian/blazor-web:1
+          kubectl apply -f kube/
       - name: Microsoft Teams Failure Notification
         uses: skitionek/notify-microsoft-teams@master
         if: failure()
