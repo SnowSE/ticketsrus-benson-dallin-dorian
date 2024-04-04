@@ -185,7 +185,7 @@ volumes:
   prometheus:
   prometheus-data:
   grafana-data:
-  # swag_data:
+  swag_data:
   loki:
 
   
