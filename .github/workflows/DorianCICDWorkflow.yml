@@ -45,12 +45,12 @@ jobs:
       #   run: |
       #     cd ./ticketsrus-benson-dallin-dorian/TestsTRU
       #     dotnet test
-      - name: deploy
+      - name: deploy docker
         run: |
           cd ./ticketsrus-benson-dallin-dorian/Staging
           docker compose up --build -d
           cd ../../
-      - name: deploy2
+      - name: deploy k8s
         run: | 
           cd ./ticketsrus-benson-dallin-dorian
           docker build -t 144.17.92.12:5000/dorian/blazor-web:1 .
