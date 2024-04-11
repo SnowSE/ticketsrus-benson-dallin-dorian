@@ -37,7 +37,7 @@ jobs:
   #       run: |
   #           cd ./ticketsrus-benson-dallin-dorian
   #           docker run -t --rm -v $(pwd):/appBW -w /appBW -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet build -warnaserror
-  runintegrationtestsanddeploy:
+  deploy:
     runs-on: [alex-office4]
     needs: clonerepository
     steps:
