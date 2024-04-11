@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: grafana.k8spractice.duckdns.org
+  - host: grafana.k8srus.duckdns.org
     http:
       paths:
       - path: /
