@@ -10,7 +10,7 @@ spec:
     http: 
       paths:
       - path: /
-        pathtype: Prefix
+        pathType: Prefix
         backend:
           service: 
             name: blazor-web-service
