@@ -55,6 +55,13 @@ jobs:
           cd ./ticketsrus-benson-dallin-dorian
           docker build -t 144.17.92.12:5000/dorian/blazor-web:1 .
           docker push 144.17.92.12:5000/dorian/blazor-web:1
+          cd ./kubeconfigs
+            kubectl -n dorian delete configmap otel-config || true
+            kubectl -n dorian create configmap otel-config --from-file=otel-collector-config.yml
+            kubectl -n dorian delete configmap grafana-datasource-config || true
+            kubectl -n dorian create configmap grafana-datasource-config --from-file=grafana-datasource.yml
+          cd ..
+          
           kubectl apply -f kube/
       - name: Microsoft Teams Failure Notification
         uses: skitionek/notify-microsoft-teams@master
