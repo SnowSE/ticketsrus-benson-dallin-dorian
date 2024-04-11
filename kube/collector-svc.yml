@@ -5,4 +5,8 @@ metadata:
   name: otel-collector-service
 spec:
   type: ClusterIP
-  selector: 
+  selector:
+    app: otel-collector
+  ports:
+    - port: 4317
+      targetPort: 4317
