@@ -2,40 +2,29 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: dorian
-  name: blazor-web-db-deployment
+  name: otel-collector-deployment
   labels:
-    app: blazor-web-db
+    app: otel-collector
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: blazor-web-db
+      app: otel-collector
   template:
     metadata:
       labels:
-        app: blazor-web-db
+        app: otel-collector
     spec:
       containers:
-      - name: blazor-web-db
-        image: postgres
+      - name: otel-collector
+        image: otel/opentelemetry-collector-contrib
         ports:
-        - containerPort: 5432
-        env:
-        - name: POSTGRES_USER
-          value: dorian
-        - name: POSTGRES_PASSWORD
-          value: P@ssword1
-        - name: POSTGRES_DB
-          value: doriandb
+        - containerPort: 4317
         volumeMounts:
-        - name: postgresstorage
-          mountPath: /var/lib/postgresql/data
-        # - name: init-script
-        #   mountPath: /docker-entrypoint-initdb.d
+        - name: otel-config-volume
+          mountPath: /etc/otel-collector-config.yaml
+          subPath: otel-collector-config.yml
       volumes:
-      - name: postgresstorage
-        persistentVolumeClaim:
-          claimName: blazor-web-db-pvc
-      # - name: init-script
-      #   configMap:
-      #     name: blazor-web-postgres-init
+      - name: otel-config-volume
+        configMap:
+          name: otel-config

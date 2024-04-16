@@ -29,16 +29,18 @@ public class Program
         builder.Services.AddHealthChecks();
         builder.Services.AddLogging();
 
+        var serviceName = "test service";
         builder.Logging.AddOpenTelemetry(options =>
         {
             options.SetResourceBuilder(
                     ResourceBuilder.CreateDefault()
-                        .AddService(Constants.serviceName))
-                    .AddConsoleExporter()
+                        .AddService(Constants.serviceName)
+                    )
                     .AddOtlpExporter(opt =>
                     {
                         opt.Endpoint = new Uri("http://otel-collector:4317/");
-                    });
+                    })
+                    .AddConsoleExporter();
         });
 
         var greeterMeter = new Meter(Constants.serviceName, Constants.serviceVersion);
@@ -87,7 +89,7 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddDbContextFactory<PostgresContext>(o =>
         {
-            o.UseNpgsql(builder.Configuration["db"]);
+            o.UseNpgsql(builder.Configuration["db"] ?? throw new NullReferenceException("environment variable not set: db"));
         }, ServiceLifetime.Scoped);
 
         builder.Services.AddScoped<IConcertService, ConcertService>();

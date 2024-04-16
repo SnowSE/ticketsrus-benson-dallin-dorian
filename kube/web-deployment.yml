@@ -20,3 +20,9 @@ spec:
         image: 144.17.92.12:5000/dorian/blazor-web:1
         ports:
         - containerPort: 8080
+        env:
+        - name: COLLECTOR_URL
+          value: http://otel-collector-service:4317/
+        - name: db
+          value: db=user id=dorian;database=doriandb;password=P@ssw0rd!;host=dorianpostgres;
+        

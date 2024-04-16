@@ -6,16 +6,14 @@ receivers:
       # zipkin:
 
 exporters:
-  # prometheus:
-  #   endpoint: otel:8889
   # otlp:
   #   endpoint: tempo:4007
-  #   tls:
-  #     insecure: true
-  loki:
-    endpoint: http://loki:3100/loki/api/v1/push
   # zipkin: 
   #   endpoint: http://zipkin:9411/api/v2/spans
+  # prometheus:
+  #   endpoint: otel:8889
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
 
 extensions:
   # health_check:
@@ -29,6 +27,10 @@ processors:
 service:
   # extensions: [zpages, health_check]  # Enable zpages
   pipelines:
+    logs:
+      receivers: [otlp]
+      processors: []
+      exporters: [loki]
     # metrics:
     #   receivers: [otlp]
     #   exporters: [prometheus]
@@ -36,10 +38,6 @@ service:
     #   receivers: [otlp]
     #   processors: [batch]
     #   exporters: [otlp, zipkin]
-    logs:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [loki]
 
 
 otel-collector:
