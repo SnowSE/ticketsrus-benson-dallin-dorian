@@ -57,6 +57,7 @@ jobs:
           cd ../../
       - name: deploy k8s
         run: | 
+          ls -a
           cd ./ticketsrus-benson-dallin-dorian
           docker build -t 144.17.92.12:5000/dorian/blazor-web:$GITHUB_RUN_ID .
           docker push 144.17.92.12:5000/dorian/blazor-web:$GITHUB_RUN_ID
