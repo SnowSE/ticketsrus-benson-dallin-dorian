@@ -4,22 +4,27 @@ on:
     branches:
       - DorianCICD
 jobs:
-  removeoldcode:
+  removeoldgetnewcode:
     runs-on: [alex-office4]
     steps:
-      - name: remove old code
-        run: |
-          cd ./ticketsrus-benson-dallin-dorian/Staging
-          docker compose down -v
-          cd ../../
-          rm -rf ./ticketsrus-benson-dallin-dorian
-  clonerepository:
-    runs-on: [alex-office4]
-    needs: removeoldcode
-    steps:
-      - name: Clone repo
-        run: |
-          git clone --single-branch --branch DorianCICD https://${{secrets.DORIAN_PAT}}@github.com/SnowSE/ticketsrus-benson-dallin-dorian.git
+      - name: check out repo code
+        uses: actions/checkout@v4
+  # removeoldcode:
+  #   runs-on: [alex-office4]
+  #   steps:
+  #     - name: remove old code
+  #       run: |
+  #         cd ./ticketsrus-benson-dallin-dorian/Staging
+  #         docker compose down -v
+  #         cd ../../
+  #         rm -rf ./ticketsrus-benson-dallin-dorian
+  # clonerepository:
+  #   runs-on: [alex-office4]
+  #   needs: removeoldcode
+  #   steps:
+  #     - name: Clone repo
+  #       run: |
+  #         git clone --single-branch --branch DorianCICD https://${{secrets.DORIAN_PAT}}@github.com/SnowSE/ticketsrus-benson-dallin-dorian.git
   # Linting: 
   #   runs-on: [ alex-office4 ]
   #   needs: clonerepository
@@ -39,7 +44,7 @@ jobs:
   #           docker run -t --rm -v $(pwd):/appBW -w /appBW -e DOTNET_CLI_HOME="/tmp/dotnet" --user $(id -u):$(id -g) mcr.microsoft.com/dotnet/sdk:8.0 dotnet build -warnaserror
   deploy:
     runs-on: [alex-office4]
-    needs: clonerepository
+    needs: removeoldgetnewcode
     steps:
       # - name: integrationtests
       #   run: |
