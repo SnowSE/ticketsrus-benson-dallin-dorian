@@ -7,6 +7,9 @@ jobs:
     steps:
       - name: backup
         run: |
-          CONTAINER_NAME=$(kubectl -n dorian get pods )
-          kubectl -n dorian exec -t blazor-web-db-deployment-6d79c95f49-8jx8r -- pg_dumpall -c -U dorian > postgres-dump.sql
+          CONTAINER_NAME=$(kubectl -n dorian get pods --no-headers -o custom-columns=":metadata.name" | grep "blazor-web-db-deployment")
+          echo $CONTAINER_NAME
+          kubectl -n dorian exec -t $CONTAINER_NAME -- \
+            pg_dumpall -c -U dorian \
+            > postgres-dump.sql
           
