@@ -1,0 +1,12 @@
+name: backup database
+on:
+  - workflow_dispatch
+jobs:
+  backup:
+    runs-on: [alex-office4]
+    steps:
+      - name: backup
+        run: |
+          CONTAINER_NAME=$(kubectl -n dorian get pods )
+          kubectl -n dorian exec -t blazor-web-db-deployment-6d79c95f49-8jx8r -- pg_dumpall -c -U dorian > postgres-dump.sql
+          
