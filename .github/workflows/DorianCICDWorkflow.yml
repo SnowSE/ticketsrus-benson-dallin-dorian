@@ -51,8 +51,8 @@ jobs:
       #     cd ./ticketsrus-benson-dallin-dorian/TestsTRU
       #     dotnet test
       - name: deploy docker
-        run: |
-          cd ./ticketsrus-benson-dallin-dorian/Staging
+        run: | 
+          cd ./../ticketsrus-benson-dallin-dorian/Staging
           docker compose up --build -d
           cd ../../
       - name: deploy k8s
