@@ -52,13 +52,12 @@ jobs:
       #     dotnet test
       - name: deploy docker
         run: | 
-          cd ./../ticketsrus-benson-dallin-dorian/Staging
+          pwd
+          cd Staging
           docker compose up --build -d
-          cd ../../
       - name: deploy k8s
         run: | 
-          ls -a
-          cd ./ticketsrus-benson-dallin-dorian
+          pwd
           docker build -t 144.17.92.12:5000/dorian/blazor-web:$GITHUB_RUN_ID .
           docker push 144.17.92.12:5000/dorian/blazor-web:$GITHUB_RUN_ID
           
