@@ -21,7 +21,7 @@ public class Program
 
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddSingleton<TicketMetrics>();
+        builder.Services.AddSingleton<TicketMetrics>(); //add to main proj
 
         builder.Services.AddMetrics();
 
@@ -29,7 +29,6 @@ public class Program
         builder.Services.AddHealthChecks();
         builder.Services.AddLogging();
 
-        var serviceName = "test service";
         builder.Logging.AddOpenTelemetry(options =>
         {
             options.SetResourceBuilder(
@@ -125,10 +124,7 @@ public class Program
                 }
         });
 
-        // app.MapGet("/health", () =>
-        // {
-        //     return "healthy";
-        // });
+   
         app.MapGet("api/dosomething", () =>
         {
             DorianMetric.CounterNumber += 1;
